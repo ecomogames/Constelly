@@ -1,0 +1,89 @@
+[
+  {
+    "id": "sample-triangle",
+    "title": "Triangle (test puzzle)",
+    "category": "object",
+    "dots": [
+      { "id": "a", "x": 0.500, "y": 0.367, "degree": 2 },
+      { "id": "b", "x": 0.200, "y": 0.917, "degree": 2 },
+      { "id": "c", "x": 0.800, "y": 0.917, "degree": 2 }
+    ],
+    "edges": [["a", "b"], ["b", "c"], ["c", "a"]]
+  },
+  {
+    "id": "sample-house",
+    "title": "House (test puzzle)",
+    "category": "object",
+    "dots": [
+      { "id": "bl", "x": 0.250, "y": 1.017, "degree": 3 },
+      { "id": "br", "x": 0.750, "y": 1.017, "degree": 3 },
+      { "id": "tl", "x": 0.250, "y": 0.617, "degree": 4 },
+      { "id": "tr", "x": 0.750, "y": 0.617, "degree": 4 },
+      { "id": "roof", "x": 0.500, "y": 0.317, "degree": 2 }
+    ],
+    "edges": [
+      ["bl", "br"], ["bl", "tl"], ["br", "tr"], ["tl", "tr"],
+      ["tl", "roof"], ["tr", "roof"],
+      ["bl", "tr"], ["br", "tl"]
+    ]
+  },
+  {
+    "id": "sample-sparkle",
+    "title": "Sparkle (test puzzle)",
+    "category": "object",
+    "dots": [
+      { "id": "c", "x": 0.500, "y": 0.667, "degree": 4 },
+      { "id": "n", "x": 0.500, "y": 0.317, "degree": 1 },
+      { "id": "e", "x": 0.850, "y": 0.667, "degree": 1 },
+      { "id": "s", "x": 0.500, "y": 1.017, "degree": 1 },
+      { "id": "w", "x": 0.150, "y": 0.667, "degree": 1 }
+    ],
+    "edges": [["c", "n"], ["c", "e"], ["c", "s"], ["c", "w"]]
+  },
+  {
+    "id": "sample-big-dipper",
+    "title": "The Big Dipper (test puzzle)",
+    "category": "real-constellation",
+    "dots": [
+      { "id": "dubhe",  "x": 0.120, "y": 0.507, "degree": 2 },
+      { "id": "merak",  "x": 0.140, "y": 0.767, "degree": 2 },
+      { "id": "phecda", "x": 0.400, "y": 0.847, "degree": 2 },
+      { "id": "megrez", "x": 0.420, "y": 0.627, "degree": 3 },
+      { "id": "alioth", "x": 0.600, "y": 0.587, "degree": 2 },
+      { "id": "mizar",  "x": 0.740, "y": 0.607, "degree": 2 },
+      { "id": "alkaid", "x": 0.900, "y": 0.767, "degree": 1 }
+    ],
+    "edges": [
+      ["dubhe", "merak"], ["merak", "phecda"], ["phecda", "megrez"], ["megrez", "dubhe"],
+      ["megrez", "alioth"], ["alioth", "mizar"], ["mizar", "alkaid"]
+    ]
+  },
+  {
+    "id": "sample-leaf",
+    "title": "Leaf (test puzzle)",
+    "category": "object",
+    "dots": [
+      {"id": "tip", "x": 0.584, "y": 0.059, "degree": 2},
+      {"id": "left-1", "x": 0.358, "y": 0.226, "degree": 2},
+      {"id": "right-1", "x": 0.719, "y": 0.281, "degree": 2},
+      {"id": "vein-ul", "x": 0.435, "y": 0.336, "degree": 1},
+      {"id": "vein-ur", "x": 0.623, "y": 0.359, "degree": 1},
+      {"id": "left-2", "x": 0.265, "y": 0.482, "degree": 2},
+      {"id": "midrib-top", "x": 0.516, "y": 0.467, "degree": 3},
+      {"id": "vein-ll", "x": 0.395, "y": 0.510, "degree": 1},
+      {"id": "right-2", "x": 0.735, "y": 0.523, "degree": 2},
+      {"id": "vein-lr", "x": 0.600, "y": 0.559, "degree": 1},
+      {"id": "midrib-mid", "x": 0.480, "y": 0.660, "degree": 4},
+      {"id": "left-3", "x": 0.329, "y": 0.745, "degree": 2},
+      {"id": "right-3", "x": 0.632, "y": 0.756, "degree": 2},
+      {"id": "base", "x": 0.469, "y": 0.926, "degree": 4},
+      {"id": "stem", "x": 0.566, "y": 1.274, "degree": 1}
+    ],
+    "edges": [
+      ["tip", "left-1"], ["tip", "right-1"], ["left-1", "left-2"], ["left-2", "left-3"],
+      ["left-3", "base"], ["right-1", "right-2"], ["right-2", "right-3"], ["right-3", "base"],
+      ["base", "stem"], ["base", "midrib-mid"], ["midrib-mid", "vein-ll"], ["midrib-mid", "vein-lr"],
+      ["midrib-mid", "midrib-top"], ["midrib-top", "vein-ul"], ["midrib-top", "vein-ur"]
+    ]
+  }
+]

@@ -1,0 +1,399 @@
+/* Constelly — styles.
+   Theme: dots on a dark starfield. Colors are tokens so the feedback states stay consistent. */
+
+:root {
+  --bg: #0b1026;          /* night sky */
+  --fg: #e8ecff;          /* text */
+  --dot: #c9d1ff;         /* neutral dot */
+  --line: #7f8bd6;        /* drawn line */
+  --ok: #ffd84a;          /* dot evaluated correct / win state (bright yellow) */
+  --bad: #ff5a5a;         /* dot evaluated wrong (red) */
+  --hint: #e0c97a;        /* hinted line: locked, a paler gold than --ok */
+  --muted: #5c6490;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* The page is exactly one screen tall during play: the board takes whatever height is left
+   (see .board-wrap). Very short screens (landscape phones) scroll instead of shrinking it away. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  min-height: 100dvh; /* dvh: excludes mobile browser toolbars */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* ---- layout ---- */
+.topbar {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  width: min(100%, 640px);
+  margin: 0 auto;
+  padding: 0.25rem 0.5rem 0;
+  text-align: center;
+}
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.icon-btn:hover { color: var(--fg); }
+.icon-btn svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
+.logo {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.puzzle-num {
+  font-weight: 400;
+  color: var(--muted);
+}
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.board-wrap {
+  flex: 1 1 0;
+  min-height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size; /* lets #board size itself from the space left (cqw / cqh) */
+}
+.hud {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 640px);
+  padding: 0.25rem 0.5rem;
+  color: var(--muted);
+}
+.hud #timer { font-variant-numeric: tabular-nums; }
+.hud button {
+  font: inherit;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  min-height: 44px;
+  padding: 0.3rem 1.1rem;
+  cursor: pointer;
+}
+.hud button:disabled { opacity: 0.35; cursor: default; }
+.reveal {
+  margin: 0.4rem 0 0;
+  font-size: 1.2rem;
+  color: var(--ok);
+  animation: fade-in 0.8s ease-out;
+}
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+/* Solved: the (disabled) controls make room for the title + "See results". */
+.stage--solved .controls { display: none; }
+.controls button,
+.confirm button {
+  font: inherit;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.3rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+.controls svg { width: 1.3rem; height: 1.3rem; fill: currentColor; }
+.controls button[aria-pressed="true"] {
+  color: var(--bg);
+  background: var(--fg);
+  border-color: var(--fg);
+}
+.controls button:disabled { opacity: 0.35; cursor: default; }
+
+.confirm {
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  max-width: min(90vw, 22rem);
+}
+.confirm::backdrop { background: rgb(0 0 0 / 0.6); }
+.confirm p { margin: 0 0 1rem; }
+.confirm-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+.confirm .danger { border-color: var(--bad); color: var(--bad); }
+
+/* ---- results / help / stats dialogs ---- */
+.dialog {
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  border-radius: 14px;
+  width: min(92vw, 24rem);
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 1.25rem 1.25rem 1.5rem;
+  text-align: center;
+}
+.dialog::backdrop { background: rgb(0 0 0 / 0.6); }
+.dialog h2 { margin: 0 2.5rem 0.75rem; font-size: 1.25rem; font-weight: 600; }
+.dialog p { margin: 0 0 0.75rem; line-height: 1.45; }
+.dialog-close-form { position: absolute; top: 0.25rem; right: 0.25rem; margin: 0; }
+.dialog-close {
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+.dialog-close:hover { color: var(--fg); }
+.results-title { font-size: 1.15rem; color: var(--ok); }
+.figures {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin: 0.5rem 0 1rem;
+}
+.figures dt { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.figures dd { margin: 0.15rem 0 0; font-size: 1.6rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.results-next { color: var(--muted); font-variant-numeric: tabular-nums; }
+.primary-btn {
+  font: inherit;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--ok);
+  border: 0;
+  border-radius: 999px;
+  min-height: 44px;
+  padding: 0.3rem 1.75rem;
+  cursor: pointer;
+}
+.share-status { min-height: 1.45em; margin: 0.4rem 0 0.25rem; color: var(--ok); font-size: 0.9rem; }
+.dialog--text #help-body { text-align: left; margin-bottom: 1rem; }
+/* How-to-play: tutorial animation below the text on phones, beside it on wider screens. */
+.help-demo { display: block; width: min(100%, 200px); margin: 0 auto 1rem; }
+.help-demo img { display: block; width: 100%; height: auto; border-radius: 10px; }
+@media (min-width: 640px) {
+  .dialog--text { width: min(92vw, 40rem); }
+  .help-layout {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 1.25rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .help-layout #help-body,
+  .help-layout .help-demo { width: 100%; margin: 0; }
+}
+.figures--stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: 1rem 0.5rem;
+}
+.figures--stats dd { font-size: 1.4rem; }
+.history { margin-top: 1.25rem; text-align: left; }
+.history h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 14rem;
+  overflow-y: auto;
+  border-top: 1px solid var(--muted);
+}
+.history-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.45rem 0.25rem;
+  border-bottom: 1px solid rgb(92 100 144 / 0.35);
+  font-variant-numeric: tabular-nums;
+}
+.history-num { color: var(--muted); }
+.history-row--solved .history-title { color: var(--ok); }
+.history-row--missed .history-title,
+.history-row--today .history-title { color: var(--muted); font-style: italic; }
+.history-meta { color: var(--fg); font-size: 0.9rem; white-space: nowrap; }
+.link-btn {
+  font: inherit;
+  color: var(--ok);
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  padding: 0 1rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.footer { min-height: 1rem; }
+.dialog-links { margin: 1rem 0 0; font-size: 0.85rem; }
+.dialog-links a, .page a { color: var(--muted); text-underline-offset: 0.2em; }
+.dialog-links a:hover, .page a:hover { color: var(--fg); }
+
+/* ---- plain text pages (privacy.html) ---- */
+.page {
+  display: block;
+  width: min(100%, 40rem);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  line-height: 1.55;
+}
+.page h1 { font-size: 1.5rem; margin: 0.5rem 0 0.25rem; }
+.page h2 { font-size: 1.1rem; margin: 1.75rem 0 0.5rem; }
+.page .updated { color: var(--muted); margin: 0 0 1.5rem; }
+.page code { font-size: 0.9em; }
+
+/* Portrait 3:4 board, as large as the space left in .board-wrap allows (capped on desktop).
+   The first width is a fallback for browsers without container query units. */
+#board {
+  display: block;
+  width: min(100vw - 1rem, (100vh - 11rem) * 0.75, 600px);
+  width: min(100cqw, 75cqh, 600px);
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+  touch-action: none;     /* needed so drag-to-connect doesn't scroll the page on mobile */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- lines ---- */
+.line {
+  stroke: var(--line);
+  stroke-width: 6;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: stroke 0.4s;
+}
+.line--hinted { stroke: var(--hint); }
+.line--flash { animation: line-flash 0.9s ease-out; }
+@keyframes line-flash {
+  0% { stroke-width: 22; opacity: 0.3; }
+  100% { stroke-width: 6; opacity: 1; }
+}
+.line--shake { animation: line-shake 0.35s ease-in-out; }
+@keyframes line-shake {
+  0%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.2; }
+}
+.rubber {
+  stroke: var(--fg);
+  stroke-width: 4;
+  stroke-dasharray: 10 10;
+  stroke-linecap: round;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ---- dots ---- */
+/* Hit testing is geometric (js/render.js), so the drawing itself never takes pointer events. */
+#board { cursor: pointer; }
+#board.board--erasing { cursor: crosshair; }
+.dot { pointer-events: none; }
+.dot-circle {
+  fill: var(--dot);
+  stroke: transparent;
+  stroke-width: 8;
+  transition: fill 0.25s, stroke 0.15s;
+}
+.dot-label {
+  fill: var(--bg);
+  font-size: 36px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.dot--selected .dot-circle { stroke: var(--fg); }
+.dot--ok .dot-circle { fill: var(--ok); }
+.dot--bad .dot-circle { fill: var(--bad); }
+
+.dot--shake {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: shake 0.35s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* ---- win: the whole constellation lights up ---- */
+.board--solved .line { stroke: var(--ok); }
+.board--solved .dot-circle { fill: var(--ok); }
+.board--solved .lines,
+.board--solved .dots {
+  filter: drop-shadow(0 0 8px var(--ok));
+  animation: fade-in 0.8s ease-out;
+}
+#board.board--solved { cursor: default; }
+
+@keyframes fade-in {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* ---- reduced motion: no shaking, pulsing or fading ----
+   A rejected dot gets a brief red ring instead of the shake (its animationend bubbles up to the
+   .dot group, which is what render.js listens on). The win glow stays, just without the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .dot--shake { animation: none; }
+  .dot--shake .dot-circle { animation: dot-flag 0.6s steps(1, end); }
+  .line--flash { animation: none; } /* .line--shake is an opacity blink, not motion: kept */
+  .reveal,
+  .board--solved .lines,
+  .board--solved .dots { animation: none; }
+}
+@keyframes dot-flag {
+  0% { stroke: var(--bad); }
+  100% { stroke: transparent; }
+}
