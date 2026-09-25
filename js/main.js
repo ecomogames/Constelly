@@ -19,7 +19,7 @@ import {
 } from "./game.js";
 import { getDayIndex, pickPuzzle, puzzleDate, msUntilNextPuzzle } from "./daily.js";
 import { createStore, summarize, archiveRows } from "./storage.js";
-import { share } from "./share.js";
+import { share, starRating } from "./share.js";
 import { renderBoard } from "./render.js";
 import { attachInput } from "./input.js";
 import { formatTime, formatCountdown, formatAverage } from "./format.js";
@@ -87,6 +87,11 @@ async function init() {
     ? { index: override, number: override + 1, puzzle: puzzles[override], preLaunch: false, archive: false }
     : pickPuzzle(puzzles, new URLSearchParams(location.search).get("n"));
 
+  // A shared link (?n=N) for today's puzzle: tidy the address to plain "/", so a tab left open
+  // past midnight reloads into the new day's puzzle instead of this one.
+  if (!pick.archive && override === null && location.search.includes("n=")) {
+    history.replaceState(null, "", location.pathname + location.hash);
+  }
   $("puzzle-num").textContent = `#${pick.number}`;
   document.title = `Constelly #${pick.number} — daily constellation puzzle`;
   if (pick.archive) {
@@ -272,6 +277,8 @@ async function init() {
     const r = shownResult();
     $("results-heading").textContent = STRINGS.results.heading(r.number);
     $("results-title").textContent = STRINGS.results.solvedTitle(r.title);
+    $("results-stars").textContent = STRINGS.share.stars(starRating(r.hints));
+    $("results-stars").setAttribute("aria-label", `${starRating(r.hints)} of 3 stars`);
     $("results-time").textContent = formatTime(r.timeMs);
     $("results-hints").textContent = String(r.hints);
     const isReplay = r.now.timeMs !== r.timeMs || r.now.hints !== r.hints;

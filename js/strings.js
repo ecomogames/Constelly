@@ -31,8 +31,9 @@ export const STRINGS = {
 
   share: {
     // No title or category here, ever: the share text must not spoil the picture.
-    text: ({ number, time, hints }) =>
-      `Constelly #${number} ✨\n⏱ ${time} · 💡 ${hints} ${hintWord(hints)}\nplayconstelly.com`,
+    text: ({ number, time, hints, stars, url }) =>
+      `Constelly #${number} ${STRINGS.share.stars(stars)}\n⏱ ${time} · 💡 ${hints} ${hintWord(hints)}\n${url}`,
+    stars: (n) => "⭐".repeat(n) + "☆".repeat(3 - n), // also shown in the results dialog
     copied: "Copied!",
     failed: "Couldn't copy — try again",
   },

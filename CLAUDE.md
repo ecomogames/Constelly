@@ -184,7 +184,10 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
      stats get it backfilled from history (on-day solves only) on the next load.
 6. ✅ Share button (`js/share.js`): spoiler-free text (number, time, hints; never title or
    category). Native share sheet on touch devices, clipboard elsewhere (with an `execCommand`
-   fallback for webviews); a cancelled share sheet is silent. Also: how-to-play dialog (opens on
+   fallback for webviews); a cancelled share sheet is silent. Format (2026-09-25):
+   `Constelly #3 ⭐⭐☆` / `⏱ 1:23 · 💡 1 hint` / `https://playconstelly.com/?n=3` — stars =
+   `starRating(hints)` (0 → 3, 1–2 → 2, 3+ → 1), also shown in the results dialog; the link opens
+   that exact puzzle (today's number → plain today, and the address is tidied to `/`). Also: how-to-play dialog (opens on
    the first visit) and stats dialog (solved, streaks, average/best time, "view today's result")
    behind header buttons. All their copy is placeholder text in `js/strings.js`.
 7. Ads + cookie consent banner + analytics. **In progress (2026-09-25): AdSense review requested;

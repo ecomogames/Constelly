@@ -216,6 +216,7 @@ body {
 }
 .dialog-close:hover { color: var(--fg); }
 .results-title { font-size: 1.15rem; color: var(--ok); }
+.results-stars { font-size: 1.6rem; letter-spacing: 0.15em; margin: -0.35rem 0 0.25rem; }
 .figures {
   display: flex;
   justify-content: center;

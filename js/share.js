@@ -1,7 +1,10 @@
 // Share — Wordle-style spoiler-free summary (wording in js/strings.js).
 //
 // buildShareText is pure and only ever sees the puzzle number, time and hint count — never the
-// title or category, so it can't spoil the picture.
+// title or category, so it can't spoil the picture. It ends with a link to that exact puzzle
+// (?n=N), so a friend who taps it later still gets the same one; on the day itself it's just
+// today's puzzle for them. The star rating (starRating) is the at-a-glance part, like Wordle's
+// coloured squares.
 //
 // share(): the native share sheet on touch devices (phones/tablets), otherwise copy to the
 // clipboard. Desktop browsers that support navigator.share (e.g. Chrome on Windows) get the
@@ -10,8 +13,18 @@
 import { formatTime } from "./format.js";
 import { STRINGS } from "./strings.js";
 
+export const SITE_URL = "https://playconstelly.com/";
+
+// Three stars for a solve without hints, two for one or two hints, one for three or more.
+export function starRating(hints) {
+  const n = Number.isInteger(hints) && hints > 0 ? hints : 0;
+  return n === 0 ? 3 : n <= 2 ? 2 : 1;
+}
+
 export function buildShareText({ number, timeMs, hints }) {
-  return STRINGS.share.text({ number, time: formatTime(timeMs), hints });
+  return STRINGS.share.text({
+    number, time: formatTime(timeMs), hints, stars: starRating(hints), url: `${SITE_URL}?n=${number}`,
+  });
 }
 
 // → "shared" | "cancelled" | "copied" | "failed"
