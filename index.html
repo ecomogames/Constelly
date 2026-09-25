@@ -120,7 +120,7 @@
       <div><dt data-text="results.hints"></dt><dd id="results-hints"></dd></div>
     </dl>
     <p id="results-replay" class="results-replay" hidden></p>
-    <button id="share-btn" class="primary-btn" type="button" data-text="results.share"></button>
+    <button id="share-btn" class="primary-btn" type="button" data-text="results.share" autofocus></button>
     <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
     <p class="results-next" id="results-next"></p>
     <button id="results-replay-btn" class="link-btn" type="button" data-text="results.replay"></button>
@@ -136,11 +136,13 @@
       <!-- Tutorial animation (tools/make_tutorial_gif.py). Beside the text on wide screens, below
            it on phones; a still frame replaces it for prefers-reduced-motion. alt set from strings. -->
       <picture class="help-demo">
-        <source srcset="img/tutorial-still.png" media="(prefers-reduced-motion: reduce)">
-        <img id="help-demo-img" src="img/tutorial.gif" width="400" height="400" alt="">
+        <!-- src/srcset are filled in when the dialog first opens (main.js), so the 220 KB animation
+             isn't downloaded by visitors who never look at it. -->
+        <source data-srcset="img/tutorial-still.png" media="(prefers-reduced-motion: reduce)">
+        <img id="help-demo-img" data-src="img/tutorial.gif" width="400" height="400" alt="">
       </picture>
     </div>
-    <form method="dialog"><button class="primary-btn" data-text="help.close"></button></form>
+    <form method="dialog"><button class="primary-btn" data-text="help.close" autofocus></button></form>
     <p class="dialog-links"><a href="privacy.html" data-text="help.privacy"></a></p>
   </dialog>
 
@@ -155,6 +157,7 @@
       <div><dt data-text="stats.maxStreak"></dt><dd id="stat-max-streak"></dd></div>
       <div><dt data-text="stats.avgTime"></dt><dd id="stat-avg"></dd></div>
       <div><dt data-text="stats.bestTime"></dt><dd id="stat-best"></dd></div>
+      <div><dt data-text="stats.avgHints"></dt><dd id="stat-avg-hints"></dd></div>
     </dl>
     <button id="stats-today" class="primary-btn" type="button" data-text="stats.viewToday" hidden></button>
     <p class="dialog-links"><button id="stats-past" class="link-btn" type="button" data-text="menu.past"></button></p>

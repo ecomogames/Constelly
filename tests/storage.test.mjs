@@ -193,3 +193,40 @@ test("archiveRows: empty before launch, capped past the end", () => {
   assert.deepEqual(archiveRows({}, puzzles, 10).map((r) => [r.day, r.today]), [[1, false], [0, false]]);
   assert.equal(archiveRows(null, puzzles, 0)[0].status, "new");
 });
+
+// ---- average hints ----
+import { hintsFromHistory } from "../js/storage.js";
+import { formatAverage } from "../js/format.js";
+
+test("average hints: counted per on-day solve, one decimal at most", () => {
+  let s = emptyStats();
+  s = applyResult(s, 0, 1000, 2);
+  s = applyResult(s, 1, 1000, 0);
+  s = applyResult(s, 2, 1000, 0);
+  assert.equal(s.totalHints, 2);
+  assert.equal(formatAverage(summarize(s).avgHints), "0.7");
+  assert.equal(formatAverage(1), "1");
+  assert.equal(formatAverage(2.25), "2.3");
+  assert.equal(summarize(emptyStats()).avgHints, null);
+  // the same day twice is still a no-op
+  assert.equal(applyResult(s, 2, 1, 5).totalHints, 2);
+});
+
+test("store: totalHints is backfilled from history for stats saved before it existed", () => {
+  const backend = memory();
+  backend.setItem("constelly:stats", JSON.stringify({ streak: 2, maxStreak: 2, lastSolvedDay: 1, totalSolved: 2, totalTimeMs: 4000, bestTimeMs: 1000 }));
+  backend.setItem("constelly:history", JSON.stringify({
+    a: { day: 0, timeMs: 3000, hints: 3 }, b: { day: 1, timeMs: 1000, hints: 0 }, c: { day: 0, timeMs: 1, hints: 9, late: true },
+  }));
+  const store = createStore({ backend });
+  assert.equal(store.loadStats(2).totalHints, 3);
+  assert.equal(JSON.parse(backend.m.get("constelly:stats")).totalHints, 3);
+  assert.equal(store.recordResult({ id: "d", day: 2, timeMs: 1000, hints: 1 }).totalHints, 4);
+  assert.equal(hintsFromHistory(null), 0);
+});
+
+test("store: late solves don't add hints to the average", () => {
+  const store = createStore({ backend: memory() });
+  store.recordResult({ id: "a", day: 3, timeMs: 1000, hints: 1 });
+  assert.equal(store.recordResult({ id: "b", day: 0, timeMs: 1000, hints: 4, late: true }).totalHints, 1);
+});

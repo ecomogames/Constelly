@@ -157,5 +157,8 @@ export function attachInput(svg, { dotAtPoint, lineAtPoint }, handlers) {
     setEraser(false);
   }
 
-  return { detach, setEraser, isErasing: () => eraser };
+  // The board changed under a tap chain (undo, hint, start over): drop the selection.
+  const clearSelection = () => select(null);
+
+  return { detach, setEraser, isErasing: () => eraser, clearSelection };
 }

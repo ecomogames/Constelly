@@ -158,7 +158,7 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 1. ✅ Core playable loop as a single HTML page: render one hardcoded puzzle, let the player connect
    dots, detect the solved state. No daily rotation, no stats, no styling polish yet.
 2. ✅ Puzzle data format finalized + day-index-based daily selection. 30 real puzzles authored
-   (animals, plants, objects; 9–20 dots). Now **101 puzzles** (2026-10-01 → 2027-01-09): the 9
+   (animals, plants, objects; 9–20 dots). Now **101 puzzles** (2026-09-23 → 2027-01-01): the 9
    real constellations were removed and 73 were redrawn (see "Redraw status" above). ORDER =
    redrawn puzzles first, then the rest; each part spreads the categories evenly with fewer dots
    first, and Starfish is day 1. The old test puzzles
@@ -179,6 +179,9 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
      history starts empty), solved puzzles reopen in the win state, history + stats. Streak =
      consecutive puzzle days solved (hints don't break it; a missed day resets it to 0 on the next
      load). `?p=N` and pre-launch play use a `constelly:dev:` prefix and never write history/stats.
+   - ✅ Stats dialog: solved, current/best streak, average/best time, **average hints** (one
+     decimal max, `formatAverage`). `totalHints` was added to stats on 2026-09-25; older saved
+     stats get it backfilled from history (on-day solves only) on the next load.
 6. ✅ Share button (`js/share.js`): spoiler-free text (number, time, hints; never title or
    category). Native share sheet on touch devices, clipboard elsewhere (with an `execCommand`
    fallback for webviews); a cancelled share sheet is silent. Also: how-to-play dialog (opens on
@@ -191,8 +194,6 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
      (IAB TCF v2.2) to serve AdSense ads in the EEA/UK/CH — a hand-rolled banner won't do. Plan:
      use AdSense's free built-in *Privacy & messaging* GDPR message instead of building one, and
      update privacy.html when ads go live.
-   - ✅ History list in the stats dialog (`historyRows` in storage.js): newest first, up to 30
-     days; titles only for solved puzzles, "Missed" otherwise. Hidden before launch.
 8. ✅ Deployed: GitHub Pages (`ecomogames/Constelly`, `main`, root) at **playconstelly.com**
    (`CNAME`; HTTPS enforced; `www` and github.io redirect to it). Polish done before launch:
    - Icons + link preview: `img/favicon.svg`, `favicon-32.png`, `apple-touch-icon.png`,
@@ -220,6 +221,15 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
      that puzzle's saved progress and reloads. The first solve stays the official result — the
      results dialog and Share show it, with a "Replay: 0:20 · 0 hints" note for the replay;
      stats/history never change. A replay in progress shows a "Replaying #N" bar.
+   - Stats' result button reads "View #N result" on a past puzzle ("View today's result" otherwise).
+10. ✅ Review fixes (2026-09-25): a tap chain's selection is dropped by Undo, Hint and Start over;
+   How to play fits a 360×640 screen (compact layout ≤ 760px tall) and its 220 KB animation only
+   loads when the dialog first opens (`data-src` → `openHelp()` in main.js).
+   **Known, not done:** 28 weak/old puzzles from day 74 (5 Dec); line colours only on the first 10
+   (day 11 = 3 Oct is all-yellow); content runs out 2027-01-01; no analytics (a cookie-free counter
+   like GoatCounter would need a privacy-page line); a deploy can briefly serve new HTML with
+   cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs; ads + consent
+   still deferred.
 
 ## Non-goals for v1
 - No user accounts or server-side leaderboards.

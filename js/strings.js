@@ -43,10 +43,10 @@ export const STRINGS = {
     // One paragraph per entry.
     body: [
       "Connect the stars to reveal a hidden picture.",
-      "Each number is how many lines that star still needs. A star turns yellow when its lines are right and red when one is wrong.",
-      "Tap two stars (or drag between them) to draw a line. Keep tapping to carry on from the last star; tap it again to stop. Use the eraser to remove lines, or undo your last move.",
-      "The quote at the top is a clue about the picture. Still stuck? A hint reveals one correct line. You're scored on time and hints used.",
-      "A new puzzle every day at 00:00 UTC. Missed one? Open the menu for past puzzles — and replay any puzzle you've solved.",
+      "Each number is how many lines a star still needs. It turns yellow when its lines are right, red when one is wrong.",
+      "Tap two stars (or drag) to draw a line. Keep tapping to carry on from the last star; tap it again to stop. The eraser removes lines, undo takes back a move.",
+      "The quote at the top is a clue. Still stuck? A hint reveals one correct line. You're scored on time and hints.",
+      "A new puzzle every day at 00:00 UTC. Missed one? It's in the menu under Past puzzles.",
     ],
     close: "Play",
     privacy: "Privacy",
@@ -63,9 +63,11 @@ export const STRINGS = {
     streak: "Current streak",
     maxStreak: "Best streak",
     avgTime: "Average time",
+    avgHints: "Average hints",
     bestTime: "Best time",
     none: "–",
     viewToday: "View today's result",
+    viewPuzzle: (number) => `View #${number} result`, // same button on a past puzzle
   },
 
   menu: {

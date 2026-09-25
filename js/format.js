@@ -14,3 +14,8 @@ export function formatCountdown(ms) {
   const total = Math.max(0, Math.ceil((Number(ms) || 0) / 1000));
   return `${pad(Math.floor(total / 3600))}:${pad(Math.floor((total % 3600) / 60))}:${pad(total % 60)}`;
 }
+
+// An average for the stats dialog: at most one decimal, no trailing ".0" (1, 0.3, 2.5).
+export function formatAverage(x) {
+  return String(Math.round(x * 10) / 10);
+}

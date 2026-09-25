@@ -22,7 +22,7 @@ import { createStore, summarize, archiveRows } from "./storage.js";
 import { share } from "./share.js";
 import { renderBoard } from "./render.js";
 import { attachInput } from "./input.js";
-import { formatTime, formatCountdown } from "./format.js";
+import { formatTime, formatCountdown, formatAverage } from "./format.js";
 import { STRINGS } from "./strings.js";
 
 const LOCAL_HOSTS = ["localhost", "127.0.0.1", "[::1]"];
@@ -118,6 +118,16 @@ async function init() {
     $("help-body").appendChild(p);
   }
   $("help-demo-img").alt = STRINGS.help.demoAlt;
+  // The tutorial animation only loads when the dialog is first opened (see index.html).
+  function openHelp() {
+    for (const n of helpDialog.querySelectorAll("[data-src], [data-srcset]")) {
+      if (n.dataset.srcset) n.srcset = n.dataset.srcset;
+      if (n.dataset.src) n.src = n.dataset.src;
+      delete n.dataset.src;
+      delete n.dataset.srcset;
+    }
+    helpDialog.showModal();
+  }
   const menuDialog = $("menu");
   const pastDialog = $("past");
   const closeAll = () => document.querySelectorAll("dialog[open]").forEach((d) => d.close());
@@ -129,11 +139,11 @@ async function init() {
     if (!pick.archive && override === null) { e.preventDefault(); menuDialog.close(); }
   });
   $("menu-past").addEventListener("click", () => openPast());
-  $("menu-help").addEventListener("click", () => { closeAll(); helpDialog.showModal(); });
+  $("menu-help").addEventListener("click", () => { closeAll(); openHelp(); });
   $("menu-stats").addEventListener("click", () => { closeAll(); $("stats-btn").click(); });
   $("stats-past").addEventListener("click", () => openPast());
   if (!store.hasSeenHelp()) {
-    helpDialog.showModal();
+    openHelp();
     store.markHelpSeen();
   }
 
@@ -190,6 +200,8 @@ async function init() {
     $("stat-max-streak").textContent = String(s.maxStreak);
     $("stat-avg").textContent = statTime(s.avgTimeMs);
     $("stat-best").textContent = statTime(s.bestTimeMs);
+    $("stat-avg-hints").textContent = s.avgHints === null ? STRINGS.stats.none : formatAverage(s.avgHints);
+    $("stats-today").textContent = pick.archive ? STRINGS.stats.viewPuzzle(pick.number) : STRINGS.stats.viewToday;
     $("stats-today").hidden = !isSolvedNow();
     closeAll();
     statsDialog.showModal();
@@ -349,6 +361,7 @@ async function init() {
   eraserBtn.addEventListener("click", () => input.setEraser(!input.isErasing()));
 
   undoBtn.addEventListener("click", () => {
+    input.clearSelection();
     const result = undo(game);
     // Only fails once hints exist (a hint may have filled a dot since the erase being undone).
     if (result && !result.ok) (result.capped ?? splitKey(result.key)).forEach((id) => view.shake(id));
@@ -358,6 +371,7 @@ async function init() {
   hintBtn.addEventListener("click", () => {
     const result = useHint(game);
     if (!result) return;
+    input.clearSelection();
     afterChange();
     view.flashLine(result.key);
     // Dots that had a wrong line taken away to make room.
@@ -372,6 +386,7 @@ async function init() {
   confirmReset.querySelector("form").addEventListener("submit", (e) => {
     if (e.submitter?.value !== "reset") return;
     input.setEraser(false);
+    input.clearSelection();
     startOver(game);
     afterChange();
   });

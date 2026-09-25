@@ -6,7 +6,8 @@
 //   constelly:history              → { <puzzleId>: { day, timeMs, hints, solvedAt, late? } }
 //                                    first solve only; late = solved from "Past puzzles"
 //   constelly:stats                → { streak, maxStreak, lastSolvedDay, totalSolved,
-//                                      totalTimeMs, bestTimeMs }
+//                                      totalTimeMs, bestTimeMs, totalHints }
+//                                    (totalHints was added later: backfilled from history)
 //   constelly:seen-help            → 1 once the how-to-play dialog has been shown
 //
 // Past puzzles (archive) and replays: a past puzzle solved late goes into history (so the list
@@ -28,7 +29,10 @@ const DEV_PREFIX = "constelly:dev:";
 // ---- pure streak / stats logic ----
 
 export function emptyStats() {
-  return { streak: 0, maxStreak: 0, lastSolvedDay: null, totalSolved: 0, totalTimeMs: 0, bestTimeMs: null };
+  return {
+    streak: 0, maxStreak: 0, lastSolvedDay: null, totalSolved: 0, totalTimeMs: 0, bestTimeMs: null,
+    totalHints: 0,
+  };
 }
 
 // Coerce whatever came out of storage into a valid stats object.
@@ -43,12 +47,23 @@ export function normalizeStats(raw) {
   s.totalSolved = count(raw.totalSolved);
   s.totalTimeMs = ms(raw.totalTimeMs) ?? 0;
   s.bestTimeMs = ms(raw.bestTimeMs);
+  // null = not stored yet (stats saved before this field existed): loadStats backfills it.
+  s.totalHints = Number.isInteger(raw.totalHints) && raw.totalHints >= 0 ? raw.totalHints : null;
   return s;
 }
 
-// A solved puzzle for `day`. Consecutive puzzle days extend the streak; hints don't matter.
-// Solving the same day twice is a no-op. → new stats object
-export function applyResult(stats, day, timeMs) {
+// Hints over the puzzles that count toward stats (solved on their own day) — for the backfill.
+export function hintsFromHistory(history) {
+  let n = 0;
+  for (const h of Object.values(history ?? {})) {
+    if (h && typeof h === "object" && !h.late && Number.isInteger(h.hints) && h.hints > 0) n += h.hints;
+  }
+  return n;
+}
+
+// A solved puzzle for `day`. Consecutive puzzle days extend the streak; hints don't break it
+// (they only feed the average). Solving the same day twice is a no-op. → new stats object
+export function applyResult(stats, day, timeMs, hints = 0) {
   const s = { ...stats };
   if (s.lastSolvedDay !== null && day <= s.lastSolvedDay) {
     if (day === s.lastSolvedDay) return s;
@@ -61,6 +76,7 @@ export function applyResult(stats, day, timeMs) {
   s.totalSolved += 1;
   s.totalTimeMs += timeMs;
   s.bestTimeMs = s.bestTimeMs === null ? timeMs : Math.min(s.bestTimeMs, timeMs);
+  s.totalHints = (s.totalHints ?? 0) + (Number.isInteger(hints) && hints > 0 ? hints : 0);
   return s;
 }
 
@@ -77,6 +93,7 @@ export function summarize(stats) {
     streak: stats.streak,
     maxStreak: stats.maxStreak,
     avgTimeMs: stats.totalSolved ? stats.totalTimeMs / stats.totalSolved : null,
+    avgHints: stats.totalSolved && stats.totalHints !== null ? stats.totalHints / stats.totalSolved : null,
     bestTimeMs: stats.bestTimeMs,
   };
 }
@@ -159,8 +176,10 @@ export function createStore({ dev = false, backend } = {}) {
     // Current stats with the streak reset if a day was missed (persisted, outside dev mode).
     loadStats(today) {
       const stored = normalizeStats(read(`${PREFIX}stats`));
-      const stats = refreshStreak(stored, today);
-      if (!dev && stats !== stored) write(`${PREFIX}stats`, stats);
+      const backfill = stored.totalHints === null;
+      const filled = backfill ? { ...stored, totalHints: hintsFromHistory(loadHistory()) } : stored;
+      const stats = refreshStreak(filled, today);
+      if (!dev && (backfill || stats !== filled)) write(`${PREFIX}stats`, stats);
       return stats;
     },
 
@@ -168,14 +187,15 @@ export function createStore({ dev = false, backend } = {}) {
     // Past puzzles list: kept in history, left out of stats and the streak.
     // → updated stats (unchanged in dev mode / if already recorded / if late)
     recordResult({ id, day, timeMs, hints, late = false }, now = new Date()) {
-      const stats = normalizeStats(read(`${PREFIX}stats`));
+      let stats = normalizeStats(read(`${PREFIX}stats`));
       if (dev) return stats;
+      if (stats.totalHints === null) stats = { ...stats, totalHints: hintsFromHistory(loadHistory()) };
       const history = loadHistory();
       if (history[id]) return stats;
       history[id] = { day, timeMs, hints, solvedAt: now.toISOString(), ...(late ? { late: true } : {}) };
       write(`${PREFIX}history`, history);
       if (late) return stats;
-      const next = applyResult(stats, day, timeMs);
+      const next = applyResult(stats, day, timeMs, hints);
       write(`${PREFIX}stats`, next);
       return next;
     },
