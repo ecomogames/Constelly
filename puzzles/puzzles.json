@@ -23,7 +23,8 @@
       {"id": "m2", "x": 0.491, "y": 0.842, "degree": 2},
       {"id": "m3", "x": 0.601, "y": 0.803, "degree": 1}
     ],
-    "edges": [["e1", "e2"], ["e3", "e4"], ["m1", "m2"], ["m2", "m3"], ["t0", "v0"], ["v0", "t1"], ["t1", "v1"], ["v1", "t2"], ["t2", "v2"], ["v2", "t3"], ["t3", "v3"], ["v3", "t4"], ["t4", "v4"], ["v4", "t0"], ["v0", "v1"], ["v1", "v2"], ["v2", "v3"], ["v3", "v4"], ["v4", "v0"]]
+    "edges": [["e1", "e2"], ["e3", "e4"], ["m1", "m2"], ["m2", "m3"], ["t0", "v0"], ["v0", "t1"], ["t1", "v1"], ["v1", "t2"], ["t2", "v2"], ["v2", "t3"], ["t3", "v3"], ["v3", "t4"], ["t4", "v4"], ["v4", "t0"], ["v0", "v1"], ["v1", "v2"], ["v2", "v3"], ["v3", "v4"], ["v4", "v0"]],
+    "colors": {"e1|e2": "white", "e3|e4": "white", "m1|m2": "red", "m2|m3": "red", "t0|v0": "pink", "t1|v0": "pink", "t1|v1": "pink", "t2|v1": "pink", "t2|v2": "pink", "t3|v2": "pink", "t3|v3": "pink", "t4|v3": "pink", "t4|v4": "pink", "t0|v4": "pink", "v0|v1": "red", "v1|v2": "red", "v2|v3": "red", "v3|v4": "red", "v0|v4": "red"}
   },
   {
     "id": "barn",
@@ -50,7 +51,8 @@
       {"id": "wtR", "x": 0.598, "y": 0.406, "degree": 3},
       {"id": "wbR", "x": 0.598, "y": 0.569, "degree": 3}
     ],
-    "edges": [["pk", "rbL"], ["rbL", "evL"], ["evL", "bsL"], ["bsL", "dbL"], ["dbL", "dbm"], ["dbm", "dbR"], ["dbR", "bsR"], ["bsR", "evR"], ["evR", "rbR"], ["rbR", "pk"], ["pk", "wv"], ["evL", "evR"], ["dtL", "dtm"], ["dtm", "dtR"], ["dtR", "dbR"], ["dbR", "dtm"], ["dtm", "dbm"], ["dbm", "dtL"], ["dtL", "dbL"], ["dbL", "dtm"], ["dbm", "dtR"], ["wtL", "wtR"], ["wtR", "wbR"], ["wbR", "wbL"], ["wbL", "wtL"], ["wtL", "wbR"], ["wbL", "wtR"]]
+    "edges": [["pk", "rbL"], ["rbL", "evL"], ["evL", "bsL"], ["bsL", "dbL"], ["dbL", "dbm"], ["dbm", "dbR"], ["dbR", "bsR"], ["bsR", "evR"], ["evR", "rbR"], ["rbR", "pk"], ["pk", "wv"], ["evL", "evR"], ["dtL", "dtm"], ["dtm", "dtR"], ["dtR", "dbR"], ["dbR", "dtm"], ["dtm", "dbm"], ["dbm", "dtL"], ["dtL", "dbL"], ["dbL", "dtm"], ["dbm", "dtR"], ["wtL", "wtR"], ["wtR", "wbR"], ["wbR", "wbL"], ["wbL", "wtL"], ["wtL", "wbR"], ["wbL", "wtR"]],
+    "colors": {"pk|rbL": "red", "evL|rbL": "red", "bsL|evL": "red", "bsL|dbL": "red", "dbL|dbm": "white", "dbR|dbm": "white", "bsR|dbR": "red", "bsR|evR": "red", "evR|rbR": "red", "pk|rbR": "red", "evL|evR": "white", "dtL|dtm": "white", "dtR|dtm": "white", "dbR|dtR": "white", "dbR|dtm": "white", "dbm|dtm": "white", "dbm|dtL": "white", "dbL|dtL": "white", "dbL|dtm": "white", "dbm|dtR": "white", "wtL|wtR": "white", "wbR|wtR": "white", "wbL|wbR": "white", "wbL|wtL": "white", "wbR|wtL": "white", "wbL|wtR": "white"}
   },
   {
     "id": "drum",
@@ -77,7 +79,8 @@
       {"id": "s2b", "x": 0.208, "y": 0.443, "degree": 1},
       {"id": "sx", "x": 0.5, "y": 0.288, "degree": 4}
     ],
-    "edges": [["b0", "h0"], ["h0", "h1"], ["h1", "h2"], ["h2", "h3"], ["h3", "h4"], ["h4", "h5"], ["h5", "h6"], ["h6", "h7"], ["h7", "h0"], ["h0", "b1"], ["b1", "b0"], ["b0", "h1"], ["h1", "b2"], ["b2", "b1"], ["b1", "h2"], ["h2", "b3"], ["b3", "b2"], ["b2", "h3"], ["h3", "b4"], ["b4", "b3"], ["b3", "h4"], ["h4", "b4"], ["s1a", "sx"], ["sx", "s1b"], ["s2a", "sx"], ["sx", "s2b"]]
+    "edges": [["b0", "h0"], ["h0", "h1"], ["h1", "h2"], ["h2", "h3"], ["h3", "h4"], ["h4", "h5"], ["h5", "h6"], ["h6", "h7"], ["h7", "h0"], ["h0", "b1"], ["b1", "b0"], ["b0", "h1"], ["h1", "b2"], ["b2", "b1"], ["b1", "h2"], ["h2", "b3"], ["b3", "b2"], ["b2", "h3"], ["h3", "b4"], ["b4", "b3"], ["b3", "h4"], ["h4", "b4"], ["s1a", "sx"], ["sx", "s1b"], ["s2a", "sx"], ["sx", "s2b"]],
+    "colors": {"b0|h0": "red", "h0|h1": "white", "h1|h2": "white", "h2|h3": "white", "h3|h4": "white", "h4|h5": "white", "h5|h6": "white", "h6|h7": "white", "h0|h7": "white", "b0|b1": "red", "b1|b2": "red", "b2|b3": "red", "b3|b4": "red", "b4|h4": "red", "s1a|sx": "brown", "s1b|sx": "brown", "s2a|sx": "brown", "s2b|sx": "brown"}
   },
   {
     "id": "pine",
@@ -104,7 +107,8 @@
       {"id": "tbL", "x": 0.382, "y": 1.246, "degree": 2},
       {"id": "tbR", "x": 0.618, "y": 1.246, "degree": 2}
     ],
-    "edges": [["ap", "o1L"], ["o1L", "i1L"], ["i1L", "c1"], ["c1", "i1R"], ["i1R", "o1R"], ["o1R", "ap"], ["ap", "c1"], ["c1", "c2"], ["c2", "c3"], ["c3", "tkL"], ["tkL", "o3L"], ["o3L", "i2L"], ["i2L", "o2L"], ["o2L", "i1L"], ["i1R", "o2R"], ["o2R", "i2R"], ["i2R", "c2"], ["c2", "i2L"], ["i2R", "o3R"], ["o3R", "tkR"], ["tkR", "c3"], ["tkL", "tbL"], ["tbL", "tbR"], ["tbR", "tkR"]]
+    "edges": [["ap", "o1L"], ["o1L", "i1L"], ["i1L", "c1"], ["c1", "i1R"], ["i1R", "o1R"], ["o1R", "ap"], ["ap", "c1"], ["c1", "c2"], ["c2", "c3"], ["c3", "tkL"], ["tkL", "o3L"], ["o3L", "i2L"], ["i2L", "o2L"], ["o2L", "i1L"], ["i1R", "o2R"], ["o2R", "i2R"], ["i2R", "c2"], ["c2", "i2L"], ["i2R", "o3R"], ["o3R", "tkR"], ["tkR", "c3"], ["tkL", "tbL"], ["tbL", "tbR"], ["tbR", "tkR"]],
+    "colors": {"ap|o1L": "green", "i1L|o1L": "green", "c1|i1L": "green", "c1|i1R": "green", "i1R|o1R": "green", "ap|o1R": "green", "ap|c1": "brown", "c1|c2": "brown", "c2|c3": "brown", "c3|tkL": "green", "o3L|tkL": "green", "i2L|o3L": "green", "i2L|o2L": "green", "i1L|o2L": "green", "i1R|o2R": "green", "i2R|o2R": "green", "c2|i2R": "green", "c2|i2L": "green", "i2R|o3R": "green", "o3R|tkR": "green", "c3|tkR": "green", "tbL|tkL": "brown", "tbL|tbR": "brown", "tbR|tkR": "brown"}
   },
   {
     "id": "teapot",
@@ -131,7 +135,8 @@
       {"id": "h2", "x": 0.92, "y": 0.749, "degree": 2},
       {"id": "h3", "x": 0.86, "y": 0.869, "degree": 2}
     ],
-    "edges": [["dl", "rl"], ["rl", "rr"], ["rr", "dr"], ["dr", "kn"], ["kn", "dl"], ["dl", "dr"], ["rl", "sl"], ["sl", "wl"], ["wl", "bl"], ["bl", "fl"], ["fl", "fr"], ["fr", "br"], ["br", "wr"], ["wr", "sr"], ["sr", "rr"], ["sl", "st"], ["st", "sd"], ["sd", "wl"], ["wl", "wr"], ["sr", "h1"], ["h1", "h2"], ["h2", "h3"], ["h3", "br"]]
+    "edges": [["dl", "rl"], ["rl", "rr"], ["rr", "dr"], ["dr", "kn"], ["kn", "dl"], ["dl", "dr"], ["rl", "sl"], ["sl", "wl"], ["wl", "bl"], ["bl", "fl"], ["fl", "fr"], ["fr", "br"], ["br", "wr"], ["wr", "sr"], ["sr", "rr"], ["sl", "st"], ["st", "sd"], ["sd", "wl"], ["wl", "wr"], ["sr", "h1"], ["h1", "h2"], ["h2", "h3"], ["h3", "br"]],
+    "colors": {"dl|rl": "white", "rl|rr": "white", "dr|rr": "white", "dr|kn": "white", "dl|kn": "white", "dl|dr": "white", "rl|sl": "blue", "sl|wl": "blue", "bl|wl": "blue", "bl|fl": "blue", "fl|fr": "blue", "br|fr": "blue", "br|wr": "blue", "sr|wr": "blue", "rr|sr": "blue", "sl|st": "blue", "sd|st": "blue", "sd|wl": "blue", "wl|wr": "pink", "h1|sr": "blue", "h1|h2": "blue", "h2|h3": "blue", "br|h3": "blue"}
   },
   {
     "id": "sled",
@@ -160,7 +165,8 @@
       {"id": "x5", "x": 0.394, "y": 0.348, "degree": 1},
       {"id": "xc", "x": 0.5, "y": 0.41, "degree": 6}
     ],
-    "edges": [["p3", "p0"], ["p0", "q0"], ["q0", "q1"], ["q1", "q2"], ["q2", "q3"], ["q3", "p3"], ["p3", "c3"], ["c3", "c2"], ["c2", "c1"], ["c1", "r3"], ["r3", "r2"], ["r2", "q2"], ["q1", "r1"], ["r1", "r0"], ["r1", "r2"], ["x0", "xc"], ["xc", "x1"], ["x2", "xc"], ["xc", "x3"], ["x4", "xc"], ["xc", "x5"]]
+    "edges": [["p3", "p0"], ["p0", "q0"], ["q0", "q1"], ["q1", "q2"], ["q2", "q3"], ["q3", "p3"], ["p3", "c3"], ["c3", "c2"], ["c2", "c1"], ["c1", "r3"], ["r3", "r2"], ["r2", "q2"], ["q1", "r1"], ["r1", "r0"], ["r1", "r2"], ["x0", "xc"], ["xc", "x1"], ["x2", "xc"], ["xc", "x3"], ["x4", "xc"], ["xc", "x5"]],
+    "colors": {"p0|p3": "brown", "p0|q0": "brown", "q0|q1": "brown", "q1|q2": "brown", "q2|q3": "brown", "p3|q3": "brown", "c3|p3": "red", "c2|c3": "red", "c1|c2": "red", "c1|r3": "red", "r2|r3": "red", "q2|r2": "red", "q1|r1": "red", "r0|r1": "red", "r1|r2": "red", "x0|xc": "cyan", "x1|xc": "cyan", "x2|xc": "cyan", "x3|xc": "cyan", "x4|xc": "cyan", "x5|xc": "cyan"}
   },
   {
     "id": "fish",
@@ -189,7 +195,8 @@
       {"id": "e2", "x": 0.24, "y": 0.734, "degree": 1},
       {"id": "s1", "x": 0.542, "y": 0.683, "degree": 2}
     ],
-    "edges": [["a3", "a2"], ["a2", "a1"], ["a1", "n"], ["n", "b1"], ["b1", "b2"], ["b2", "b3"], ["b3", "b4"], ["b4", "pb"], ["pb", "tl"], ["tl", "tn"], ["tn", "tu"], ["tu", "pt"], ["pt", "a4"], ["a4", "a3"], ["a3", "s1"], ["s1", "b3"], ["b3", "pf"], ["pf", "b2"], ["b2", "g"], ["g", "a2"], ["a2", "df"], ["df", "a4"], ["pt", "pb"], ["e1", "e2"]]
+    "edges": [["a3", "a2"], ["a2", "a1"], ["a1", "n"], ["n", "b1"], ["b1", "b2"], ["b2", "b3"], ["b3", "b4"], ["b4", "pb"], ["pb", "tl"], ["tl", "tn"], ["tn", "tu"], ["tu", "pt"], ["pt", "a4"], ["a4", "a3"], ["a3", "s1"], ["s1", "b3"], ["b3", "pf"], ["pf", "b2"], ["b2", "g"], ["g", "a2"], ["a2", "df"], ["df", "a4"], ["pt", "pb"], ["e1", "e2"]],
+    "colors": {"a2|a3": "orange", "a1|a2": "orange", "a1|n": "orange", "b1|n": "orange", "b1|b2": "orange", "b2|b3": "orange", "b3|b4": "orange", "b4|pb": "orange", "pb|tl": "orange", "tl|tn": "orange", "tn|tu": "orange", "pt|tu": "orange", "a4|pt": "orange", "a3|a4": "orange", "a3|s1": "white", "b3|s1": "white", "b3|pf": "orange", "b2|pf": "orange", "b2|g": "white", "a2|g": "white", "a2|df": "orange", "a4|df": "orange", "pb|pt": "orange", "e1|e2": "white"}
   },
   {
     "id": "balloon",
@@ -219,7 +226,8 @@
       {"id": "bb", "x": 0.5, "y": 1.253, "degree": 3},
       {"id": "bbr", "x": 0.621, "y": 1.253, "degree": 2}
     ],
-    "edges": [["l2", "l1"], ["l1", "t"], ["t", "r1"], ["r1", "r2"], ["r2", "r3"], ["r3", "r4"], ["r4", "nr"], ["nr", "nl"], ["nl", "l4"], ["l4", "l3"], ["l3", "l2"], ["l2", "gl1"], ["gl1", "t"], ["t", "gr1"], ["gr1", "gr2"], ["gr2", "nr"], ["nr", "btr"], ["btr", "bt"], ["bt", "btl"], ["btl", "nl"], ["nl", "gl2"], ["gl2", "gl1"], ["gl1", "gr1"], ["gr1", "r2"], ["l3", "gl2"], ["gl2", "gr2"], ["gr2", "r3"], ["btl", "bbl"], ["bbl", "bb"], ["bb", "bbr"], ["bbr", "btr"], ["bt", "bb"]]
+    "edges": [["l2", "l1"], ["l1", "t"], ["t", "r1"], ["r1", "r2"], ["r2", "r3"], ["r3", "r4"], ["r4", "nr"], ["nr", "nl"], ["nl", "l4"], ["l4", "l3"], ["l3", "l2"], ["l2", "gl1"], ["gl1", "t"], ["t", "gr1"], ["gr1", "gr2"], ["gr2", "nr"], ["nr", "btr"], ["btr", "bt"], ["bt", "btl"], ["btl", "nl"], ["nl", "gl2"], ["gl2", "gl1"], ["gl1", "gr1"], ["gr1", "r2"], ["l3", "gl2"], ["gl2", "gr2"], ["gr2", "r3"], ["btl", "bbl"], ["bbl", "bb"], ["bb", "bbr"], ["bbr", "btr"], ["bt", "bb"]],
+    "colors": {"l1|l2": "red", "l1|t": "red", "r1|t": "red", "r1|r2": "red", "r2|r3": "red", "r3|r4": "red", "nr|r4": "red", "l4|nl": "red", "l3|l4": "red", "l2|l3": "red", "gl1|l2": "blue", "btr|nr": "white", "bt|btr": "brown", "bt|btl": "brown", "btl|nl": "white", "gl1|gr1": "blue", "gr1|r2": "blue", "gl2|l3": "blue", "gl2|gr2": "blue", "gr2|r3": "blue", "bbl|btl": "brown", "bb|bbl": "brown", "bb|bbr": "brown", "bbr|btr": "brown", "bb|bt": "brown"}
   },
   {
     "id": "bridge",
@@ -249,7 +257,8 @@
       {"id": "w5", "x": 0.786, "y": 1.036, "degree": 3},
       {"id": "w6", "x": 0.92, "y": 0.969, "degree": 1}
     ],
-    "edges": [["T1", "X1"], ["X1", "D0"], ["D0", "T1"], ["T1", "C0"], ["C0", "C1"], ["C1", "C2"], ["C2", "C3"], ["C3", "T2"], ["T2", "X2"], ["X2", "H3"], ["H3", "H2"], ["H2", "H1"], ["H1", "H0"], ["H0", "X1"], ["X1", "w1"], ["w1", "w0"], ["T2", "D6"], ["D6", "X2"], ["X2", "w5"], ["w5", "w4"], ["w4", "w3"], ["w3", "w2"], ["w2", "w1"], ["H0", "C0"], ["H1", "C1"], ["H2", "C2"], ["H3", "C3"], ["w5", "w6"]]
+    "edges": [["T1", "X1"], ["X1", "D0"], ["D0", "T1"], ["T1", "C0"], ["C0", "C1"], ["C1", "C2"], ["C2", "C3"], ["C3", "T2"], ["T2", "X2"], ["X2", "H3"], ["H3", "H2"], ["H2", "H1"], ["H1", "H0"], ["H0", "X1"], ["X1", "w1"], ["w1", "w0"], ["T2", "D6"], ["D6", "X2"], ["X2", "w5"], ["w5", "w4"], ["w4", "w3"], ["w3", "w2"], ["w2", "w1"], ["H0", "C0"], ["H1", "C1"], ["H2", "C2"], ["H3", "C3"], ["w5", "w6"]],
+    "colors": {"T1|X1": "red", "D0|X1": "red", "D0|T1": "red", "C0|T1": "red", "C0|C1": "red", "C1|C2": "red", "C2|C3": "red", "C3|T2": "red", "T2|X2": "red", "H3|X2": "white", "H2|H3": "white", "H1|H2": "white", "H0|H1": "white", "H0|X1": "white", "X1|w1": "red", "w0|w1": "blue", "D6|T2": "red", "D6|X2": "red", "X2|w5": "red", "w4|w5": "blue", "w3|w4": "blue", "w2|w3": "blue", "w1|w2": "blue", "C0|H0": "white", "C1|H1": "white", "C2|H2": "white", "C3|H3": "white", "w5|w6": "blue"}
   },
   {
     "id": "pineapple",
@@ -280,7 +289,8 @@
       {"id": "v4", "x": 0.632, "y": 0.46, "degree": 2},
       {"id": "t5", "x": 0.797, "y": 0.377, "degree": 2}
     ],
-    "edges": [["ru", "tr"], ["tr", "m"], ["m", "tl"], ["tl", "lu"], ["lu", "ll"], ["ll", "bl"], ["bl", "br"], ["br", "rl"], ["rl", "ru"], ["ru", "e"], ["e", "n"], ["n", "tl"], ["tl", "t1"], ["t1", "v1"], ["v1", "t2"], ["t2", "v2"], ["v2", "t3"], ["t3", "v3"], ["v3", "t4"], ["t4", "v4"], ["v4", "t5"], ["t5", "tr"], ["tr", "n"], ["n", "w"], ["w", "lu"], ["rl", "e"], ["e", "s"], ["s", "w"], ["w", "ll"], ["br", "s"], ["s", "bl"], ["v2", "m"], ["m", "v3"]]
+    "edges": [["ru", "tr"], ["tr", "m"], ["m", "tl"], ["tl", "lu"], ["lu", "ll"], ["ll", "bl"], ["bl", "br"], ["br", "rl"], ["rl", "ru"], ["ru", "e"], ["e", "n"], ["n", "tl"], ["tl", "t1"], ["t1", "v1"], ["v1", "t2"], ["t2", "v2"], ["v2", "t3"], ["t3", "v3"], ["v3", "t4"], ["t4", "v4"], ["v4", "t5"], ["t5", "tr"], ["tr", "n"], ["n", "w"], ["w", "lu"], ["rl", "e"], ["e", "s"], ["s", "w"], ["w", "ll"], ["br", "s"], ["s", "bl"], ["v2", "m"], ["m", "v3"]],
+    "colors": {"ru|tr": "orange", "m|tr": "green", "m|tl": "green", "lu|tl": "orange", "ll|lu": "orange", "bl|ll": "orange", "bl|br": "orange", "br|rl": "orange", "rl|ru": "orange", "t1|tl": "green", "t1|v1": "green", "t2|v1": "green", "t2|v2": "green", "t3|v2": "green", "t3|v3": "green", "t4|v3": "green", "t4|v4": "green", "t5|v4": "green", "t5|tr": "green", "m|v2": "green", "m|v3": "green"}
   },
   {
     "id": "fox",

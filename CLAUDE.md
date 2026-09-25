@@ -91,6 +91,14 @@ low running cost** over scalability or cleverness.
 - **Clue (`clue=` in P()):** ≤ 80 chars (aim ≤ 40), witty, family-friendly, must not contain a
   word of the title or id (validator + editor enforce), no song lyrics. Shown in the HUD between
   the timer and the Hint button (max two lines); hidden when a puzzle has none.
+- **Line colours (`colors=` in P()):** `colors={"green": ["a b c"], "red": ["d e"]}` (path
+  syntax; unlisted lines are yellow). puzzles.json gets `"colors": {"a|b": "green"}` (keys as
+  `edgeKey` in js/game.js). Palette: yellow, orange, red, pink, purple, blue, cyan, green, white,
+  brown — hex in `--c-*` (css/style.css) and `PALETTE` (author_puzzles.py), names in the schema
+  enum; the validator checks CSS and schema agree. Colours show **only in the win state** (each
+  line glows in its own colour via the `#win-glow` SVG filter), never while solving — they'd
+  give away which lines are right. Editor: palette swatches → click/drag over lines to paint.
+  Coloured so far (2026-09-25): the first 10 in ORDER; the rest are still all-yellow.
 - **Redraw status:** `REDRAWN` in author_puzzles.py lists puzzles drawn to the new standard
   (73 as of 2026-09-25); they come first in `ORDER`. The other 28 sit at the end of `ORDER` and
   still need a redraw: 17 have a weak new attempt with a clue (bat, bee, bird, deer, frog, grapes,

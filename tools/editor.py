@@ -60,11 +60,12 @@ def list_puzzles():
         out.append({
             "index": index, "id": pid, "title": fitted["title"], "category": fitted["category"],
             "clue": fitted.get("clue", ""), "redrawn": pid in redrawn,
+            "colors": fitted.get("colors", {}),
             "dots": [{"id": d["id"], "x": d["x"], "y": d["y"]} for d in fitted["dots"]],
             "edges": fitted["edges"],
         })
     return {"launch": LAUNCH.isoformat(), "todayIndex": today_index(), "categories": CATEGORIES,
-            "puzzles": out}
+            "palette": mod.get("PALETTE", {}), "puzzles": out}
 
 
 # ---- writing author_puzzles.py ----------------------------------------------------------------
@@ -113,15 +114,31 @@ def wrap(items, sep, width, indent):
     return lines
 
 
-def format_block(pid, title, category, pts, paths, clue=""):
+def format_colors(names, colors, palette):
+    """{"a|b": "green"} -> 'colors={"green": ["a b c"], ...}' in palette order, or ''."""
+    by_color = {}
+    for k, c in colors.items():
+        by_color.setdefault(c, []).append(k.split("|"))
+    parts = []
+    for c in [c for c in palette if c in by_color]:
+        paths = edges_to_paths([n for n in names if any(n in e for e in by_color[c])], by_color[c])
+        parts.append(f"{json.dumps(c)}: [" + ", ".join(json.dumps(x) for x in paths) + "]")
+    if not parts:
+        return ""
+    lines = wrap(parts, ", ", 94, "  ")
+    return "colors={" + "\n    ".join(lines) + "}"
+
+
+def format_block(pid, title, category, pts, paths, clue="", colors_src=""):
     items = [f"{n} {num(x)} {num(y)}" for n, (x, y) in pts]
     chunks = wrap(items, "; ", 94, "  ")
     pts_src = "\n  ".join(json.dumps(c) for c in chunks)  # wrap() ends each chunk but the last with ";"
     path_lines = wrap([json.dumps(p) for p in paths], ", ", 94, "   ")
     paths_src = "[" + "\n   ".join(path_lines) + "]"
     clue_src = f",\n  clue={json.dumps(clue, ensure_ascii=False)}" if clue else ""
+    colors_src = f",\n  {colors_src}" if colors_src else ""
     return (f"P({json.dumps(pid)}, {json.dumps(title, ensure_ascii=False)}, {json.dumps(category)},\n"
-            f"  {pts_src},\n  {paths_src}{clue_src})")
+            f"  {pts_src},\n  {paths_src}{clue_src}{colors_src})")
 
 
 def format_list(name, ids):
@@ -146,7 +163,7 @@ class BadRequest(Exception):
     pass
 
 
-def check_request(body, existing_ids, order, today):
+def check_request(body, existing_ids, order, today, palette=()):
     pid = body.get("id", "")
     title = str(body.get("title", "")).strip()
     clue = " ".join(str(body.get("clue") or "").split())
@@ -185,6 +202,18 @@ def check_request(body, existing_ids, order, today):
             raise BadRequest(f"duplicate line {e[0]}-{e[1]}")
         seen.add(k)
         touched.update(e)
+    colors = {}
+    raw_colors = body.get("colors") or {}
+    if not isinstance(raw_colors, dict):
+        raise BadRequest("colors must be an object")
+    for k, c in raw_colors.items():
+        a, _, b = str(k).partition("|")
+        if frozenset((a, b)) not in seen:
+            raise BadRequest(f"colour on {k}, which isn't a line")
+        if c not in palette:
+            raise BadRequest(f"unknown colour {c!r}")
+        if c != "yellow":
+            colors["|".join(sorted((a, b)))] = c
     if names - touched:
         raise BadRequest(f"dots with no lines: {', '.join(sorted(names - touched))}")
     xs, ys = [p[1] for p in pts], [p[2] for p in pts]
@@ -201,7 +230,7 @@ def check_request(body, existing_ids, order, today):
             raise BadRequest(f"position must be between {max(today + 1, 0)} and {len(order)} "
                              "(puzzles that have been played can't move)")
     return (pid, title, category, [(n, (x, y)) for n, x, y in pts], [list(e) for e in edges], position,
-            clue, bool(body.get("redrawn")))
+            clue, bool(body.get("redrawn")), colors)
 
 
 def run_tool(name, *args):
@@ -218,13 +247,16 @@ def save(body):
         src = raw.replace("\r\n", "\n")
         mod = load_module(src)
         order = list(mod["ORDER"])
-        pid, title, category, pts, edges, position, clue, is_redrawn = check_request(
-            body, {p["id"] for p in mod["PUZZLES"]}, order, today_index())
+        palette = list(mod.get("PALETTE", {}))
+        pid, title, category, pts, edges, position, clue, is_redrawn, colors = check_request(
+            body, {p["id"] for p in mod["PUZZLES"]}, order, today_index(), palette)
         redrawn = [i for i in mod.get("REDRAWN", []) if i != pid]
         if is_redrawn:
             redrawn.append(pid)
 
-        block = format_block(pid, title, category, pts, edges_to_paths([n for n, _ in pts], edges), clue)
+        names = [n for n, _ in pts]
+        block = format_block(pid, title, category, pts, edges_to_paths(names, edges), clue,
+                             format_colors(names, colors, palette))
         lines = src.split("\n")
         blocks, spans = top_level(ast.parse(src))
         # Replace from the bottom up so earlier line numbers stay valid.

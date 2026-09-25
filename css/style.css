@@ -10,6 +10,19 @@
   --bad: #ff5a5a;         /* dot evaluated wrong (red) */
   --hint: #e0c97a;        /* hinted line: locked, a paler gold than --ok */
   --muted: #5c6490;
+
+  /* Line colours for the solved picture (puzzle.colors). Keep the names in sync with
+     puzzles/schema.json and PALETTE in tools/author_puzzles.py. Uncoloured lines use --ok. */
+  --c-yellow: #ffd84a;
+  --c-orange: #ff9a3c;
+  --c-red: #ff4d5e;
+  --c-pink: #ff6ec7;
+  --c-purple: #b78cff;
+  --c-blue: #4aa8ff;
+  --c-cyan: #38e1f0;
+  --c-green: #4be37a;
+  --c-white: #f2f4ff;
+  --c-brown: #c8874f;
 }
 
 * { box-sizing: border-box; }
@@ -385,11 +398,23 @@ body {
 }
 
 /* ---- win: the whole constellation lights up ---- */
+/* Each line lights in its own colour; the SVG blur filter (render.js) makes each one glow in it. */
 .board--solved .line { stroke: var(--ok); }
+.board--solved .line--c-yellow { stroke: var(--c-yellow); }
+.board--solved .line--c-orange { stroke: var(--c-orange); }
+.board--solved .line--c-red { stroke: var(--c-red); }
+.board--solved .line--c-pink { stroke: var(--c-pink); }
+.board--solved .line--c-purple { stroke: var(--c-purple); }
+.board--solved .line--c-blue { stroke: var(--c-blue); }
+.board--solved .line--c-cyan { stroke: var(--c-cyan); }
+.board--solved .line--c-green { stroke: var(--c-green); }
+.board--solved .line--c-white { stroke: var(--c-white); }
+.board--solved .line--c-brown { stroke: var(--c-brown); }
 .board--solved .dot-circle { fill: var(--ok); }
+.board--solved .lines { filter: url(#win-glow); }
+.board--solved .dots { filter: drop-shadow(0 0 8px var(--ok)); }
 .board--solved .lines,
 .board--solved .dots {
-  filter: drop-shadow(0 0 8px var(--ok));
   animation: fade-in 0.8s ease-out;
 }
 #board.board--solved { cursor: default; }

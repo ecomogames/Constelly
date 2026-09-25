@@ -12,6 +12,8 @@ Checks (JSON Schema can't express the graph ones):
   - every dot at least MIN_EDGE_MARGIN from the board edge (x in 0-1, y in 0-BOARD_H)
   - no dot lies on (or grazes) a solution line it isn't an endpoint of, see MIN_LINE_CLEARANCE
   - the optional clue doesn't contain a word of the title or id (it would give the picture away)
+  - line colours (optional "colors") are keyed by real solution lines, with known colour names
+    (the schema's names must match the --c-* variables in css/style.css)
 Also prints the date the last puzzle is played, and warns when that's close.
 
 OPEN: solution uniqueness — optionally count alternative graphs that satisfy the same
@@ -52,6 +54,22 @@ MIN_EDGE_MARGIN = 0.05
 # A dot closer than this to a solution line it isn't part of looks like it's on that line.
 # ~ DOT_R (0.028) + half the line width + a visible gap.
 MIN_LINE_CLEARANCE = 0.05
+
+
+def color_names() -> list[str]:
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    return schema["items"]["properties"]["colors"]["additionalProperties"]["enum"]
+
+
+COLOR_NAMES = color_names()
+
+
+def check_palette() -> list[str]:
+    css = (ROOT / "css" / "style.css").read_text(encoding="utf-8")
+    in_css = re.findall(r"--c-([a-z]+):", css)
+    if sorted(in_css) != sorted(COLOR_NAMES):
+        return [f"palette mismatch: schema has {sorted(COLOR_NAMES)}, css/style.css has {sorted(in_css)}"]
+    return []
 
 
 def check_schema(puzzles) -> list[str]:
@@ -156,6 +174,14 @@ def check_puzzle(i: int, p: dict) -> list[str]:
         if given:
             errors.append(f"{where} clue gives the picture away ({', '.join(given)}): {clue!r}")
 
+    for k, color in (p.get("colors") or {}).items():
+        a, _, b = k.partition("|")
+        if not (a < b and frozenset((a, b)) in seen):
+            errors.append(f"{where} colour for '{k}', which isn't a line of the puzzle "
+                          "(keys are 'a|b' with the ids sorted)")
+        if color not in COLOR_NAMES:
+            errors.append(f"{where} unknown colour {color!r} on {k}")
+
     for a, b in sorted(tuple(sorted(k)) for k in seen):
         for d in ds:
             if d["id"] in (a, b):
@@ -189,7 +215,7 @@ def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else PUZZLES
     puzzles = json.loads(path.read_text(encoding="utf-8"))
 
-    errors = check_schema(puzzles)
+    errors = check_schema(puzzles) + check_palette()
     if errors:  # graph checks assume the shape is right
         print("\n".join(errors))
         print(f"FAILED: {len(errors)} problem(s)")

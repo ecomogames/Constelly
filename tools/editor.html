@@ -84,9 +84,13 @@
     .grid-minor { stroke: #16204a; stroke-width: 1; }
     .grid-major { stroke: #1f2a5c; stroke-width: 1.5; }
     .fitbox { fill: none; stroke: #3a4580; stroke-width: 2; stroke-dasharray: 10 8; }
-    .edge { stroke: var(--line); stroke-width: 7; stroke-linecap: round; }
-    .edge.hover { stroke: #aab4ff; stroke-width: 10; }
-    .edge.problem { stroke: var(--warn); stroke-dasharray: 14 10; }
+    .edge { stroke: var(--ok); stroke-width: 7; stroke-linecap: round; }  /* colour set inline */
+    .edge.hover { stroke-width: 12; }
+    .edge.problem { stroke-dasharray: 14 10; }
+    .palette { display: inline-flex; gap: 4px; align-items: center; }
+    .swatch { width: 24px; height: 24px; padding: 0; border-radius: 50%; border: 2px solid transparent; }
+    .swatch[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px #fff; }
+    .painting svg#canvas { cursor: cell; }
     .rubber { stroke: var(--dot); stroke-width: 3; stroke-dasharray: 6 8; opacity: 0.6; pointer-events: none; }
     .dot circle { fill: var(--dot); stroke: none; }
     .dot text { fill: var(--bg); font: 700 26px system-ui, sans-serif; text-anchor: middle;
@@ -134,12 +138,15 @@
         <label title="A picture to trace over (only shown here, never saved)">Trace <input id="trace-file" type="file" accept="image/*" hidden><button id="trace-btn" type="button">Image…</button></label>
         <input id="trace-opacity" type="range" min="0" max="1" step="0.05" value="0.35" title="Trace image opacity" disabled>
         <button id="trace-clear" disabled title="Remove trace image">×</button>
+        <span class="sep"></span>
+        <span class="palette" id="palette" title="Line colours in the solved picture. Pick one, then click or drag over lines. Yellow = default. Esc stops."><span class="muted" style="font-size:13px">Paint</span></span>
       </div>
       <div class="stage"><svg id="canvas" viewBox="0 0 1000 1333"></svg></div>
       <div class="hint-bar">
         Click: add a dot, joined to the selected one (on a line: splits it) · Click a dot: select it,
         or join / unjoin it with the selected one · Drag: move · Right-click: delete a dot or line ·
-        <kbd>Del</kbd>: delete selected · <kbd>Esc</kbd>: deselect · <kbd>Ctrl</kbd>+<kbd>Z</kbd>: undo · <kbd>Ctrl</kbd>+<kbd>S</kbd>: save
+        <kbd>Del</kbd>: delete selected · <kbd>Esc</kbd>: deselect · <kbd>Ctrl</kbd>+<kbd>Z</kbd>: undo · <kbd>Ctrl</kbd>+<kbd>S</kbd>: save ·
+        Paint: pick a colour, click or drag over lines (<kbd>Esc</kbd> stops)
       </div>
     </main>
 
@@ -189,6 +196,7 @@ let meta = null;       // { launch, todayIndex, categories, puzzles }
 let cur = null;        // { isNew, index, id, title, category, position, dots:[{id,x,y}], edges:[[a,b]] }
 let savedJson = "";    // snapshot of cur at load/save, for the dirty check
 let sel = null, hover = null;  // hover: {dot:id} | {edge:i}
+let paint = null;              // colour name while painting lines, else null
 let cursor = null;     // last pointer position (board units), for the rubber band
 let undoStack = [], redoStack = [];
 let traceUrl = null;
@@ -222,7 +230,11 @@ const r3 = (v) => Math.round(v * 1000) / 1000;
 const isDirty = () => cur && JSON.stringify(stateOf(cur)) !== savedJson;
 const stateOf = (c) => ({ id: c.id, title: c.title, category: c.category, position: c.position,
   clue: (c.clue || "").trim(), redrawn: !!c.redrawn,
-  dots: c.dots.map((d) => [d.id, r3(d.x), r3(d.y)]), edges: c.edges.map((e) => key(...e)).sort() });
+  dots: c.dots.map((d) => [d.id, r3(d.x), r3(d.y)]), edges: c.edges.map((e) => key(...e)).sort(),
+  colors: Object.entries(c.colors || {}).filter(([, v]) => v !== "yellow").sort() });
+const snapshot = () => clone({ dots: cur.dots, edges: cur.edges, colors: cur.colors });
+const colorOf = (a, b) => cur.colors?.[key(a, b)] || "yellow";
+const hex = (name) => meta.palette?.[name] || "#ffd84a";
 
 // Same as fit() in tools/author_puzzles.py.
 function fit(dots) {
@@ -304,7 +316,7 @@ function analyse() {
   }
   const n = cur.dots.length;
   const junc = n ? Math.round(100 * Object.values(deg).filter((v) => v >= 3).length / n) : 0;
-  if (n && (n < 15 || n > 20)) warns.push(`${n} dots — the target is 15–20`);
+  if (n && (n < 18 || n > 26)) warns.push(`${n} dots — the target is 18–26`);
   if (chain > MAX_CHAIN) warns.push(`Longest run of 2s is ${chain} (want ≤ ${MAX_CHAIN}) — add branching detail`);
   if (n && junc < MIN_JUNCTION) warns.push(`Only ${junc}% of dots are 3+ (want ≥ ${MIN_JUNCTION}%)`);
   return { errors, warns, problemDots, problemEdges, minSpacing, chain, junc, scale, fdots };
@@ -357,7 +369,8 @@ function render() {
   cur.edges.forEach(([p, q], i) => {
     const A = D.get(p), B = D.get(q);
     const cls = ["edge", hover?.edge === i ? "hover" : "", a.problemEdges.has(i) ? "problem" : ""].join(" ");
-    el("line", { x1: A.x * S, y1: A.y * S, x2: B.x * S, y2: B.y * S, class: cls }, edges);
+    const color = paint && hover?.edge === i ? paint : colorOf(p, q);  // preview the paint on hover
+    el("line", { x1: A.x * S, y1: A.y * S, x2: B.x * S, y2: B.y * S, class: cls, style: `stroke:${hex(color)}` }, edges);
   });
   if (sel && cursor && D.get(sel) && !hover?.dot && !hover?.drag) {
     const A = D.get(sel);
@@ -386,7 +399,7 @@ function renderPanel(a) {
     stats.append(l, v);
   };
   const n = cur.dots.length;
-  row("Dots", n, n >= 15 && n <= 20 ? "good" : "warn");
+  row("Dots", n, n >= 18 && n <= 26 ? "good" : "warn");
   row("Lines", cur.edges.length);
   row("Dots with 3+ lines", `${a.junc}%`, a.junc >= MIN_JUNCTION ? "good" : "warn");
   row("Longest run of 2s", a.chain, a.chain <= MAX_CHAIN ? "good" : "warn");
@@ -460,10 +473,29 @@ function updatePosDate() {
 }
 
 // ---------- editing ----------
-function pushUndo() { undoStack.push(clone({ dots: cur.dots, edges: cur.edges })); redoStack = []; if (undoStack.length > 300) undoStack.shift(); }
-function restore(s) { cur.dots = s.dots; cur.edges = s.edges; if (sel && !cur.dots.some((d) => d.id === sel)) sel = null; }
-function doUndo() { if (!undoStack.length) return; redoStack.push(clone({ dots: cur.dots, edges: cur.edges })); restore(undoStack.pop()); render(); }
-function doRedo() { if (!redoStack.length) return; undoStack.push(clone({ dots: cur.dots, edges: cur.edges })); restore(redoStack.pop()); render(); }
+function pushUndo() { undoStack.push(snapshot()); redoStack = []; if (undoStack.length > 300) undoStack.shift(); }
+function restore(s) { cur.dots = s.dots; cur.edges = s.edges; cur.colors = s.colors || {}; if (sel && !cur.dots.some((d) => d.id === sel)) sel = null; }
+function doUndo() { if (!undoStack.length) return; redoStack.push(snapshot()); restore(undoStack.pop()); render(); }
+function doRedo() { if (!redoStack.length) return; undoStack.push(snapshot()); restore(redoStack.pop()); render(); }
+// Colours belong to lines: drop the ones whose line is gone.
+function pruneColors() {
+  const live = new Set(cur.edges.map((e) => key(...e)));
+  for (const k of Object.keys(cur.colors)) if (!live.has(k)) delete cur.colors[k];
+}
+function paintEdge(i) {  // → true if the colour changed
+  const k = key(...cur.edges[i]);
+  const before = cur.colors[k] || "yellow";
+  if (before === paint) return false;
+  if (paint === "yellow") delete cur.colors[k]; else cur.colors[k] = paint;
+  return true;
+}
+function setPaint(name) {
+  paint = paint === name ? null : name;
+  for (const b of document.querySelectorAll(".swatch")) b.setAttribute("aria-pressed", String(b.dataset.color === paint));
+  document.body.classList.toggle("painting", !!paint);
+  if (paint) sel = null;
+  render();
+}
 
 function nextName() {
   const used = new Set(cur.dots.map((d) => d.id));
@@ -476,6 +508,7 @@ function toggleEdge(a, b) {
   const i = cur.edges.findIndex((e) => key(...e) === k);
   pushUndo();
   if (i >= 0) cur.edges.splice(i, 1); else cur.edges.push([a, b]);
+  pruneColors();
 }
 function addDot(p, joinTo) {
   pushUndo();
@@ -488,6 +521,7 @@ function deleteDot(id) {
   pushUndo();
   cur.dots = cur.dots.filter((d) => d.id !== id);
   cur.edges = cur.edges.filter(([a, b]) => a !== id && b !== id);
+  pruneColors();
   if (sel === id) sel = null;
 }
 function splitEdge(i, p) {
@@ -498,7 +532,10 @@ function splitEdge(i, p) {
   pushUndo();
   const id = nextName();
   cur.dots.push({ id, x: r3(A.x + t * (B.x - A.x)), y: r3(A.y + t * (B.y - A.y)) });
+  const color = cur.colors[key(a, b)];
   cur.edges.splice(i, 1, [a, id], [id, b]);
+  pruneColors();
+  if (color) { cur.colors[key(a, id)] = color; cur.colors[key(id, b)] = color; }  // both halves keep it
   return id;
 }
 
@@ -528,13 +565,27 @@ function onDown(evt) {
   const p = toBoard(evt);
   const d = dotAt(p);
   $("canvas").setPointerCapture(evt.pointerId);
-  if (d) press = { kind: "dot", id: d, start: p, moved: false, before: clone({ dots: cur.dots, edges: cur.edges }) };
+  if (paint) {  // painting: lines only; dragging paints every line the pointer crosses
+    press = { kind: "paint", before: snapshot(), changed: false };
+    const e = edgeAt(p);
+    if (e !== null) press.changed = paintEdge(e) || press.changed;
+    render();
+    return;
+  }
+  if (d) press = { kind: "dot", id: d, start: p, moved: false, before: snapshot() };
   else { const e = edgeAt(p); press = e !== null ? { kind: "edge", i: e, start: p } : { kind: "empty", start: p }; }
 }
 function onMove(evt) {
   if (!cur || $("player").checked) return;
   const p = toBoard(evt);
   cursor = p;
+  if (paint) {
+    const e = edgeAt(p);
+    if (press?.kind === "paint" && e !== null) press.changed = paintEdge(e) || press.changed;
+    hover = e !== null ? { edge: e } : null;
+    render();
+    return;
+  }
   if (press?.kind === "dot") {
     if (!press.moved && dist(p, press.start) > 0.006) press.moved = true;
     if (press.moved) {
@@ -556,6 +607,11 @@ function onUp(evt) {
   if (!press || !cur) return;
   const p = toBoard(evt);
   const pr = press; press = null;
+  if (pr.kind === "paint") {
+    if (pr.changed) { undoStack.push(pr.before); redoStack = []; }
+    render();
+    return;
+  }
   if (pr.kind === "dot") {
     if (pr.moved) { undoStack.push(pr.before); redoStack = []; }
     else if (!sel) sel = pr.id;
@@ -597,14 +653,16 @@ function open(id) {
   if (!confirmDiscard()) return;
   const p = meta.puzzles.find((x) => x.id === id);
   setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
-    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges),
+    colors: clone(p.colors || {}) });
   history.replaceState(null, "", `#${id}`);
 }
 function newPuzzle(from) {
   if (!confirmDiscard()) return;
   setCurrent({ isNew: true, index: null, id: "", title: from ? `${from.title} copy` : "",
     category: from?.category || "object", clue: from?.clue || "", redrawn: true, position: meta.puzzles.length,
-    dots: from ? clone(from.dots) : [], edges: from ? clone(from.edges) : [] });
+    dots: from ? clone(from.dots) : [], edges: from ? clone(from.edges) : [],
+    colors: from ? clone(from.colors || {}) : {} });
   history.replaceState(null, "", "#new");
   $("f-id").focus();
 }
@@ -619,7 +677,7 @@ async function save() {
   if (played && shapeChanged && !confirm(`#${cur.index + 1} has already been played. Change its drawing anyway?`)) return;
   const body = { isNew: cur.isNew, id: cur.id, title: cur.title.trim(), category: cur.category,
     clue: (cur.clue || "").trim(), redrawn: !!cur.redrawn,
-    dots: cur.dots, edges: cur.edges, confirmPlayed: played };
+    dots: cur.dots, edges: cur.edges, colors: cur.colors, confirmPlayed: played };
   if (cur.isNew) body.position = cur.position;
   $("save-btn").disabled = true; $("save-btn").textContent = "Saving…";
   const out = $("save-result");
@@ -639,7 +697,8 @@ async function save() {
   savedJson = ""; cur = null;
   const p = meta.puzzles.find((x) => x.id === id);
   setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
-    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges),
+    colors: clone(p.colors || {}) });
   history.replaceState(null, "", `#${id}`);
   const box = $("save-result");
   box.append(banner(result.ok ? "good" : "bad", result.ok
@@ -664,7 +723,7 @@ function wire() {
     if (!cur || $("player").checked) return;
     const p = toBoard(e), d = dotAt(p), i = d ? null : edgeAt(p);
     if (d) deleteDot(d);
-    else if (i !== null) { pushUndo(); cur.edges.splice(i, 1); }
+    else if (i !== null) { pushUndo(); cur.edges.splice(i, 1); pruneColors(); }
     hover = null;
     render();
   });
@@ -674,7 +733,7 @@ function wire() {
     if (typing || !cur) return;
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); e.shiftKey ? doRedo() : doUndo(); }
     else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") { e.preventDefault(); doRedo(); }
-    else if (e.key === "Escape") { sel = null; render(); }
+    else if (e.key === "Escape") { if (paint) setPaint(paint); else { sel = null; render(); } }
     else if ((e.key === "Delete" || e.key === "Backspace") && sel) { e.preventDefault(); deleteDot(sel); render(); }
     else if (sel && e.key.startsWith("Arrow")) {
       e.preventDefault();
@@ -738,6 +797,13 @@ async function init() {
     return;
   }
   $("app").hidden = false;
+  for (const [name, color] of Object.entries(meta.palette || {})) {
+    const b = document.createElement("button");
+    b.className = "swatch"; b.dataset.color = name; b.title = name + (name === "yellow" ? " (default)" : "");
+    b.style.background = color; b.setAttribute("aria-pressed", "false");
+    b.onclick = () => setPaint(name);
+    $("palette").append(b);
+  }
   for (const c of meta.categories) { const o = document.createElement("option"); o.value = o.textContent = c; $("f-cat").append(o); }
   wire();
   const want = decodeURIComponent(location.hash.slice(1));

@@ -12,6 +12,11 @@ is scaled uniformly and centred onto the 3:4 board inside an 0.08 margin.
 Each puzzle may have a clue= : a short line shown to the player while solving. It must hint at
 the picture without naming it (e.g. hot-air balloon: "I can see my house from here...").
 
+Lines can have colours for the solved picture: colors={"green": ["a b c"], "red": ["d e"]} uses
+the same path syntax (each step must be a line of the drawing). Unlisted lines are yellow.
+The colours only show once the puzzle is solved, so they never give away which lines are right.
+Names: PALETTE below (hex values are the ones css/style.css uses).
+
 Publish order is ORDER at the bottom (index 0 = launch day). Don't reorder puzzles that have
 already been played: the day index picks puzzles by position. REDRAWN lists the puzzles whose
 drawing has been redone to the new standard (18-26 dots, richer detail, a clue); the rest are
@@ -28,8 +33,19 @@ BOARD_H = 4 / 3
 BOX = (0.08, 0.92, 0.08, BOARD_H - 0.08)  # x0, x1, y0, y1 usable area
 PUZZLES = []
 
+# Line colours (keep in sync with --c-* in css/style.css and the enum in puzzles/schema.json).
+PALETTE = {
+    "yellow": "#ffd84a", "orange": "#ff9a3c", "red": "#ff4d5e", "pink": "#ff6ec7",
+    "purple": "#b78cff", "blue": "#4aa8ff", "cyan": "#38e1f0", "green": "#4be37a",
+    "white": "#f2f4ff", "brown": "#c8874f",
+}
 
-def P(pid, title, cat, pts, paths, clue=""):
+
+def edge_key(a, b):  # same as edgeKey() in js/game.js
+    return f"{a}|{b}" if a < b else f"{b}|{a}"
+
+
+def P(pid, title, cat, pts, paths, clue="", colors=None):
     if isinstance(pts, str):
         d = {}
         for item in pts.split(";"):
@@ -48,7 +64,19 @@ def P(pid, title, cat, pts, paths, clue=""):
             assert k not in seen, (pid, "dup edge", a, b)
             seen.add(k)
             edges.append([a, b])
-    PUZZLES.append(dict(id=pid, title=title, category=cat, pts=pts, edges=edges, clue=clue))
+    line_colors = {}
+    for color, cpaths in (colors or {}).items():
+        assert color in PALETTE, (pid, "unknown colour", color)
+        for path in cpaths:
+            ids = path.split()
+            for a, b in zip(ids, ids[1:]):
+                k = edge_key(a, b)
+                assert frozenset((a, b)) in seen, (pid, "colour on a line that isn't drawn", a, b)
+                assert k not in line_colors, (pid, "line coloured twice", a, b)
+                if color != "yellow":
+                    line_colors[k] = color
+    PUZZLES.append(dict(id=pid, title=title, category=cat, pts=pts, edges=edges, clue=clue,
+                        colors=line_colors))
 
 
 def polar(cx, cy, r, deg):
@@ -61,7 +89,9 @@ P("starfish", "Starfish", "animal",
   "t3 20.6 103.9; v3 24.2 78.1; t4 8 53.4; v4 33.7 48.9; e1 42.7 57.3; e2 42.7 69.2;"
   "e3 55.4 57.3; e4 55.4 69.2; m1 38 80.3; m2 49.1 84.2; m3 60.1 80.3",
   ["e1 e2", "e3 e4", "m1 m2 m3", "t0 v0 t1 v1 t2 v2 t3 v3 t4 v4 t0", "v0 v1 v2 v3 v4 v0"],
-  clue="No, this is Patrick!")
+  clue="No, this is Patrick!",
+  colors={"red": ["m1 m2 m3", "v0 v1 v2 v3 v4 v0"], "pink": ["t0 v0 t1 v1 t2 v2 t3 v3 t4 v4 t0"],
+    "white": ["e1 e2", "e3 e4"]})
 
 P("barn", "Barn", "object",
   "pk 50 22.7; rbL 19 43.9; evL 9.3 65; bsL 9.3 125.3; dtL 28.8 81.3; dbL 28.8 125.3;"
@@ -69,7 +99,9 @@ P("barn", "Barn", "object",
   "bsR 90.7 125.3; dtR 71.2 81.3; dbR 71.2 125.3; wtR 59.8 40.6; wbR 59.8 56.9",
   ["pk rbL evL bsL dbL dbm dbR bsR evR rbR pk wv", "evL evR",
    "dtL dtm dtR dbR dtm dbm dtL dbL dtm", "dbm dtR", "wtL wtR wbR wbL wtL wbR", "wbL wtR"],
-  clue="Old MacDonald's headquarters")
+  clue="Old MacDonald's headquarters",
+  colors={"red": ["dbL bsL evL rbL pk rbR evR bsR dbR"],
+    "white": ["evL evR", "dtL dtm dtR dbR dbm dbL dtL dbm dtm dbR", "dbL dtm", "dbm dtR", "wtL wtR wbR wbL wtL wbR", "wbL wtR"]})
 
 P("drum", "Drum", "object",
   "h0 92 66.2; h1 79.7 75.9; h2 50 79.9; h3 20.3 75.9; h4 8 66.2; h5 20.3 56.5; h6 50 52.5;"
@@ -77,7 +109,9 @@ P("drum", "Drum", "object",
   "s1a 20.8 13.3; s1b 79.2 44.3; s2a 79.2 13.3; s2b 20.8 44.3; sx 50 28.8",
   ["b0 h0 h1 h2 h3 h4 h5 h6 h7 h0 b1 b0 h1 b2 b1 h2 b3 b2 h3 b4 b3 h4 b4", "s1a sx s1b",
    "s2a sx s2b"],
-  clue="Ba-dum-tss!")
+  clue="Ba-dum-tss!",
+  colors={"red": ["h0 b0 b1 b2 b3 b4 h4"], "white": ["h0 h1 h2 h3 h4 h5 h6 h7 h0"],
+    "brown": ["s1a sx s1b", "s2a sx s2b"]})
 
 P("pine", "Pine tree", "plant",
   "ap 50 8.7; o1L 26.5 40.6; o1R 73.5 40.6; i1L 38.2 40.6; i1R 61.8 40.6; c1 50 40.6;"
@@ -85,14 +119,19 @@ P("pine", "Pine tree", "plant",
   "o3R 92 106.1; tkL 38.2 106.1; tkR 61.8 106.1; c3 50 106.1; tbL 38.2 124.6; tbR 61.8 124.6",
   ["ap o1L i1L c1 i1R o1R ap c1 c2 c3 tkL o3L i2L o2L i1L", "i1R o2R i2R c2 i2L",
    "i2R o3R tkR c3", "tkL tbL tbR tkR"],
-  clue="Evergreen and never needs a haircut")
+  clue="Evergreen and never needs a haircut",
+  colors={"green": ["i1L o1L ap o1R i1R c1 i1L o2L i2L c2 i2R o2R i1R", "i2L o3L tkL c3 tkR o3R i2R"],
+    "brown": ["ap c1 c2 c3", "tkL tbL tbR tkR"]})
 
 P("teapot", "Teapot", "object",
   "kn 51.5 32.9; dl 42.5 42.7; dr 60.5 42.7; rl 36.5 52.4; rr 66.5 52.4; sl 27.5 62.9;"
   "sr 75.5 62.9; wl 24.5 77.9; wr 78.5 77.9; bl 29 91.4; br 74 91.4; fl 36.5 100.4;"
   "fr 66.5 100.4; st 8 46.4; sd 14 68.9; h1 87.5 61.4; h2 92 74.9; h3 86 86.9",
   ["dl rl rr dr kn dl dr", "rl sl wl bl fl fr br wr sr rr", "sl st sd wl wr", "sr h1 h2 h3 br"],
-  clue="Short and stout")
+  clue="Short and stout",
+  colors={"pink": ["wl wr"],
+    "blue": ["rl sl wl bl fl fr br wr sr rr", "sl st sd wl", "sr h1 h2 h3 br"],
+    "white": ["dl rl rr dr dl kn dr"]})
 
 P("sled", "Sled", "object",
   "p0 12.3 74.3; p3 70.3 74.3; q3 70.3 87.3; q0 12.3 87.3; q1 26.8 87.3; q2 54.3 87.3;"
@@ -101,14 +140,18 @@ P("sled", "Sled", "object",
   "xc 50 41",
   ["p3 p0 q0 q1 q2 q3 p3 c3 c2 c1 r3 r2 q2", "q1 r1 r0", "r1 r2", "x0 xc x1", "x2 xc x3",
    "x4 xc x5"],
-  clue="Rosebud...")
+  clue="Rosebud...",
+  colors={"red": ["p3 c3 c2 c1 r3 r2 q2", "q1 r1 r0", "r1 r2"],
+    "cyan": ["x0 xc x1", "x2 xc x3", "x4 xc x5"], "brown": ["p0 p3 q3 q2 q1 q0 p0"]})
 
 P("fish", "Fish", "animal",
   "n 8 68.3; a1 16.4 53.2; a2 31.5 45.7; a3 48.3 44.8; a4 61.8 51.5; pt 73.5 61.6; b1 16.4 83.5;"
   "b2 31.5 90.2; b3 48.3 91.9; b4 61.8 85.1; pb 73.5 75.1; tu 92 44.8; tn 83.6 68.3; tl 92 91.9;"
   "df 55 29.7; pf 51.7 103.6; g 38.2 67.5; e1 24 61.6; e2 24 73.4; s1 54.2 68.3",
   ["a3 a2 a1 n b1 b2 b3 b4 pb tl tn tu pt a4 a3 s1 b3 pf b2 g a2 df a4", "pt pb", "e1 e2"],
-  clue="Just keep swimming...")
+  clue="Just keep swimming...",
+  colors={"orange": ["a2 a1 n b1 b2 b3 b4 pb tl tn tu pt a4 a3 a2 df a4", "pt pb", "b2 pf b3"],
+    "white": ["a2 g b2", "a3 s1 b3", "e1 e2"]})
 
 P("balloon", "Hot-air balloon", "object",
   "t 50 8; l1 27.7 15.4; l2 14.6 34.1; l3 14.6 54.6; l4 27.7 75; nl 40.7 89.9; r1 72.3 15.4;"
@@ -117,7 +160,9 @@ P("balloon", "Hot-air balloon", "object",
   "bb 50 125.3; bbr 62.1 125.3",
   ["l2 l1 t r1 r2 r3 r4 nr nl l4 l3 l2 gl1 t gr1 gr2 nr btr bt btl nl gl2 gl1 gr1 r2",
    "l3 gl2 gr2 r3", "btl bbl bb bbr btr", "bt bb"],
-  clue="I can see my house from here...")
+  clue="I can see my house from here...",
+  colors={"red": ["nl l4 l3 l2 l1 t r1 r2 r3 r4 nr"], "blue": ["l2 gl1 gr1 r2", "l3 gl2 gr2 r3"],
+    "white": ["nl btl", "nr btr"], "brown": ["bt btl bbl bb bbr btr bt bb"]})
 
 P("bridge", "Bridge", "object",
   "D0 8 80.1; X1 21.4 80.1; X2 78.6 80.1; D6 92 80.1; T1 21.4 29.7; T2 78.6 29.7; H0 32.9 80.1;"
@@ -126,7 +171,10 @@ P("bridge", "Bridge", "object",
   "w5 78.6 103.6; w6 92 96.9",
   ["T1 X1 D0 T1 C0 C1 C2 C3 T2 X2 H3 H2 H1 H0 X1 w1 w0", "T2 D6 X2 w5 w4 w3 w2 w1", "H0 C0",
    "H1 C1", "H2 C2", "H3 C3", "w5 w6"],
-  clue="Built for getting over things")
+  clue="Built for getting over things",
+  colors={"red": ["X1 T1 D0 X1 w1", "X2 T2 D6 X2 w5", "T1 C0 C1 C2 C3 T2"],
+    "blue": ["w0 w1 w2 w3 w4 w5 w6"],
+    "white": ["X1 H0 H1 H2 H3 X2", "H0 C0", "H1 C1", "H2 C2", "H3 C3"]})
 
 P("pineapple", "Pineapple", "plant",
   "tl 38.4 59.2; m 50 59.2; tr 61.6 59.2; ru 73.1 75.8; rl 73.1 108.8; br 61.6 125.3;"
@@ -135,7 +183,9 @@ P("pineapple", "Pineapple", "plant",
   "v4 63.2 46; t5 79.7 37.7",
   ["ru tr m tl lu ll bl br rl ru e n tl t1 v1 t2 v2 t3 v3 t4 v4 t5 tr n w lu", "rl e s w ll",
    "br s bl", "v2 m v3"],
-  clue="I belong on pizza. Fight me.")
+  clue="I belong on pizza. Fight me.",
+  colors={"orange": ["tl lu ll bl br rl ru tr"],
+    "green": ["v2 t2 v1 t1 tl m v2 t3 v3 t4 v4 t5 tr m v3"]})
 
 P("fox", "Fox", "animal",
   "etl 20.5 8; eol 11.1 51.5; eml 24.4 44.5; eil 37.6 37.5; ckl 8 79.5; jl 28.2 96.6;"
@@ -973,15 +1023,15 @@ ORDER = [
 
 # Puzzles redrawn to the new standard; everything else in ORDER is an old drawing.
 REDRAWN = [
+    "fox", "ferriswheel", "gift", "kite", "giraffe", "lantern", "bamboo", "bench", "whale",
+    "hammer", "ship", "butterfly", "umbrella", "lotus", "anchor2", "birdhouse", "dog", "coffee",
+    "igloo", "wheat", "koala", "camera", "chessrook", "cupcake", "turtle", "headphones", "acorn",
+    "hourglass", "camel", "rocket", "sunglasses", "telescope", "ant", "corn", "train", "pencil",
+    "bear", "pizza", "trafficlight", "pumpkin", "well", "beetle", "bell", "burger", "crab",
+    "bus", "cactus", "church", "ladybug", "clock", "compass", "dice", "octopus", "mushroom2",
+    "flag", "laptop", "penguin", "robot", "snowman", "daisy", "trophy", "spider", "violin",
     "starfish", "barn", "drum", "pine", "teapot", "sled", "fish", "balloon", "bridge",
-    "pineapple", "fox", "ferriswheel", "gift", "kite", "giraffe", "lantern", "bamboo", "bench",
-    "whale", "hammer", "ship", "butterfly", "umbrella", "lotus", "anchor2", "birdhouse", "dog",
-    "coffee", "igloo", "wheat", "koala", "camera", "chessrook", "cupcake", "turtle",
-    "headphones", "acorn", "hourglass", "camel", "rocket", "sunglasses", "telescope", "ant",
-    "corn", "train", "pencil", "bear", "pizza", "trafficlight", "pumpkin", "well", "beetle",
-    "bell", "burger", "crab", "bus", "cactus", "church", "ladybug", "clock", "compass", "dice",
-    "octopus", "mushroom2", "flag", "laptop", "penguin", "robot", "snowman", "daisy", "trophy",
-    "spider", "violin"
+    "pineapple"
 ]
 
 
@@ -1003,6 +1053,9 @@ def fit(p):
     if p.get("clue"):
         out["clue"] = p["clue"]
     out.update(dots=dots, edges=p["edges"])
+    if p.get("colors"):  # in edge order, so the JSON diff stays stable
+        order = [edge_key(a, b) for a, b in p["edges"]]
+        out["colors"] = {k: p["colors"][k] for k in order if k in p["colors"]}
     return out
 
 
@@ -1017,7 +1070,9 @@ def dumps(puzzles):
             f'    "category": {j(p["category"])},\n'
             + (f'    "clue": {j(p["clue"])},\n' if p.get("clue") else "")
             + f'    "dots": [\n{dots}\n    ],\n'
-            f'    "edges": {j(p["edges"])}\n  }}')
+            f'    "edges": {j(p["edges"])}'
+            + (f',\n    "colors": {j(p["colors"])}' if p.get("colors") else "")
+            + "\n  }")
     return "[\n" + ",\n".join(blocks) + "\n]\n"
 
 

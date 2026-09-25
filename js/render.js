@@ -7,7 +7,8 @@
 // - Hit testing is geometric (nearest dot / nearest line), not per-element hit circles, so dots
 //   can sit closer than a fingertip without ambiguous taps. See dotAtPoint / lineAtPoint.
 // - Dot classes: dot--ok (yellow), dot--bad (red), neutral otherwise. Hinted lines: line--hinted.
-// - Win state: whole constellation lights yellow.
+// - Win state: the whole constellation lights up — dots yellow, each line in its colour
+//   (puzzle.colors: { "a|b": "green" }, default yellow), glowing via the #win-glow filter.
 //
 // renderBoard builds the static parts once; the returned view's update() redraws lines and
 // dot states after every change.
@@ -51,6 +52,14 @@ export function renderBoard(svg, game) {
   svg.setAttribute("viewBox", `0 0 ${SCALE} ${Math.round(SCALE * BOARD_H)}`);
 
   const pos = new Map(game.puzzle.dots.map((d) => [d.id, { x: d.x * SCALE, y: d.y * SCALE }]));
+  const colors = game.puzzle.colors ?? {};
+  // A soft glow in each line's own colour (a CSS drop-shadow would be one colour for all).
+  const defs = el("defs", {}, svg);
+  const glow = el("filter", { id: "win-glow", x: "-20%", y: "-20%", width: "140%", height: "140%" }, defs);
+  el("feGaussianBlur", { in: "SourceGraphic", stdDeviation: 7, result: "blur" }, glow);
+  const merge = el("feMerge", {}, glow);
+  el("feMergeNode", { in: "blur" }, merge);
+  el("feMergeNode", { in: "SourceGraphic" }, merge);
   const linesLayer = el("g", { class: "lines" }, svg);
   const rubber = el("line", { class: "rubber", visibility: "hidden" }, svg);
   const dotsLayer = el("g", { class: "dots" }, svg);
@@ -75,7 +84,8 @@ export function renderBoard(svg, game) {
     for (const key of drawnKeys) {
       const [a, b] = splitKey(key);
       const p = pos.get(a), q = pos.get(b);
-      const cls = game.hinted.has(key) ? "line line--hinted" : "line";
+      let cls = game.hinted.has(key) ? "line line--hinted" : "line";
+      if (colors[key]) cls += ` line--c-${colors[key]}`; // only styled once solved (style.css)
       lineEls.set(key, el("line", { class: cls, x1: p.x, y1: p.y, x2: q.x, y2: q.y }, linesLayer));
     }
     for (const [id, g] of dotEls) {
