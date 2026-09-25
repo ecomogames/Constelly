@@ -88,6 +88,11 @@ low running cost** over scalability or cleverness.
   changes. Also edits the clue and the "redrawn" flag (the `REDRAWN` list). The server binds
   127.0.0.1 and rejects foreign Host/Origin headers; the page is
   public on Pages but inert there (no API). No delete — remove a puzzle by hand.
+- **Batch tool + session guides:** `tools/puzzle_kit.py` (order / check / preview / draft / apply —
+  batch-edit drawings and colours from a draft file of `P()`/`COLOR()` calls; PNG previews go to
+  the gitignored `Claude outputs/previews/`). Guides for a fresh session:
+  `docs/PUZZLES_REDRAW_AND_COLOR.md` (redraw the weak ones, colour #11+) and `docs/PUZZLES_NEW.md`
+  (add new puzzles past the end date).
 - **Target size (updated 2026-09-25):** **18–26 dots** — the owner found the 10–20-dot drawings
   too basic and often unrecognisable. The bar: a stranger names the solved picture in 3 seconds;
   draw it like a clean line-art icon, exaggerate the 2–4 defining features, add internal detail.
@@ -101,13 +106,17 @@ low running cost** over scalability or cleverness.
   enum; the validator checks CSS and schema agree. Colours show **only in the win state** (each
   line glows in its own colour via the `#win-glow` SVG filter), never while solving — they'd
   give away which lines are right. Editor: palette swatches → click/drag over lines to paint.
-  Coloured so far (2026-09-25): the first 10 in ORDER; the rest are still all-yellow.
-- **Redraw status:** `REDRAWN` in author_puzzles.py lists puzzles drawn to the new standard
-  (73 as of 2026-09-25); they come first in `ORDER`. The other 28 sit at the end of `ORDER` and
-  still need a redraw: 17 have a weak new attempt with a clue (bat, bee, bird, deer, frog, grapes,
-  horse, icecream, lemon, lizard, mailbox, monkey, panda, seagull, skateboard, sunflower, tiger),
-  11 are old drawings without a clue (candle, car, castle, donut, hedgehog, key2, microphone,
-  snowflake, strawberry, television, tent). The editor shows an "old" badge and a checkbox.
+  Coloured so far (2026-09-25, updated): **all 101 puzzles** now have line colours.
+- **Redraw status (2026-09-25, updated):** `REDRAWN` in author_puzzles.py lists puzzles drawn to
+  the new standard — **all 101** puzzles now qualify; the 28 that were still weak/old (bat, bee,
+  bird, candle, car, castle, deer, donut, frog, grapes, hedgehog, horse, icecream, key2, lemon,
+  lizard, mailbox, microphone, monkey, panda, seagull, skateboard, snowflake, strawberry,
+  sunflower, television, tent, tiger) were redrawn to the 18-26 dot standard and coloured, via
+  `docs/PUZZLES_REDRAW_AND_COLOR.md`. Five (frog, seagull, lizard, tiger, monkey) needed a second
+  redraw pass before they cleared the "stranger names it in 3 seconds" bar; all now pass the
+  automated checks and a visual review, though tiger and monkey lean partly on their line colours
+  (stripes / muzzle tone) to read clearly rather than silhouette alone — worth a look if the owner
+  wants them stronger. The editor's "old" badge/checkbox should no longer trigger for any puzzle.
 
 ## Puzzle data format (starting point — adjust as needed)
 ```json
@@ -245,9 +254,11 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 10. ✅ Review fixes (2026-09-25): a tap chain's selection is dropped by Undo, Hint and Start over;
    How to play fits a 360×640 screen (compact layout ≤ 760px tall) and its 220 KB animation only
    loads when the dialog first opens (`data-src` → `openHelp()` in main.js).
-   **Known, not done:** 28 weak/old puzzles from day 74 (5 Dec); line colours only on the first 10
-   (day 11 = 3 Oct is all-yellow); content runs out 2027-01-01; a deploy can briefly serve new HTML with
+   **Known, not done:** content runs out 2027-01-01; a deploy can briefly serve new HTML with
    cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs.
+11. ✅ All 101 puzzles redrawn to the 18-26 dot standard and line-coloured (2026-09-25), per
+    `docs/PUZZLES_REDRAW_AND_COLOR.md`. See "Redraw status" / "Line colours" above for the two
+    puzzles (tiger, monkey) worth another look.
 
 ## Non-goals for v1
 - No user accounts or server-side leaderboards.

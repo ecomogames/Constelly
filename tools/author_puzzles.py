@@ -194,7 +194,10 @@ P("fox", "Fox", "animal",
   "eybr 59.3 63.9; nr 57 113.7; nb 50 125.3",
   ["etl eil eml eol etl eml", "eol ckl jl nl nr jr ckr eor etr eir eil",
    "ckl mkl nl nb nr mkr ckr", "eyal eybl", "etr emr eor", "emr eir", "eyar eybr"],
-  clue="Quick, brown, and jumps over lazy dogs")
+  clue="Quick, brown, and jumps over lazy dogs",
+  colors={"orange": ["eol ckl jl nl nr jr ckr eor etr eir eil", "ckl mkl nl nb nr mkr ckr"],
+    "white": ["eyal eybl", "eyar eybr"],
+    "brown": ["etl eil eml eol etl eml", "etr emr eor", "emr eir"]})
 
 P("ferriswheel", "Ferris wheel", "object",
   "hub 50 46.5; r0 50 8; r1 22.8 19.3; r2 11.5 46.5; r3 22.8 73.8; r4 50 85.1; r5 77.2 73.8;"
@@ -203,7 +206,10 @@ P("ferriswheel", "Ferris wheel", "object",
   "gL 11.5 125.3; gR 88.5 125.3",
   ["r0 r1 r2 r3 r4 r5 r6 r7 r0 hub r1", "r0 c0a c0b r0", "r2 hub r3 c3a c3b r3",
    "r4 hub r5 c5a c5b r5", "r4 c4a c4b r4", "r6 hub r7", "ftL hub ftR ftL gL", "ftR gR"],
-  clue="Round and round we go")
+  clue="Round and round we go",
+  colors={"red": ["r0 r1 r2 r3 r4 r5 r6 r7 r0"],
+    "white": ["r0 c0a c0b r0", "r3 c3a c3b r3", "r4 c4a c4b r4", "r5 c5a c5b r5"],
+    "brown": ["ftL hub ftR ftL gL", "ftR gR"]})
 
 P("gift", "Gift box", "object",
   "LtL 8 49.4; LbL 8 64.6; BtL 19.8 64.6; BbL 19.8 110.8; RtL 43.7 49.4; RmL 43.7 64.6;"
@@ -212,7 +218,9 @@ P("gift", "Gift box", "object",
   "LuR 73.5 22.6; LoR 81.9 37.7; LiR 68.5 42.7",
   ["BtL RmL RmR BtR LbR LtR RtR RtL LtL LbL BtL BbL RbL RbR BbR BtR",
    "RbL RmL RtL Kc RtR RmR RbR", "Kc LuL LoL LiL Kc LuR LoR LiR Kc"],
-  clue="It's the thought that counts")
+  clue="It's the thought that counts",
+  colors={"red": ["RbL RmL RtL Kc RtR RmR RbR", "Kc LuL LoL LiL Kc LuR LoR LiR Kc"],
+    "blue": ["BtL RmL RmR BtR LbR LtR RtR RtL LtL LbL BtL BbL RbL RbR BbR BtR"]})
 
 P("kite", "Kite", "object",
   "k0 50 8; kl 25.7 24.2; kr 74.3 24.2; kc 50 24.2; kb 50 54.9; t0 54 70.3; t0a 43.5 64.6;"
@@ -221,7 +229,10 @@ P("kite", "Kite", "object",
   "t2e 64.6 114.8; te 50 125.3",
   ["k0 kl kb kr k0 kc kl", "kr kc kb t0 t1 t2 te", "t0 t0a t0b t0 t0c t0e t0",
    "t1 t1a t1b t1 t1c t1e t1", "t2 t2a t2b t2 t2c t2e t2"],
-  clue="Go fly one!")
+  clue="Go fly one!",
+  colors={"red": ["k0 kl kb kr k0 kc kl", "kr kc kb"], "pink": ["t1 t1a t1b t1 t1c t1e t1"],
+    "green": ["t0 t0a t0b t0 t0c t0e t0", "t2 t2a t2b t2 t2c t2e t2"],
+    "white": ["kb t0 t1 t2 te"]})
 
 P("giraffe", "Giraffe", "animal",
   "sn 8 32.9; ht 20 20.9; hb 32 23.9; jw 21.5 40.4; os1 18.5 8.9; os2 32 11.9; nb1 41 43.4;"
@@ -230,7 +241,9 @@ P("giraffe", "Giraffe", "animal",
   "r2 84.5 124.4; tl 92 94.4",
   ["ht sn jw nf1 ch bf bf2 bl2 bl rp bk wi nb1 hb ht os1", "hb os2", "nb1 nf1", "bk sp wi ch",
    "rp tl", "bf f1", "bl r2", "f2 bf2 sp bl2 r1"],
-  clue="Head and neck above the rest")
+  clue="Head and neck above the rest",
+  colors={"orange": ["ht sn jw nf1 ch bf bf2 bl2 bl rp bk wi nb1 hb ht os1"],
+    "brown": ["hb os2", "nb1 nf1", "bk sp wi ch", "rp tl", "f2 bf2 sp bl2 r1"]})
 
 P("lantern", "Lantern", "object",
   "h1 42.2 21.7; h2 50 8; h3 57.8 21.7; c1 40.2 35.4; c2 59.8 35.4; a1 14.8 54.9; a2 32.4 54.9;"
@@ -239,7 +252,9 @@ P("lantern", "Lantern", "object",
   "fb 50 98; fc 57.8 88.2",
   ["a1 a2 a3 a4 c2 h3 h2 h1 c1 c2 a3 b3 b2 a2 c1 a1 b1 b2 d2 d1 b1", "a4 b4 b3 d3 d2",
    "b4 d4 d3", "fl fa fb fc fl"],
-  clue="Light the way, old-school style")
+  clue="Light the way, old-school style",
+  colors={"orange": ["fl fa fb fc fl"],
+    "red": ["a1 a2 a3 a4 c2 h3 h2 h1 c1 c2 a3 b3 b2 a2 c1 a1 b1 b2", "a4 b4 b3"]})
 
 P("bamboo", "Bamboo", "plant",
   "a0l 29 23.9; a0r 41 23.9; a1l 29 46.4; a1r 41 46.4; a2l 29 68.9; a2r 41 68.9; a3l 29 91.4;"
@@ -248,7 +263,9 @@ P("bamboo", "Bamboo", "plant",
   "l1t 77 19.4; l2s 83 61.4; l2t 92 44.9; l3s 15.5 62.9; l3t 8 83.9",
   ["a1l a0l a0r a1r a2r a3r a4r a4l a3l a2l a1l a1r l1s l1t a1r", "a2l a2r", "a2l l3s l3t a2l",
    "a3l a3r", "b1l b0l b0r b1r b2r b3r b3l b2l b1l b1r l2t l2s b1r", "b2l b2r"],
-  clue="A panda's favourite snack bar")
+  clue="A panda's favourite snack bar",
+  colors={"green": ["a1l a0l a0r a1r a2r a3r a4r a4l a3l a2l a1l a1r l1s l1t a1r", "b1l b0l b0r b1r b2r b3r b3l b2l b1l b1r l2t l2s b1r", "a2l l3s l3t a2l"],
+    "brown": ["a2l a2r", "a3l a3r", "b2l b2r"]})
 
 P("bench", "Park bench", "object",
   "p1 21.4 25.5; p2 50 25.5; p3 78.6 25.5; q1 21.4 38.9; q2 50 38.9; q3 78.6 38.9; r1 21.4 52.4;"
@@ -257,7 +274,9 @@ P("bench", "Park bench", "object",
   "g3 85.3 107.8",
   ["p2 p1 q1 q2 q3 p3 p2 q2 r2 r1 q1", "q3 r3 r2 s2 s1 r1 a1 s0 s1 f1 f0 s0",
    "s2 s3 r3 a3 s4 s3 f3 f1 g1", "s4 f4 f3 g3"],
-  clue="Feed the pigeons, rest your feet")
+  clue="Feed the pigeons, rest your feet",
+  colors={"green": ["q3 r3 r2 s2 s1 r1 a1 s0 s1 f1 f0 s0", "s2 s3 r3 a3 s4 s3 f3 f1 g1", "s4 f4 f3 g3"],
+    "brown": ["p2 p1 q1 q2 q3 p3 p2 q2 r2 r1 q1"]})
 
 P("whale", "Whale", "animal",
   "sn 8 77; h1 12.4 60.8; h2 25.7 49; h3 47.8 49; k1 61.1 57.8; q1 71.4 53.4; fl 68.4 37.2;"
@@ -266,7 +285,9 @@ P("whale", "Whale", "animal",
   "ey2 37.5 69.6; sp1 25.7 35.7; sp2 15.4 29.8; sp3 36 29.8",
   ["sn h1 h2 h3 k1 q1 fl fn fr q2 u1 u2 u3 u4 u5 sn m1 p1 p2 u1", "h2 sp1 sp2", "q1 q2",
    "u2 p2", "u3 p1", "u4 m1", "ey ey2", "sp1 sp3"],
-  clue="Thar she blows!")
+  clue="Thar she blows!",
+  colors={"blue": ["sn h1 h2 h3 k1 q1 fl fn fr q2 u1 u2 u3 u4 u5 sn m1 p1 p2 u1", "q1 q2"],
+    "cyan": ["u2 p2", "u3 p1", "u4 m1"], "white": ["h2 sp1 sp2", "ey ey2", "sp1 sp3"]})
 
 P("hammer", "Hammer", "object",
   "fa 8 10.2; fb 8 42.2; fc 21 10.2; fd 21 42.2; t1 32.4 10.9; t2 46.2 11.7; e 58.4 13.2;"
@@ -275,7 +296,10 @@ P("hammer", "Hammer", "object",
   "er 46.2 114; eb 39.3 123.2",
   ["fc fa fb fd fc t1 t2 e h i j k hr hl fd", "t1 hl g1l g2l g3l el eb er g3r g2r g1r hr t2",
    "g1l g1r", "g2l g2r", "g3l g3r"],
-  clue="When all you see is nails...")
+  clue="When all you see is nails...",
+  colors={"red": ["g1l g1r", "g2l g2r", "g3l g3r"],
+    "white": ["fc fa fb fd fc t1 t2 e h i j k hr hl fd"],
+    "brown": ["t1 hl g1l g2l g3l el eb er g3r g2r g1r hr t2"]})
 
 P("ship", "Sailboat", "object",
   "mt 50 11.7; fg 66.2 17.4; m0 50 23.1; ma 50 39.2; mb 50 57; m1 50 71.5; dk 50 84.4;"
@@ -284,7 +308,9 @@ P("ship", "Sailboat", "object",
   "w3 54.8 111.9; w4 69.4 121.6; w5 83.9 111.9",
   ["dk m1 mb ma m0 mt fg m0 la lb mc m1 jk js ma la", "dk bw kb ks sn dk", "lb mb js",
    "w0 w1 w2 w3 w4 w5"],
-  clue="Catch the wind, skip the engine")
+  clue="Catch the wind, skip the engine",
+  colors={"blue": ["w0 w1 w2 w3 w4 w5"], "white": ["mt fg m0 la lb mc m1 jk js ma la", "lb mb js"],
+    "brown": ["mt m0 ma mb m1 dk bw kb ks sn dk"]})
 
 P("butterfly", "Butterfly", "animal",
   "hd 50 45.7; aL 41.6 23.8; b1 50 57.4; b2 50 74.2; b3 50 102.8; u1L 33.2 33.9; u2L 13 30.5;"
@@ -293,7 +319,10 @@ P("butterfly", "Butterfly", "animal",
   "d1R 83.6 92.7; d2R 70.2 109.5; s1R 80.2 44; s2R 66.8 47.3; s3R 75.2 59.1",
   ["hd aL", "hd aR", "hd b1 b2 b3 d2L d1L u4L u3L u2L u1L b1 u1R u2R u3R u4R b2 u4L",
    "b3 d2R d1R u4R", "s1L s2L s3L s1L", "s1R s2R s3R s1R"],
-  clue="I used to be a caterpillar")
+  clue="I used to be a caterpillar",
+  colors={"pink": ["s1L s2L s3L s1L", "s1R s2R s3R s1R"],
+    "purple": ["u4L u3L u2L u1L b1 u1R u2R u3R u4R b2 u4L d1L d2L b3 d2R d1R u4R"],
+    "brown": ["hd aL", "hd aR", "hd b1 b2 b3"]})
 
 P("umbrella", "Umbrella", "object",
   "tip 50 11.2; t 50 23; oL 23.1 28; bL 11.4 41.5; rL0 8 61.6; sL0 18.5 52.4; rL1 29 61.6;"
@@ -302,7 +331,10 @@ P("umbrella", "Umbrella", "object",
   "kR 69.3 41.5; h3 26.5 111.2",
   ["tip t oL bL rL0 sL0 rL1 sL1 r2 sR1 rR1 sR0 rR0 bR oR t kL rL1", "bL kL km t kR rR1",
    "bR kR km r2 sh h1 h2 h3"],
-  clue="Singin' in the rain, but dry")
+  clue="Singin' in the rain, but dry",
+  colors={"red": ["t oL bL rL0 sL0 rL1 sL1 r2 sR1 rR1 sR0 rR0 bR oR t"],
+    "blue": ["t kL rL1", "t km kL bL", "t kR rR1", "r2 km kR bR"],
+    "brown": ["tip t", "r2 sh h1 h2 h3"]})
 
 P("lotus", "Lotus", "plant",
   "T 50 21.7; a1L 40.2 41.2; a2L 36.5 62.2; cbL 42.5 87.7; v 50 68.2; mtL 23 33.7;"
@@ -311,7 +343,10 @@ P("lotus", "Lotus", "plant",
   "obR 71 84.7; otR 92 65.2; olR 84.5 81.7; w1R 86 99.7; w2R 68 99.7; w3R 60.5 111.7",
   ["T a1L a2L cbL obL moL mtL a2L", "T a1R a2R cbR obR moR mtR a2R", "T v cbL cbR v",
    "moL otL olL obL", "w1L w2L", "w3L w3R", "moR otR olR obR", "w1R w2R"],
-  clue="Blooms beautifully out of the mud")
+  clue="Blooms beautifully out of the mud",
+  colors={"pink": ["a2L a1L T a1R a2R cbR obR moR mtR a2R", "a2L cbL obL moL mtL a2L"],
+    "green": ["T v cbL cbR v"],
+    "brown": ["moL otL olL obL", "w1L w2L", "w3L w3R", "moR otR olR obR", "w1R w2R"]})
 
 P("anchor2", "Anchor", "object",
   "rt 50 17; rb 50 41.2; r1L 39.5 23.1; r2L 39.5 35.2; stL 29 53.3; sct 50 53.3; sbL 29 65.5;"
@@ -320,7 +355,9 @@ P("anchor2", "Anchor", "object",
   "tR 82.3 71.1; bR 92 97; cR 69.4 93.7",
   ["rb r2L r1L rt r1R r2R rb sct stL sbL scb sbR stR sct scb cr a2L mL cL tL bL mL",
    "cr a2R mR cR tR bR mR"],
-  clue="I keep you grounded at sea")
+  clue="I keep you grounded at sea",
+  colors={"blue": ["rb sct stL sbL scb sbR stR sct scb"], "white": ["rt r1L r2L rb r2R r1R rt"],
+    "brown": ["scb cr a2L mL cL tL bL mL", "cr a2R mR cR tR bR mR"]})
 
 P("birdhouse", "Birdhouse", "object",
   "A 50 12.4; IA 50 25.4; ML 29 29; EL 8 45.7; NL 32.6 39.7; IEL 16.7 52.9; WL 16.7 102.1;"
@@ -329,7 +366,9 @@ P("birdhouse", "Birdhouse", "object",
   "h2 56.4 77.6; h3 43.6 77.6; h4 39.6 65.5",
   ["ML EL IEL NL IA NR IER ER MR A ML NL", "IEL WL PL PR WR IER", "PL QL QR PR", "pL pR",
    "MR NR", "h0 h1 h2 h3 h4 h0"],
-  clue="Tweet home, sweet home")
+  clue="Tweet home, sweet home",
+  colors={"orange": ["IEL WL PL PR WR IER", "PL QL QR PR"],
+    "brown": ["ML A MR ER IER NR IA NL IEL EL ML NL", "pL pR", "MR NR"]})
 
 P("dog", "Dog", "animal",
   "top 50 27.6; tL 31.5 32.6; sL 26.5 54.5; jL 33.2 76.3; chin 50 86.4; eo1L 14.7 36;"
@@ -338,7 +377,10 @@ P("dog", "Dog", "animal",
   "eo2R 92 57.8; etR 87 84.7; eyR 61.8 42.7; ey2R 61.8 54.5; nlR 58.4 66.2; tgR 57.6 95.6",
   ["tL top tR sR jR chin jL sL tL eo1L eo2L etL sL", "chin nb nlR nlL nb",
    "chin tgL tt tgR chin", "eyL ey2L", "tR eo1R eo2R etR sR", "eyR ey2R"],
-  clue="Who's a good boy?")
+  clue="Who's a good boy?",
+  colors={"pink": ["chin tgL tt tgR chin"], "blue": ["eyL ey2L", "eyR ey2R"],
+    "white": ["chin nb nlR nlL nb"],
+    "brown": ["tL top tR sR jR chin jL sL tL eo1L eo2L etL sL", "tR eo1R eo2R etR sR"]})
 
 P("coffee", "Coffee cup", "object",
   "tl 18.1 58.3; rb1 33.2 51.5; rb2 60.1 51.5; tr 75.2 58.3; rf2 60.1 65; rf1 33.2 65;"
@@ -347,7 +389,9 @@ P("coffee", "Coffee cup", "object",
   "s0b 31.5 26.3; s0c 36.6 14.6; s1a 56.7 38.1; s1b 51.7 26.3; s1c 56.7 14.6",
   ["tl rb1 rb2 tr rf2 rf1 tl c1 sl u1 u2 sr c2 hh2 hh1 tr", "c1 c2", "hh1 o1 o2 o3 hh2",
    "s0a s0b s0c", "s1a s1b s1c"],
-  clue="Espresso yourself!")
+  clue="Espresso yourself!",
+  colors={"white": ["tr rb2 rb1 tl rf1 rf2 tr hh1 o1 o2 o3 hh2 hh1", "c2 hh2", "s0a s0b s0c", "s1a s1b s1c"],
+    "brown": ["tl c1 sl u1 u2 sr c2 c1"]})
 
 P("igloo", "Igloo", "object",
   "o0L 8 92.7; o1L 9.1 80.9; o2L 14.9 64.1; o3L 23.1 52.7; o4L 36.6 43.4; top 50 40.6;"
@@ -357,7 +401,10 @@ P("igloo", "Igloo", "object",
   ["o1L o0L dbL shL aA1L o1L o2L o3L o4L top o4R o3R o2R o1R o0R dbR shR aA1R o1R",
    "o2L bB1L bB2L bBc bB2R bB1R o2R", "top bBc", "bB1L aA1L", "bB2L shL dtop shR bB2R",
    "bB1R aA1R"],
-  clue="Cool pad, snow kidding")
+  clue="Cool pad, snow kidding",
+  colors={"blue": ["o2L bB1L bB2L bBc bB2R bB1R o2R", "top bBc", "bB1L aA1L", "bB2L shL dtop shR bB2R", "bB1R aA1R"],
+    "cyan": ["o0L o1L aA1L shL dbL o0L", "o0R o1R aA1R shR dbR o0R"],
+    "white": ["o1L o2L o3L o4L top o4R o3R o2R o1R"]})
 
 P("wheat", "Wheat", "plant",
   "b1 50 93.1; b2 50 71.1; b3 50 49.1; s0 50 125.3; k0Lt 30.9 78.4; k0La 43.1 80.4;"
@@ -368,7 +415,9 @@ P("wheat", "Wheat", "plant",
   ["b3 b2 b1 s0", "b3 kta ktt ktb b3", "k0Lt k0La b1 k0Lb k0Lt k0Lw",
    "k0Rt k0Ra b1 k0Rb k0Rt k0Rw", "k1Lt k1La b2 k1Lb k1Lt k1Lw", "k1Rt k1Ra b2 k1Rb k1Rt k1Rw",
    "ktt ktw"],
-  clue="Our daily bread starts in a field")
+  clue="Our daily bread starts in a field",
+  colors={"orange": ["b1 k0La k0Lt k0Lb b1 k0Ra k0Rt k0Rb b1", "b2 k1La k1Lt k1Lb b2 k1Ra k1Rt k1Rb b2", "b3 kta ktt ktb b3"],
+    "green": ["b3 b2 b1 s0"]})
 
 P("koala", "Koala", "animal",
   "j1L 22.9 58; e1L 8.9 49.8; e2L 8 33.5; e3L 21.1 23.9; e4L 36.4 29.5; j2L 40.1 45.3;"
@@ -377,7 +426,9 @@ P("koala", "Koala", "animal",
   "c1R 79 91.9; nuR 57 67.4; nlR 58.6 83; eyR 68.7 65.8; ey2R 68.7 77.5",
   ["j1L c1L cb c1R j1R e1R e2R e3R e4R j2R j2L e4L e3L e2L e1L j1L j2L",
    "nlL nuL nuR nlR nb nlL nlR", "eyL ey2L", "j1R j2R", "eyR ey2R"],
-  clue="Eucalyptus is my whole personality")
+  clue="Eucalyptus is my whole personality",
+  colors={"pink": ["nlL nuL nuR nlR nlL nb nlR"], "white": ["eyL ey2L", "eyR ey2R"],
+    "brown": ["j1L j2L e4L e3L e2L e1L j1L c1L cb c1R j1R j2R e4R e3R e2R e1R j1R", "j2L j2R"]})
 
 P("camera", "Camera", "object",
   "k1 8 41.5; k2 92 41.5; k3 92 105.3; k4 8 105.3; hb1 33.2 41.5; hb2 66.8 41.5; ht1 39.9 28;"
@@ -386,7 +437,9 @@ P("camera", "Camera", "object",
   "i2 56.7 61.7; i3 63.4 73.4; i4 56.7 85.1; i5 43.3 85.1",
   ["hb1 k1 sL k4 k3 sR k2 hb2 ht2 ht1 hb1 hb2", "sL L4 L3 L2 L1 L0 sR", "L0 L7 L6 L5 L4",
    "i0 i1 i2 i3 i4 i5 i0 i2"],
-  clue="Say cheese!")
+  clue="Say cheese!",
+  colors={"blue": ["sL L4 L5 L6 L7 L0 L1 L2 L3 L4", "sR L0"], "cyan": ["i0 i1 i2 i3 i4 i5 i0 i2"],
+    "white": ["hb1 ht1 ht2 hb2"], "brown": ["k1 hb1 hb2 k2 sR k3 k4 sL k1"]})
 
 P("chessrook", "Chess rook", "object",
   "t1L 15.3 8.2; t2L 29 8.2; t3L 29 21.9; t4L 42.7 21.9; t5L 42.7 8.2; cL 15.3 35.6; gL 29 35.6;"
@@ -395,7 +448,9 @@ P("chessrook", "Chess rook", "object",
   "wR 76.5 88.6; rR 85.6 97.7; sR 85.6 110.5; fR 92 125.1",
   ["t3L t2L t1L cL gL gR cR t1R t2R t3R t4R t5R t5L t4L t3L gL",
    "cL nL wL rL sL fL fR sR rR wR nR cR", "nL nR", "wL wR", "sL sR", "t3R gR"],
-  clue="I start every game stuck in a corner")
+  clue="I start every game stuck in a corner",
+  colors={"white": ["t3L t2L t1L cL gL t3L t4L t5L t5R t4R t3R t2R t1R cR gR t3R", "gL gR"],
+    "brown": ["cL nL nR cR", "nL wL wR nR", "wL rL sL sR rR wR", "sL fL fR sR"]})
 
 P("cupcake", "Cupcake", "object",
   "wL0 18 85.7; wL1 34 85.7; w2 50 85.7; vL0 25.6 125.3; vL1 37.8 125.3; v2 50 125.3;"
@@ -404,7 +459,10 @@ P("cupcake", "Cupcake", "object",
   "ch1 40.6 30.9; ch2 44.2 19.8; ch3 55.8 19.8; ch4 59.4 30.9; st 62.2 8",
   ["wL0 wL1 w2 wR1 wR0 vR0 vR1 v2 vL1 vL0 wL0 aL1 aL2 bL ch0 bR aR2 aR1 wR0", "wL1 vL1",
    "w2 v2", "aL2 c1 aR2", "bL c2 bR", "wR1 vR1", "ch3 ch2 ch1 ch0 ch4 ch3 st"],
-  clue="Muffin compares to me")
+  clue="Muffin compares to me",
+  colors={"red": ["ch3 st"],
+    "pink": ["aL1 aL2 bL ch0 ch1 ch2 ch3 ch4 ch0 bR c2 bL", "aL2 c1 aR2 bR", "aR1 aR2"],
+    "brown": ["wL0 aL1", "wL0 wL1 w2 wR1 wR0 aR1", "wL0 vL0 vL1 wL1", "w2 v2 vL1", "v2 vR1 wR1", "wR0 vR0 vR1"]})
 
 P("turtle", "Turtle", "animal",
   "o1L 40.3 36; o1R 59.7 36; o2L 23.8 49.1; o2R 76.2 49.1; o3L 16.7 72.8; o3R 83.3 72.8;"
@@ -414,7 +472,9 @@ P("turtle", "Turtle", "animal",
   ["o1L o1R o2R o3R o4R o5R o5L o4L o3L o2L o1L xtL xtR xmR xbR xbL xmL xtL",
    "o1L hdL hd hdR o1R xtR", "o1L ffL o2L", "o1R ffR o2R", "o3L xmL", "o3R xmR",
    "o4L bfL o5L xbL", "o4R bfR o5R xbR", "o5L tail o5R"],
-  clue="Slow and steady wins the race")
+  clue="Slow and steady wins the race",
+  colors={"green": ["o1L o2L o3L o4L o5L o5R o4R o3R o2R o1R o1L xtL xtR xmR xbR xbL xmL xtL", "o1R xtR", "o3L xmL", "o3R xmR", "o5L xbL", "o5R xbR"],
+    "brown": ["o2L ffL o1L hdL hd hdR o1R ffR o2R", "o4L bfL o5L tail o5R bfR o4R"]})
 
 P("headphones", "Headphones", "object",
   "o0 15.4 60.9; i0 26.9 60.9; o1 25.5 36.4; i1 33.7 44.6; o2 50 26.3; i2 50 37.8; o3 74.5 36.4;"
@@ -423,7 +483,10 @@ P("headphones", "Headphones", "object",
   "c5R 87.9 107; c4R 68.1 107; c3R 64 89.7; c2R 68.1 72.4; kR 75.5 89.7",
   ["o0 o1 o2 o3 o4 i4 i3 i2 i1 i0 o0 c1L c6L c5L c4L c3L c2L i0", "o1 i1", "o2 i2", "o3 i3",
    "o4 c1R c6R c5R c4R c3R c2R i4", "c1L c2L kL c4L", "c1R c2R kR c4R"],
-  clue="Noise? Cancelled.")
+  clue="Noise? Cancelled.",
+  colors={"purple": ["c1L c2L c3L c4L c5L c6L c1L", "c1R c2R c3R c4R c5R c6R c1R"],
+    "white": ["c4L kL c2L", "c4R kR c2R"],
+    "brown": ["o1 o2 o3 o4 c1R", "o1 o0 c1L", "o1 i1 i2 i3 i4 c2R", "i1 i0 c2L", "o2 i2", "o3 i3"]})
 
 P("acorn", "Acorn", "plant",
   "st 54.8 8; ct 50 22.5; c1L 30.7 27.3; c2L 16.2 38.5; rimL 9.8 51.4; b1L 22.7 59.4;"
@@ -433,7 +496,9 @@ P("acorn", "Acorn", "plant",
   "n3R 60.4 106",
   ["st ct c1L c2L rimL b1L b2L b3 b2R b1R rimR c2R c1R ct",
    "tip n3L n2L n1L b1L h1L b2L h2L b3 h2R b2R h1R b1R n1R n2R n3R tip nib"],
-  clue="Every mighty oak started here")
+  clue="Every mighty oak started here",
+  colors={"orange": ["b1L n1L n2L n3L tip n3R n2R n1R b1R"], "green": ["st ct"],
+    "brown": ["b1L rimL c2L c1L ct c1R c2R rimR b1R b2R b3 b2L b1L h1L b2L h2L b3 h2R b2R h1R b1R"]})
 
 P("hourglass", "Hourglass", "object",
   "ptL 8 14.2; ptR 92 14.2; pbL 18.5 24.7; pbR 81.5 24.7; gL 32 24.7; gR 68 24.7; s1L 23.7 39.7;"
@@ -443,7 +508,9 @@ P("hourglass", "Hourglass", "object",
   ["pbL ptL ptR pbR gR gL pbL qtL gbL s4L s3L wL s2L s1L gL",
    "pbR qtR gbR s4R s3R wR s2R s1R gR", "s2L dip s2R", "s4L peak s4R", "qtL qbL qbR qtR",
    "gbL gbR"],
-  clue="Time is running out... grain by grain")
+  clue="Time is running out... grain by grain",
+  colors={"cyan": ["gL s1L s2L dip s2R s1R gR", "s2L wL s3L s4L peak s4R s3R wR s2R", "s4L gbL", "s4R gbR"],
+    "brown": ["pbL ptL ptR pbR gR gL pbL qtL gbL gbR qtR pbR", "qtL qbL qbR qtR"]})
 
 P("camel", "Camel", "animal",
   "n1 8 41.9; h1 14 31.4; h2 26 28.4; e 30.5 17.9; h3 32 38.9; j 17 50.9; nb 42.5 53.9;"
@@ -452,7 +519,9 @@ P("camel", "Camel", "animal",
   "rk1 69.5 95.9; rf1 71 115.4; rk2 81.5 95.9; rf2 84.5 115.4",
   ["h2 h1 n1 j nf c b1 b2 rt r p2 d p1 nb h3 h2 e", "h3 j", "nb c", "r t",
    "ff1 fk1 b1 fk2 ff2", "rf1 rk1 b2 rk2 rf2"],
-  clue="Two lumps, please - no sugar needed")
+  clue="Two lumps, please - no sugar needed",
+  colors={"orange": ["nb p1 d p2 r rt b2", "r t"], "white": ["h2 e"],
+    "brown": ["b2 b1 c nb h3 h2 h1 n1 j nf c", "b2 rk1 rf1", "b2 rk2 rf2", "ff1 fk1 b1 fk2 ff2"]})
 
 P("rocket", "Rocket", "object",
   "tip 50 8; c1L 41 20; cbL 33.5 36.6; fbL 33.5 78.7; btL 33.5 93.7; ftL 16.9 98.3;"
@@ -461,7 +530,9 @@ P("rocket", "Rocket", "object",
   "fwR 83.1 84.7; nzR 57.5 101.3; flR 60.5 113.3; wR 61.3 56.1; wuR 56 46.4; wdR 56 65.9",
   ["cbL c1L tip c1R cbR fbR btR nzR nzL btL fbL cbL cbR", "fbL fwL ftL btL btR ftR fwR fbR",
    "nzL flL fl flR nzR", "wL wuL wuR wR wdR wdL wL wR"],
-  clue="3... 2... 1... liftoff!")
+  clue="3... 2... 1... liftoff!",
+  colors={"orange": ["fbL fwL ftL btL", "fbR fwR ftR btR"], "red": ["tip c1L cbL cbR c1R tip"],
+    "blue": ["wL wdL wdR wR wuR wuL wL"], "white": ["cbL fbL btL", "cbR fbR btR"]})
 
 P("sunglasses", "Sunglasses", "object",
   "aL 8 64.1; bL 25.8 61.6; cL 43.6 64.1; gL 9.3 75.6; dL 43.6 75.6; mL 10.5 92.1;"
@@ -470,7 +541,9 @@ P("sunglasses", "Sunglasses", "object",
   "fR 76.7 102.3; eR 62.7 97.2; gl1R 81.2 82.6; gl2R 72.9 90.8; hR 88.2 41.2; jR 81.8 31",
   ["aL hL jL", "aL bL cL cR bR aR hR jR", "aL gL dL cL", "gL mL fL eL dL", "gl1L gl2L",
    "aR gR dR cR", "gR mR fR eR dR", "gl1R gl2R"],
-  clue="Too cool for UV rays")
+  clue="Too cool for UV rays",
+  colors={"cyan": ["aL gL dL cL", "gL mL fL eL dL", "aR gR dR cR", "gR mR fR eR dR"],
+    "white": ["gl1L gl2L", "gl1R gl2R"], "brown": ["jL hL aL bL cL cR bR aR hR jR"]})
 
 P("telescope", "Telescope", "object",
   "e1 8 67.8; e2 13 78.5; k1 18.1 63.1; k2 23.1 73.8; a0 26.9 55.4; b0 34.6 72.1; a1 47.9 44.5;"
@@ -479,7 +552,9 @@ P("telescope", "Telescope", "object",
   "sc 28.1 28.2; st 28.1 17; sb 28.1 39.4; sw 16.9 28.2; se 39.3 28.2",
   ["k1 k2 e2 e1 k1 a0 a1 a2 a3 b3 b2 b1 b0 k2", "a0 b0", "a1 b1 hub sl fl", "a2 b2",
    "fm sm hub sr fr", "sl sm sr", "st sc sb", "sw sc se"],
-  clue="Seeing stars on purpose")
+  clue="Seeing stars on purpose",
+  colors={"blue": ["a1 a0 b0 b1 b2 b3 a3 a2 a1 b1", "a2 b2"], "white": ["st sc sb", "sw sc se"],
+    "brown": ["k1 k2 e2 e1 k1 a0", "k2 b0", "b1 hub sl fl", "fm sm hub sr fr", "sl sm sr"]})
 
 P("ant", "Ant", "animal",
   "hl 38.4 36.4; ael 33.1 18.7; atl 18 8; tl 40.2 61.3; kfl 23.3 47.1; ffl 10 32.9;"
@@ -489,7 +564,10 @@ P("ant", "Ant", "animal",
   "n2 50 75.6; ab 50 125.3",
   ["hl ht hr n1 hl ael atl", "tl n1 tr n2 tl kfl ffl", "tl fml", "tl kbl fbl",
    "al1l n2 al1r al2r ab al2l al1l al1r", "hr aer atr", "tr kfr ffr", "tr fmr", "tr kbr fbr"],
-  clue="I can lift fifty times my own weight")
+  clue="I can lift fifty times my own weight",
+  colors={"red": ["al1l n2 tr n1 hr ht hl n1 tl n2 al1r al2r ab al2l al1l al1r"],
+    "white": ["hl ael atl", "hr aer atr"],
+    "brown": ["tl kfl ffl", "tl fml", "tl kbl fbl", "tr kfr ffr", "tr fmr", "tr kbr fbr"]})
 
 P("corn", "Corn on the cob", "plant",
   "T 50 10.1; o2L 30.8 26.5; v1L 41.8 28.3; o3L 28.1 43.8; v2L 41.8 43.8; o4L 28.1 59.4;"
@@ -500,7 +578,9 @@ P("corn", "Corn on the cob", "plant",
   ["o2L T o2R o3R o4R o5R v4R v3R v2R v1R T v1L v2L v3L v4L o5L o4L o3L o2L v1L v1R o2R",
    "o3L v2L v2R o3R", "o4L v3L v3R o4R", "v4L v4R",
    "Bm lbL loL tL o5L Bm lbR loR tR o5R Bm St"],
-  clue="All ears, and a-maize-ing at it")
+  clue="All ears, and a-maize-ing at it",
+  colors={"orange": ["v1L v1R", "o3L v2L v2R o3R", "o4L v3L v3R o4R", "v4L v4R"],
+    "green": ["o5L tL loL lbL Bm o5L", "Bm lbR loR tR o5R Bm"], "white": ["Bm St"]})
 
 P("train", "Steam train", "object",
   "c1 8 32.9; c2 32 32.9; c3 32 53.9; c4 8 80.9; s1 53 53.9; s2 48.5 35.9; s3 69.5 35.9;"
@@ -509,7 +589,9 @@ P("train", "Steam train", "object",
   "v2 71.8 90.7; v3 66.1 100.4; v4 54.9 100.4; v5 49.2 90.7",
   ["s1 c3 c2 c1 c4 w0 w1 v0 v1 f2 f1 s4 s1 s2 s3 s4", "f2 cc cb v2 v1", "w0 w5 w4 w3 w2 w1",
    "w2 v5 v4 v3 v2", "v0 v5"],
-  clue="Choo-choo-choose me!")
+  clue="Choo-choo-choose me!",
+  colors={"red": ["c1 c2 c3 s1 s4 f1 f2 v1 v0 w1 w0 c4 c1"], "blue": ["s1 s2 s3 s4"],
+    "brown": ["f2 cc cb v2 v3 v4 v5 w2 w3 w4 w5 w0", "w1 w2", "v0 v5", "v1 v2"]})
 
 P("pencil", "Pencil", "object",
   "ea 33.5 8; eb 16.8 17.6; f0a 44.8 13.5; f0b 15.9 30.2; f1a 50.4 23.1; f1b 21.4 39.8;"
@@ -518,7 +600,10 @@ P("pencil", "Pencil", "object",
   "tip 84.1 114.9; w0 70.8 122.4; w1 58.9 113.5; w2 47 123.8; w3 35.2 114.9; w4 23.3 125.3",
   ["f0a ea eb f0b f1b f2b sb k3 lb tip la k1 sa f2a f1a f0a f0b", "f1a f1b", "f2a f2p f2q f2b",
    "f2p sp k1", "f2q sq k2 sp", "sq k3", "la lb", "tip w0 w1 w2 w3 w4"],
-  clue="Sharp wit, but I always get the point")
+  clue="Sharp wit, but I always get the point",
+  colors={"orange": ["f2a f2p f2q f2b", "f2p sp k1", "f2q sq k2 sp", "sq k3"],
+    "pink": ["ea f0a f0b eb ea"], "white": ["f0a f1a f1b f0b", "tip w0 w1 w2 w3 w4"],
+    "brown": ["f1a f2a sa k1 la tip lb k3 sb f2b f1b", "la lb"]})
 
 P("bear", "Bear", "animal",
   "hal 35.6 35.9; hbl 16.1 53.5; hcl 13.9 84.6; hdl 33.8 106.3; e1l 27.1 27; e2l 15 28.1;"
@@ -529,7 +614,10 @@ P("bear", "Bear", "animal",
   ["eyal eybl", "mtl ml m0 mr mtr mtl nb mtr", "eyar eybr", "nb m0",
    "hal hbl hcl hdl hdr hcr hbr har hal e1l e2l e3l hbl iel hal",
    "har e1r e2r e3r hbr ier har"],
-  clue="Someone's been sleeping in my bed!")
+  clue="Someone's been sleeping in my bed!",
+  colors={"orange": ["mtl ml m0 mr mtr mtl nb mtr", "nb m0"], "cyan": ["eyal eybl", "eyar eybr"],
+    "white": ["hal iel hbl", "har ier hbr"],
+    "brown": ["hal har hbr hcr hdr hdl hcl hbl hal e1l e2l e3l hbl", "har e1r e2r e3r hbr"]})
 
 P("pizza", "Pizza slice", "object",
   "o0 9.8 19.3; o1 29.1 11.2; o2 50 8; o3 70.9 11.2; o4 90.2 19.3; tip 50 125.3; i0 15.3 33.7;"
@@ -538,7 +626,9 @@ P("pizza", "Pizza slice", "object",
   "ra 35.2 86.4; rb 43.2 107.3; r1 47.2 87.4; r2 51.4 98.7",
   ["o1 o0 i0 ra rb tip qb qa i4 o4 o3 o2 o1 i1 i0", "o3 i3 i2 i1", "i4 i3", "qa q1 q2 q3 qb",
    "ra r1 r2 rb", "p0 p1 p2 p3 p4 p0"],
-  clue="That's amore!")
+  clue="That's amore!",
+  colors={"orange": ["i0 i1 i2 i3 i4"], "red": ["o1 o0 i0 ra rb tip qb qa i4 o4", "p0 p1 p2 p3 p4 p0"],
+    "white": ["qa q1 q2 q3 qb", "ra r1 r2 rb"], "brown": ["o3 o4", "o3 o2 o1 i1", "o3 i3"]})
 
 P("trafficlight", "Traffic light", "object",
   "TL 30.7 8; TR 69.3 8; L1 30.7 38.4; R1 69.3 38.4; L2 30.7 68.7; R2 69.3 68.7; BL 30.7 99.1;"
@@ -547,7 +637,9 @@ P("trafficlight", "Traffic light", "object",
   "z1 59.2 82; z2 55.7 92.8; z3 44.3 92.8; z4 40.8 82",
   ["L1 L2 BL BR R2 R1 TR TL L1 R1", "L2 R2", "BL Q BR", "Q G", "x0 x1 x2 x3 x4 x0",
    "y0 y1 y2 y3 y4 y0", "z0 z1 z2 z3 z4 z0"],
-  clue="Stop, wait for it... go!")
+  clue="Stop, wait for it... go!",
+  colors={"red": ["x0 x1 x2 x3 x4 x0"], "green": ["z0 z1 z2 z3 z4 z0"],
+    "brown": ["L1 TL TR R1 R2 BR BL L2 L1 R1", "L2 R2", "BL Q BR", "Q G"]})
 
 P("pumpkin", "Pumpkin", "plant",
   "SBL 43 58.7; U1L 28 56.7; U2L 14 66.7; LL 8 82.7; D2L 14 100.7; D1L 28 112.7; B 50 116.7;"
@@ -556,7 +648,9 @@ P("pumpkin", "Pumpkin", "plant",
   "LS2 76 38.7; C1 34 34.7; C2 28 23.7; C3 39 16.7",
   ["U1L SBL SBR U1R U2R LR D2R D1R B D1L D2L LL U2L U1L R1L D1L", "U1R R1R D1R",
    "STL SBL R2L B R2R SBR STR STL C1 C2 C3", "STR LS1 Lt LS2 STR Lt"],
-  clue="Your ride, Cinderella... until midnight")
+  clue="Your ride, Cinderella... until midnight",
+  colors={"orange": ["U1L SBL SBR U1R U2R LR D2R D1R B D1L D2L LL U2L U1L R1L D1L", "U1R R1R D1R", "SBL STL STR SBR R2R B R2L SBL"],
+    "green": ["STR LS1 Lt LS2 STR Lt"], "brown": ["STL C1 C2 C3"]})
 
 P("well", "Wishing well", "object",
   "pk 50 10.8; eL 8 37.7; pL 21.4 37.7; xL 21.4 52.8; xc 50 52.8; rL 9.7 86.4; r2L 21.4 84.3;"
@@ -566,7 +660,9 @@ P("well", "Wishing well", "object",
   ["pL eL pk eR pR xR r2R rR fR fc fL rL r2L xL pL pR", "xL xc xR",
    "xc bt bt1L bb1L bb1R bt1R bt", "rL wL w2L wc w2R wR rR", "r2L r2R", "fL w2L", "fc wc",
    "fR w2R"],
-  clue="Toss a coin and hope")
+  clue="Toss a coin and hope",
+  colors={"orange": ["pL eL pk eR pR"], "blue": ["xc bt bt1L bb1L bb1R bt1R bt"],
+    "brown": ["pL xL xc xR pR", "xL r2L r2R xR", "rL r2L", "rL fL fc fR rR r2R", "rL wL w2L wc w2R wR rR", "fL w2L", "fc wc", "fR w2R"]})
 
 P("beetle", "Beetle", "animal",
   "hL 42.2 27.8; aL 28.2 13.8; pL 36 37.1; pbL 26.7 55.8; pc 50 55.8; e1L 22 83.8;"
@@ -576,7 +672,10 @@ P("beetle", "Beetle", "animal",
   "f3R 85.8 111.8",
   ["hL aL", "hL pL pbL pc pbR pR hR aR", "hL hR", "pL k1L f1L", "pc bot e2L e1L pbL k2L f2L",
    "e1L k3L f3L", "bot e2R e1R pbR k2R f2R", "pR k1R f1R", "e1R k3R f3R"],
-  clue="Crawling in armour since the dinosaurs")
+  clue="Crawling in armour since the dinosaurs",
+  colors={"orange": ["hL aL", "hR aR"],
+    "green": ["pbL pL hL hR pR pbR pc pbL e1L e2L bot pc", "bot e2R e1R pbR"],
+    "brown": ["pL k1L f1L", "pbL k2L f2L", "e1L k3L f3L", "pR k1R f1R", "pbR k2R f2R", "e1R k3R f3R"]})
 
 P("bell", "Bell", "object",
   "sL 36 32.4; aL 25.1 40.1; bL 21.2 54.1; cL 19.7 69.7; eL 17.3 82.9; fL 8 94.6; gL 8 107;"
@@ -585,7 +684,8 @@ P("bell", "Bell", "object",
   "k1 59.6 114; k2 55.9 125.3; k3 44.1 125.3; k4 40.4 114",
   ["aL bL cL eL fL gL mL b0 mR gR fR eR cR bR aR sR t sL aL aR", "eL eR", "fL fR",
    "t q1 q2 q3 q4 t", "b0 k1 k2 k3 k4 b0"],
-  clue="Saved by me at the end of class")
+  clue="Saved by me at the end of class",
+  colors={"orange": ["eL eR", "fL fR"], "red": ["b0 k1 k2 k3 k4 b0"], "brown": ["t q1 q2 q3 q4 t"]})
 
 P("burger", "Burger", "object",
   "t0L 14.9 59.4; t1L 17.9 42.6; t2L 31.7 30.4; t3 50 25.8; pk1L 32.4 59.4; pk2 50 59.4;"
@@ -595,7 +695,11 @@ P("burger", "Burger", "object",
   "sa1R 69.9 48; sa2R 59.9 41.1",
   ["t0L t1L t2L t3 t2R t1R t0R pk1R pk2 pk1L t0L v1L pk1L v2L pk2 v2R pk1R v1R t0R",
    "pb0L peL pt0L v1L v2L v2R v1R pt0R peR pb0R bbR bbL pb0L pb0R", "sa1L sa2L", "sa1R sa2R"],
-  clue="Hold the pickles, please")
+  clue="Hold the pickles, please",
+  colors={"orange": ["t0L t1L t2L t3 t2R t1R t0R", "pb0L bbL bbR pb0R pb0L"],
+    "green": ["t0L pk1L pk2 pk1R t0R v1R pk1R v2R pk2 v2L pk1L v1L t0L"],
+    "white": ["sa1L sa2L", "sa1R sa2R"],
+    "brown": ["pb0L peL pt0L v1L v2L v2R v1R pt0R peR pb0R"]})
 
 P("crab", "Crab", "animal",
   "b1L 38.3 58.5; b1R 61.7 58.5; b2L 23.2 70.2; b2R 76.8 70.2; b4L 33.7 84.2; b4R 66.3 84.2;"
@@ -604,7 +708,10 @@ P("crab", "Crab", "animal",
   "f1L 8 88.8; f1R 92 88.8; k2L 23.2 92.3; k2R 76.8 92.3; f2L 26.7 104; f2R 73.3 104",
   ["b1L b1R b2R b4R b4L b2L b1L eL", "b1R eR", "b4L k2L f2L", "b4R k2R f2R", "wL b2L k1L f1L",
    "wL oL uL nL lL wL", "wR b2R k1R f1R", "wR oR uR nR lR wR"],
-  clue="Pinch me, I must be dreaming")
+  clue="Pinch me, I must be dreaming",
+  colors={"orange": ["b1L b1R b2R b4R b4L b2L b1L"],
+    "red": ["b2L wL oL uL nL lL wL", "b2R wR oR uR nR lR wR"], "white": ["b1L eL", "b1R eR"],
+    "brown": ["b2L k1L f1L", "b2R k1R f1R", "b4L k2L f2L", "b4R k2R f2R"]})
 
 P("bus", "Bus", "object",
   "a 8 33; b 92 33; c 92 90.1; dd 8 90.1; t0 14.7 44.8; u0 14.7 63.3; t1 31.5 44.8;"
@@ -614,7 +721,10 @@ P("bus", "Bus", "object",
   "v5 62.6 100.3",
   ["t1 t0 u0 u1 u2 u3 u4 t4 t3 t2 t1 u1", "t2 u2", "t3 u3",
    "w0 dd a b c v3 v2 v1 v0 w3 w2 w1 w0 w5 w4 w3", "v0 v5 v4 v3"],
-  clue="Please move down to the back!")
+  clue="Please move down to the back!",
+  colors={"orange": ["w0 dd a b c v3"],
+    "blue": ["t1 t0 u0 u1 u2 u3 u4 t4 t3 t2 t1 u1", "t2 u2", "t3 u3"],
+    "brown": ["w3 v0 v1 v2 v3 v4 v5 v0", "w3 w2 w1 w0 w5 w4 w3"]})
 
 P("cactus", "Cactus", "plant",
   "ct 50 13.4; ctL 38.7 23.1; ctR 61.3 23.1; jL1 38.7 58.6; jL2 38.7 76.4; jR1 61.3 45.7;"
@@ -624,7 +734,10 @@ P("cactus", "Cactus", "plant",
   "pBL 29.8 120; pBR 70.2 120",
   ["ct ctL jL1 jL2 bL pTL pML pMR pTR bR jR2 jR1 ctR ct b0 bL", "jL1 aEL aIL aTL aOL aBL jL2",
    "jR1 aER aIR aTR aOR aBR jR2", "b0 bR", "pML pBL pBR pMR"],
-  clue="Don't hug me, I'm a little prickly")
+  clue="Don't hug me, I'm a little prickly",
+  colors={"orange": ["pML pBL pBR pMR"],
+    "green": ["ct ctL jL1 jL2 bL b0 ct ctR jR1 jR2 bR b0", "jL1 aEL aIL aTL aOL aBL jL2", "jR1 aER aIR aTR aOR aBR jR2"],
+    "brown": ["bL pTL pML pMR pTR bR"]})
 
 P("church", "Church", "object",
   "ct 50 8; cl 38.7 19.3; cr 61.3 19.3; cc 50 19.3; st 50 32.1; sbl 30.7 53; sbr 69.3 53;"
@@ -633,7 +746,9 @@ P("church", "Church", "object",
   "dt 50 96.4; w0 50 60.2; w1 39.6 66.3; w2 39.6 78.3; w3 50 84.3; w4 60.4 78.3; w5 60.4 66.3",
   ["ct cc st sbl sbr st", "cl cc cr", "sbl tjl tgl gl el tjl", "sbr tjr tgr dr dl tgl",
    "tjr er gr tgr", "dl dml dt dmr dr", "w0 w1 w2 w3 w4 w5 w0 w3", "w1 w4", "w2 w5"],
-  clue="Sunday best, bells on")
+  clue="Sunday best, bells on",
+  colors={"orange": ["cc st sbl sbr st"], "blue": ["w0 w1 w2 w3 w4 w5 w0 w3", "w1 w4", "w2 w5"],
+    "brown": ["ct cc cl", "cr cc", "dl dml dt dmr dr"]})
 
 P("ladybug", "Ladybug", "animal",
   "b0 50 37.6; b1 75.8 46; b2 91.7 67.9; b3 91.7 95; b4 75.8 116.9; b5 50 125.3; b6 24.2 116.9;"
@@ -642,7 +757,9 @@ P("ladybug", "Ladybug", "animal",
   "p01L 39 97.9; p02L 20.9 97.9; p00R 70 82.9; p01R 79.1 97.9; p02R 61 97.9",
   ["b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 b0 m1 m2 b5", "b1 hR hB hA hL b9", "hA nL", "hB nR",
    "m1 x1 m2 x2 m1", "p00L p01L p02L p00L", "p00R p01R p02R p00R"],
-  clue="Seven spots and a lucky streak")
+  clue="Seven spots and a lucky streak",
+  colors={"red": ["b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 b0"], "white": ["m1 x1 m2 x2 m1"],
+    "brown": ["b0 m1 m2 b5", "b1 hR hB hA hL b9", "hA nL", "hB nR", "p00L p01L p02L p00L", "p00R p01R p02R p00R"]})
 
 P("clock", "Alarm clock", "object",
   "h0 50 32.6; h1 68.1 37.4; h2 81.4 50.7; h3 86.2 68.8; h4 81.4 86.9; h5 68.1 100.2; h6 50 105;"
@@ -651,7 +768,10 @@ P("clock", "Alarm clock", "object",
   "hm 50 17.6; fl 20.2 115.7; fr 79.8 115.7; ctr 50 68.8; hh 37.1 61.3; mh 68.5 58.1",
   ["h1 h0 h11 h10 h9 h8 h7 h6 h5 h4 h3 h2 h1 bR1 bR2 h2", "h3 t3", "h5 fr", "h6 t6", "h7 fl",
    "h9 t9", "h10 bL2 bL1 h11", "t0 h0 hm", "hh ctr mh"],
-  clue="Five more minutes, please!")
+  clue="Five more minutes, please!",
+  colors={"orange": ["h0 hm", "h1 bR1 bR2 h2", "h10 bL2 bL1 h11"], "blue": ["hh ctr mh"],
+    "white": ["h0 t0", "h3 t3", "h6 t6", "h9 t9"],
+    "brown": ["h5 h6 h7 h8 h9 h10 h11 h0 h1 h2 h3 h4 h5 fr", "h7 fl"]})
 
 P("compass", "Compass", "object",
   "c0 50 40.4; c1 71 46.1; c2 86.3 61.4; c3 92 82.4; c4 86.3 103.4; c5 71 118.8; c6 50 124.4;"
@@ -660,7 +780,9 @@ P("compass", "Compass", "object",
   "v3 40.9 73.3; k 50 28.3; q1 39.5 21; q2 43.5 8.9; q3 56.5 8.9; q4 60.5 21",
   ["c3 c2 c1 c0 c11 c10 c9 c8 c7 c6 c5 c4 c3 te v0 tn v3 tw v2 ts v1 te o tn c0 k q1 q2 q3 q4 k",
    "c6 ts o tw c9"],
-  clue="Always pointing north, never lost")
+  clue="Always pointing north, never lost",
+  colors={"red": ["c0 k q1 q2 q3 q4 k"],
+    "blue": ["c0 tn v0 te c3", "c6 ts v2 tw v3 tn o te v1 ts o tw c9"]})
 
 P("dice", "Dice", "object",
   "C 50 66.7; TL 8 42.4; T 50 18.2; TR 92 42.4; BL 8 90.9; B 50 115.2; BR 92 90.9; p0 50 30.8;"
@@ -669,7 +791,9 @@ P("dice", "Dice", "object",
   "t0 74.3 73.1; t1 74.3 84.5; t2 64.5 78.8; u0 57.2 102.7; u1 57.2 91.3; u2 67.1 97",
   ["C TL T TR C B BL TL", "TR BR B", "p0 p1 p2 p0 pc p1", "p2 pc", "q0 q1 q2 q0",
    "r0 r1 r2 r0", "s0 s1 s2 s0", "t0 t1 t2 t0", "u0 u1 u2 u0"],
-  clue="Feeling lucky? Roll with it")
+  clue="Feeling lucky? Roll with it",
+  colors={"red": ["p0 p1 p2 p0 pc p1", "p2 pc", "q0 q1 q2 q0", "r0 r1 r2 r0", "s0 s1 s2 s0", "t0 t1 t2 t0", "u0 u1 u2 u0"],
+    "white": ["C TL T TR C B BL TL", "TR BR B"]})
 
 P("octopus", "Octopus", "animal",
   "top 50 20; uL 31.3 26.2; sL 22 43.3; bL 26.7 62; mL 39.1 69.8; mid 50 71.3; eL1 40.7 40.2;"
@@ -678,7 +802,10 @@ P("octopus", "Octopus", "animal",
   "eR2 59.3 52.7; aR1 82.7 80.7; aR2 92 97.8; aR3 79.6 100.9; bR1 67.1 90; bR2 62.4 110.2",
   ["bL mL mid mR bR sR uR top uL sL bL aL1 aL2 aL3 aL1", "mL bL1 bL2", "mid c1 c2", "eL1 eL2",
    "bR aR1 aR2 aR3 aR1", "mR bR1 bR2", "eR1 eR2"],
-  clue="Eight arms and still can't hug enough")
+  clue="Eight arms and still can't hug enough",
+  colors={"pink": ["top uR sR bR mR mid mL bL sL uL top"],
+    "purple": ["bL aL1 aL2 aL3 aL1", "mL bL1 bL2", "mid c1 c2", "bR aR1 aR2 aR3 aR1", "mR bR1 bR2"],
+    "white": ["eL1 eL2", "eR1 eR2"]})
 
 P("mushroom2", "Toadstool", "plant",
   "c0 8 65.2; c1 13.6 43.4; c2 29 27.5; c3 50 21.7; c4 71 27.5; c5 86.4 43.4; c6 92 65.2;"
@@ -687,7 +814,10 @@ P("mushroom2", "Toadstool", "plant",
   "a0 26.7 42.7; a1 33.3 53.9; a2 20.2 53.9; b0 73.2 42.7; b1 79.8 53.9; b2 66.7 53.9",
   ["c0 c1 c2 c3 c4 c5 c6 u3 u1 c0 sL sR c6", "u1 sL mL fL fR mR sR u3", "mL mR",
    "p0 p1 p2 p3 p4 p0", "a0 a1 a2 a0", "b0 b1 b2 b0"],
-  clue="Fairy furniture, do not eat")
+  clue="Fairy furniture, do not eat",
+  colors={"red": ["c0 c1 c2 c3 c4 c5 c6 u3 u1 c0 sL sR c6"],
+    "white": ["p0 p1 p2 p3 p4 p0", "a0 a1 a2 a0", "b0 b1 b2 b0"],
+    "brown": ["u1 sL mL fL fR mR sR u3", "mL mR"]})
 
 P("flag", "Flag", "object",
   "g00 19.3 17; g01 38.7 11.3; g02 56.5 17; g03 74.2 22.6; g04 92 17; g12 56.5 31.5;"
@@ -697,7 +827,10 @@ P("flag", "Flag", "object",
   "bl 8 122; br 30.6 122",
   ["g02 g01 g00 g20 g30 g40 bot bl", "g02 g03 g04 g14 g13 g12 g02", "g12 g22 g21 g20",
    "g14 g24 g23 g22", "g24 g34 g33 g32 g31 g30", "g34 g44 g43 g42 g41 g40", "bot br"],
-  clue="Run me up the pole and salute")
+  clue="Run me up the pole and salute",
+  colors={"red": ["g02 g01 g00 g20 g30 g40", "g02 g03 g04 g14 g13 g12 g02", "g24 g34 g33 g32 g31 g30"],
+    "white": ["g12 g22 g21 g20", "g14 g24 g23 g22", "g34 g44 g43 g42 g41 g40"],
+    "brown": ["g40 bot bl", "bot br"]})
 
 P("laptop", "Laptop", "object",
   "s0 15.3 8; s1 84.7 8; s2 84.7 59.2; s3 15.3 59.2; i0 26.9 18.7; i1 73.1 18.7; i2 73.1 48.5;"
@@ -707,7 +840,10 @@ P("laptop", "Laptop", "object",
   "p3 43.4 117.1",
   ["s2 s1 s0 s3 s2 b1 b0 s3", "k1 k0 m0 n0 n1 n2 n3 n4 m4 k4 k3 k2 k1 n1", "k2 n2", "k3 n3",
    "m0 m4", "i0 i1 i2 i3 i0", "p0 p1 p2 p3 p0"],
-  clue="Ctrl+Alt+Del my way to your lap")
+  clue="Ctrl+Alt+Del my way to your lap",
+  colors={"blue": ["i0 i1 i2 i3 i0"],
+    "cyan": ["k1 k0 m0 n0 n1 n2 n3 n4 m4 k4 k3 k2 k1 n1", "k2 n2", "k3 n3", "m0 m4"],
+    "white": ["s2 s1 s0 s3 s2 b1 b0 s3", "p0 p1 p2 p3 p0"]})
 
 P("penguin", "Penguin", "animal",
   "top 50 16.1; o1L 36 22.3; o2L 26.7 36.3; o3L 22 56.6; o4L 23.6 83; o5L 34.4 103.2;"
@@ -717,7 +853,10 @@ P("penguin", "Penguin", "animal",
   "tR 71.8 117.2; t2R 56.2 117.2",
   ["o3L o2L o1L top o1R o2R o3R o4R o5R bot o5L o4L o3L fL o4L", "o3R fR o4R",
    "o2L i1L vn i1R o2R i2R o5R tR t2R bot t2L tL o5L i2L o2L", "bk1 bk2 bk3 bk1"],
-  clue="Always dressed for a black-tie event")
+  clue="Always dressed for a black-tie event",
+  colors={"orange": ["o5L tL t2L bot t2R tR o5R"],
+    "blue": ["o3L o2L o1L top o1R o2R o3R o4R o5R bot o5L o4L o3L fL o4L", "o3R fR o4R"],
+    "white": ["o5L i2L o2L i1L vn i1R o2R i2R o5R", "bk1 bk2 bk3 bk1"]})
 
 P("robot", "Robot", "object",
   "an 50 13.8; ab 50 25.4; htL 26.8 25.4; hbL 26.8 64.5; btL 15.2 64.5; bbL 15.2 103.6;"
@@ -727,7 +866,10 @@ P("robot", "Robot", "object",
   "e4R 67.4 47.1; mR 61.6 57.3",
   ["an ab htL hbL hbR htR ab", "hbL btL bbL lgL lgR bbR btR hbR", "btL hdL", "lgL ftL",
    "mL mR", "btR hdR", "lgR ftR", "e1L e2L e3L e4L e1L", "e1R e2R e3R e4R e1R"],
-  clue="Beep boop, I come in peace")
+  clue="Beep boop, I come in peace",
+  colors={"orange": ["btL hdL", "lgL ftL", "btR hdR", "lgR ftR"],
+    "red": ["e1L e2L e3L e4L e1L", "e1R e2R e3R e4R e1R"],
+    "cyan": ["an ab htL hbL hbR htR ab", "hbL btL bbL lgL lgR bbR btR hbR"], "green": ["mL mR"]})
 
 P("snowman", "Snowman", "object",
   "bmL 29 32.2; bmR 71 32.2; crL 41.7 32.2; crR 58.3 32.2; ctL 41.7 9.7; ctR 58.3 9.7;"
@@ -737,7 +879,10 @@ P("snowman", "Snowman", "object",
   "bt1 50 84.7; bt2 50 102.7",
   ["crL bmL sL nkL nm nkR sR bmR crR crL ctL ctR crR", "nkL b1L b2L b3L b3R b2R b1R nkR",
    "nm bt1 bt2", "b1L hdL fgL", "b1R hdR fgR", "nb1 nb2 ntip nb1"],
-  clue="Chilling out until spring")
+  clue="Chilling out until spring",
+  colors={"orange": ["nm bt1 bt2"], "red": ["nkL nm nkR"],
+    "white": ["crL bmL sL nkL b1L b2L b3L b3R b2R b1R nkR sR bmR crR crL ctL ctR crR"],
+    "brown": ["b1L hdL fgL", "b1R hdR fgR", "nb1 nb2 ntip nb1"]})
 
 P("daisy", "Daisy", "plant",
   "c0 50 59.4; t0l 41.3 80.3; t0r 30.6 75.9; c1 39.2 54.9; t1l 18.3 63.6; t1r 13.8 52.9;"
@@ -747,7 +892,10 @@ P("daisy", "Daisy", "plant",
   "Lb 50 100; S 50 125.3; Lt 77.1 93.2; Ls 68.6 111.8",
   ["c0 t0l t0r c1 t1l t1r c2 t2l t2r c3 t3l t3r c4 t4l t4r c5 t5l t5r c6 t6l t6r c7 t7l t7r c0 c1 c2 c3 c4 c5 c6 c7 c0 Lb S",
    "Lb Lt Ls Lb"],
-  clue="He loves me, he loves me not...")
+  clue="He loves me, he loves me not...",
+  colors={"green": ["Lb Lt Ls Lb"],
+    "white": ["c0 t0l t0r c1 t1l t1r c2 t2l t2r c3 t3l t3r c4 t4l t4r c5 t5l t5r c6 t6l t6r c7 t7l t7r c0"],
+    "brown": ["c0 Lb S"]})
 
 P("trophy", "Trophy", "object",
   "rL 20 15.7; rR 80 15.7; bdL 21.5 27.7; bdR 78.5 27.7; c1L 26 44.2; c1R 74 44.2; c2L 35 56.2;"
@@ -756,7 +904,9 @@ P("trophy", "Trophy", "object",
   "bbL 30.5 117.7; bbR 69.5 117.7; pqL 41 98.2; pqR 59 98.2; pbL 41 110.2; pbR 59 110.2",
   ["rL rR bdR c1R c2R nR sR btR bbR bbL btL sL nL c2L c1L bdL rL h1L h2L h3L c2L",
    "rR h1R h2R h3R c2R", "bdL bdR", "nL nR", "sL sR", "btL btR", "pqL pqR pbR pbL pqL"],
-  clue="Winner winner, chicken dinner")
+  clue="Winner winner, chicken dinner",
+  colors={"orange": ["rL rR bdR c1R c2R nR", "rL bdL c1L c2L nL", "rL h1L h2L h3L c2L", "rR h1R h2R h3R c2R", "bdL bdR"],
+    "white": ["pqL pqR pbR pbL pqL"], "brown": ["btL bbL bbR btR btL"]})
 
 P("spider", "Spider", "animal",
   "c0 50 55.8; c1 60.3 63.3; c2 56.4 75.5; c3 43.6 75.5; c4 39.7 63.3; thr 50 15.3; aL 36 91.6;"
@@ -766,7 +916,9 @@ P("spider", "Spider", "animal",
   "f4R 79.6 118",
   ["c0 thr", "c0 c1 c2 c3 c4 c0", "c2 aR aBR aBL aL c3 k3L f3L", "c2 k3R f3R", "c2 k4R f4R",
    "c3 k4L f4L", "aL aR", "f1L k1L c4 k2L f2L", "f1R k1R c1 k2R f2R"],
-  clue="Along came one and sat down beside her")
+  clue="Along came one and sat down beside her",
+  colors={"purple": ["c2 aR aBR aBL aL c3", "aL aR"], "white": ["c0 thr"],
+    "brown": ["f1L k1L c4 c3 c2 c1 c0 c4 k2L f2L", "f3L k3L c3 k4L f4L", "f1R k1R c1 k2R f2R", "f3R k3R c2 k4R f4R"]})
 
 P("violin", "Violin", "object",
   "SC 50 8; P1L 43 17.9; PBL 44 31.9; NBL 44 51.8; UBL 20.2 65.7; C2L 25.1 81.6; C1L 25.1 97.5;"
@@ -776,234 +928,367 @@ P("violin", "Violin", "object",
   "S2 59.9 16",
   ["FEL NBL UBL C2L C1L LWL LBL B LBR LWR C1R C2R UBR NBR NBL PBL P1L SC S2 PBR NBR FER BRR B BRL FEL FER",
    "BRL BRR", "FaL FbL", "FaR FbR"],
-  clue="Chin up, bow ready!")
+  clue="Chin up, bow ready!",
+  colors={"purple": ["FaL FbL", "FaR FbR"], "white": ["BRL BRR"],
+    "brown": ["FEL NBL UBL C2L C1L LWL LBL B LBR LWR C1R C2R UBR NBR NBL PBL P1L SC S2 PBR NBR FER BRR B BRL FEL FER"]})
 
 P("bat", "Bat", "animal",
-  "earL 43.5 42.4; headT 50 52.1; shL 41.1 60.2; wristL 27.4 44.1; tipL 8 65.1; v1L 19.3 68.3;"
-  "f2L 25.8 84.4; v2L 32.2 73.1; hipL 41.9 81.2; bot 50 90.9; earR 56.5 42.4; shR 58.9 60.2;"
-  "wristR 72.6 44.1; tipR 92 65.1; v1R 80.7 68.3; f2R 74.2 84.4; v2R 67.8 73.1; hipR 58.1 81.2",
-  ["shL earL headT earR shR wristR tipR v1R f2R v2R hipR shR",
-   "shL wristL tipL v1L f2L v2L hipL shL", "f2L wristL hipL bot hipR wristR f2R"],
-  clue="Hangs out upside down all day")
+  "earTipL 42.8 23.2; earValley 50 31.9; earTipR 57.2 23.2; eyeL 42.8 40.6; eyeR 57.2 40.6;"
+  "jawL 29.7 40.6; jawR 70.3 40.6; shL 19.6 46.4; shR 80.4 46.4; wristL 15.2 58; wristR 84.8 58;"
+  "tip1L 8 69.6; tip1R 92 69.6; valleyL 25.4 75.4; valleyR 74.6 75.4; tip2L 21 89.8;"
+  "tip2R 79 89.8; bodyBottom 50 97.1; footL 44.2 110.1; footR 55.8 110.1",
+  ["valleyL tip2L bodyBottom tip2R valleyR tip1R wristR shR jawR earTipR earValley earTipL jawL shL wristL tip1L valleyL wristL tip2L",
+   "valleyR wristR tip2R", "footL bodyBottom footR", "earValley eyeL eyeR earValley"],
+  clue="Hangs out upside down all day",
+  colors={"purple": ["wristL tip1L valleyL tip2L bodyBottom tip2R valleyR tip1R wristR valleyR", "wristL valleyL", "wristL tip2L", "wristR tip2R"],
+    "white": ["earValley eyeL eyeR earValley"],
+    "brown": ["wristL shL jawL earTipL earValley earTipR jawR shR wristR", "footL bodyBottom footR"]})
 
 P("key2", "Key", "object",
-  "b1 20 8; b2 4 34; b3 20 60; b4 48 60; b5 62 34; b6 48 8; h1 32 26; h2 32 44;t1 82 34;"
-  "t2 82 58; t3 102 34; t4 102 56; e 118 34",
-  ["b1 b2 b3 b4 b5 b6 b1", "h1 h2", "b1 h1", "b3 h2", "b5 t1", "t1 t2", "t1 t3", "t3 t4", "t3 e"])
+  "bo_top 22.8 43.8; bo_tr 37.6 54.9; bo_br 37.6 75.9; bo_bot 22.8 87; bo_bl 8 75.9;"
+  "bo_tl 8 54.9; in_t 22.8 56.2; in_r 30.2 65.4; in_b 22.8 74.7; in_l 15.4 65.4;"
+  "st_mid 53.7 54.9; st2 67.3 54.9; tip 85.8 54.9; sb_mid 53.7 75.9; c1 64.8 75.9; c2 64.8 89.5;"
+  "c3 75.9 89.5; c4 75.9 75.9; tipB 92 75.9",
+  ["bo_top bo_tr bo_br bo_bot bo_bl bo_tl bo_top in_t in_r in_b in_l in_t",
+   "bo_tr st_mid st2 tip tipB c4 c3 c2 c1 sb_mid bo_br", "bo_bot in_b", "st2 c4"],
+  clue="I open more doors than I close",
+  colors={"orange": ["bo_top bo_tr bo_br bo_bot bo_bl bo_tl bo_top"],
+    "cyan": ["bo_tr st_mid st2 tip tipB c4 c3 c2 c1 sb_mid bo_br", "st2 c4"],
+    "white": ["bo_top in_t in_r in_b in_l in_t", "bo_bot in_b"]})
 
 P("bee", "Bee", "animal",
-  "t1 44.3 67; t2 56.4 64.9; t3 68.5 67.7; br 80.6 79.8; u3 68.5 91.9; u2 56.4 94.8;"
-  "u1 44.3 92.6; st 92 82; wa1 35.1 48.5; wa2 46.4 38.5; wb1 62.1 38.5; wb2 74.9 47.1;"
-  "h1 26.2 90; h2 14.3 86.1; h3 14.3 73.6; h4 26.2 69.7; bf 33.6 79.8; an1 8 59.9;"
-  "an2 23.7 54.2",
-  ["t2 t1 bf h1 h2 h3 h4 bf u1 u2 u3 br t3 t2 u2", "t2 wa2 wa1 t1 u1", "t2 wb1 wb2 t3 u3",
-   "br st", "h3 an1", "h4 an2"],
-  clue="Buzz off, I'm busy!")
+  "hd_t 18.1 65.2; hd_b 18.1 84; ant1 8 53.6; ant2 31.2 46.4; bt1 29.7 58; bt2 42.8 55.1;"
+  "bt3 55.8 55.1; bt4 68.8 58; tail 80.4 72.5; bb4 68.8 89.8; bb3 55.8 94.2; bb2 42.8 94.2;"
+  "bb1 29.7 89.8; st_tip 92 72.5; leg1 29.7 107.2; leg2 42.8 107.2; leg3 55.8 107.2;"
+  "w1a 39.9 31.9; w1b 60.1 26.1; w1c 67.4 40.6; w1d 50 44.9",
+  ["ant1 hd_t bt1 bt2 bt3 bt4 tail bb4 bb3 bb2 bb1 hd_b hd_t ant2", "bt2 bb2 leg2",
+   "tail st_tip", "bb1 leg1", "leg3 bb3 bt3 w1d w1c w1b w1a w1d"],
+  clue="Buzz off, I'm busy!",
+  colors={"orange": ["ant1 hd_t bt1 bt2 bt3 bt4 tail bb4 bb3 bb2 bb1 hd_b hd_t ant2"],
+    "white": ["bt3 w1d w1c w1b w1a w1d"], "brown": ["bt2 bb2 leg2", "bt3 bb3 leg3"]})
 
 P("tent", "Tent", "object",
-  "pk 50 26.1; bl 17.8 93.3; br 82.2 93.3; d1 38.8 93.3; d2 50 45.7; d3 61.2 93.3;"
-  "g1 50 104.5; gl 8 84.9; gr 92 84.9; pl 17.8 107.3; pr 82.2 107.3; f1 37.4 68.1;"
-  "f2 62.6 68.1",
-  ["pk bl d1 d3 br pk d2 d1 g1 d3 d2", "pl bl gl", "pr br gr", "f1 f2"])
+  "apex 50 34.3; ridgeL 38.6 58.4; ridgeR 61.4 58.4; guyTopL 29.6 77.6; guyTopR 70.4 77.6;"
+  "baseL 21.6 94.5; baseR 78.4 94.5; stakeL 8 94.5; stakeR 92 94.5; doorBaseL 38.6 94.5;"
+  "doorBaseR 61.4 94.5; groundMid 50 94.5; tuftTip 50 107; zip1 43.2 70.4; zip2 56.8 70.4;"
+  "flagA 61.4 26.4; flagB 61.4 43.4; flagA2 38.6 26.4; flagB2 38.6 43.4",
+  ["ridgeL apex ridgeR guyTopR baseR doorBaseR groundMid doorBaseL baseL guyTopL ridgeL ridgeR",
+   "guyTopL stakeL baseL", "guyTopR stakeR baseR", "doorBaseL zip1 apex zip2 doorBaseR",
+   "groundMid tuftTip", "zip1 zip2", "apex flagA flagB apex flagA2 flagB2 apex"],
+  clue="Home away from home, zipped shut",
+  colors={"orange": ["ridgeL apex ridgeR guyTopR baseR doorBaseR groundMid doorBaseL baseL guyTopL ridgeL ridgeR"],
+    "red": ["apex flagA flagB apex flagA2 flagB2 apex"],
+    "white": ["guyTopL stakeL baseL", "guyTopR stakeR baseR", "groundMid tuftTip"],
+    "brown": ["doorBaseL zip1 apex zip2 doorBaseR", "zip1 zip2"]})
 
 P("strawberry", "Strawberry", "plant",
-  "t1 30.8 48.4; t2 50 42.6; t3 69.2 48.4; r1 86.5 69.6; b 50 125.3; l1 13.5 69.6;"
-  "sd1 34.6 75.3; sd2 50 67.6; sd3 65.4 75.3; sd4 40.4 96.5; sd5 59.6 96.5; lf1 25 29.2;"
-  "lf2 50 23.4; lf3 75 29.2; st 50 8",
-  ["t1 t2 t3 r1 b l1 t1 sd1 sd2 t2 lf1", "sd3 sd2", "t3 sd3 sd5 sd4 sd1", "lf3 t2 lf2 st"])
+  "tL 18.7 54.2; tR 81.3 54.2; mL 8 70.2; mR 92 70.2; bL 30.3 98.8; bR 69.7 98.8; tip 50 123.9;"
+  "bB 33.9 36.3; midC 50 30.9; bD 66.1 36.3; lt1 12.5 39.9; lt2 41.1 23.8; lt3 58.9 23.8;"
+  "lt4 87.5 39.9; stem 50 16.6; stemCurl 64.3 9.5; seedA 23.2 73.8; seedB 39.3 82.8;"
+  "seedC 60.7 82.8; seedD 76.8 73.8",
+  ["tL mL bL tip bR mR tR tL lt1 bB lt2 midC lt3 bD lt4 tR", "mL seedA seedB seedC seedD mR",
+   "midC stem stemCurl"],
+  clue="Sweet, red, and covered in freckles",
+  colors={"red": ["tL mL bL tip bR mR tR tL"],
+    "green": ["tL lt1 bB lt2 midC lt3 bD lt4 tR", "midC stem stemCurl"],
+    "white": ["mL seedA seedB seedC seedD mR"]})
 
 P("hedgehog", "Hedgehog", "animal",
-  "s0 18 62; s1 22 45; s2 35 33; s3 52 28; s4 69 33; s5 82 45; s6 86 62; p0 0 62;"
-  "p1 6 36;p2 26 16; p3 52 10; p4 78 16; p5 98 36; p6 104 62; sn 112 78; fb 74 94;"
-  "bb 30 96;ey 72 72; ey2 88 78",
-  ["s0 s1 s2 s3 s4 s5 s6", "s0 p0", "s1 p1", "s2 p2", "s3 p3", "s4 p4", "s5 p5", "s6 p6",
-   "s6 sn", "sn fb", "fb bb", "bb s0", "ey ey2"])
+  "snoutTop 28.3 57.4; foreheadTop 37.2 46.8; p1 41.6 36.2; v1 47.8 50.3; p2 54 35.3;"
+  "v2 58.4 54.7; p3 67.2 34.4; v3 69.9 56.5; p4 77.9 40.6; v4 81.4 57.4; p5 89.3 46.8;"
+  "tailTip 92 62.7; hip 78.7 75.1; belly3 67.2 83.9; belly2 53.1 86.6; belly1 39.8 83.9;"
+  "chin 26.6 79.5; snoutTip 18.6 70.6; eye 39.8 58.3; whisker 8 75.1; leg1 39.8 96.3;"
+  "leg2 53.1 98.9; leg3 67.2 96.3; leg4 83.2 87.4",
+  ["snoutTop foreheadTop p1 v1 p2 v2 p3 v3 p4 v4 p5 tailTip hip belly3 belly2 belly1 chin snoutTip snoutTop eye",
+   "v1 belly1 leg1", "v2 belly2 leg2", "v3 belly3 leg3", "v4 hip leg4", "snoutTip whisker"],
+  clue="Please don't pet the pointy stranger",
+  colors={"orange": ["foreheadTop snoutTop snoutTip chin belly1 belly2 belly3 hip tailTip"],
+    "white": ["snoutTop eye", "snoutTip whisker"],
+    "brown": ["foreheadTop p1 v1 p2 v2 p3 v3 p4 v4 p5 tailTip", "v1 belly1 leg1", "v2 belly2 leg2", "v3 belly3 leg3", "v4 hip leg4"]})
 
 P("microphone", "Microphone", "object",
-  "h1 33.5 8; h2 66.5 8; h3 70.6 45.1; h4 29.4 45.1; m1 39.7 26.5; m2 60.3 26.5;"
-  "n1 39.7 57.4; n2 60.3 57.4; b1 33.5 82.1; b2 66.5 82.1; s 50 82.1; st 50 115;"
-  "f1 29.4 125.3; f2 70.6 125.3",
-  ["h1 h2 h3 h4 h1 m1 m2 h2", "n1 h4", "n2 h3", "s b1 n1 n2 b2 s st f1", "st f2"])
+  "hTL 43.7 8; hTR 72.2 8; hBR 72.2 31; hBL 43.7 31; midL 43.7 19.5; midR 72.2 19.5;"
+  "neckL 47 44.2; neckR 68.9 44.2; bandL 47 56.2; bandR 68.9 56.2; handleBL 45.9 77.1;"
+  "handleBR 70 77.1; standTop 58 77.1; poleBottom 58 89.1; legL 44.8 100.1; legC 58 101.8;"
+  "legR 71.1 100.1; btnL 17.4 57.9; btnR 30.5 57.9; cable2 79.9 110; cable3 71.7 118.2;"
+  "cable4 82.6 125.3",
+  ["hTL midL hBL hBR midR hTR hTL hBR neckR bandR handleBR standTop handleBL bandL neckL hBL hTR",
+   "midL midR", "bandL bandR", "standTop poleBottom legL",
+   "legR poleBottom legC cable2 cable3 cable4", "btnL btnR"],
+  clue="Is this thing on?",
+  colors={"red": ["btnL btnR"],
+    "blue": ["hBR neckR bandR handleBR standTop handleBL bandL neckL hBL", "bandL bandR"],
+    "white": ["hTL midL hBL hBR midR hTR hTL hBR", "hTR hBL", "midL midR"],
+    "brown": ["standTop poleBottom legL", "legR poleBottom legC cable2 cable3 cable4"]})
 
 P("frog", "Frog", "animal",
-  "e0 39.9 16; e1 54.9 24.7; e2 54.9 42; e3 39.9 50.7; e4 24.8 42; e5 24.8 24.7; pa 39.9 27.6;"
-  "pb 39.9 39.1; sn 8 56.5; mc 42.8 63.8; cn 13.8 69.6; ch 26.8 81.1; fw 25.4 104.3;"
-  "f1 12.3 110.1; f2 28.3 115.9; bl 42.8 95.6; bk 73.2 50.7; rp 92 72.5; th 71.7 71;"
-  "kn 58.7 89.8; he 89.1 104.3; t1 54.3 107.2; t2 58.7 117.4",
-  ["e2 e1 e0 e5 e4 e3 e2 bk rp he kn bl ch cn sn e4", "pa pb", "sn mc", "ch fw f1", "fw f2",
-   "bk th kn", "t1 he t2"],
-  clue="Ribbit if you love lily pads")
+  "snout 89.2 55.1; hTop 76.7 36.2; eyeTop 64.1 20.5; pupil 64.1 8; eyeBack 51.6 33.1;"
+  "backTop 39 26.8; rearSlope 26.5 39.4; hip 17.1 55.1; belly 54.7 70.7; chin 79.8 61.3;"
+  "fKnee 67.3 83.3; fFoot 54.7 95.8; fToe1 35.9 111.5; fToe2 69.1 111.5; thigh 10.8 70.7;"
+  "knee 23.3 89.6; ankle 39 99; foot 57.8 114.7; toeA 45.3 122.8; toeB 71.6 125.3",
+  ["eyeTop hTop snout chin belly hip rearSlope backTop eyeBack eyeTop pupil",
+   "hip thigh knee ankle foot toeA", "belly fKnee fFoot fToe1", "fFoot fToe2", "foot toeB"],
+  clue="Ribbiting good time",
+  colors={"green": ["hip belly chin snout hTop eyeTop eyeBack backTop rearSlope hip thigh knee ankle foot", "belly fKnee fFoot"],
+    "white": ["eyeTop pupil"]})
 
 P("candle", "Candle", "object",
-  "tl 30.4 48.9; tr 69.6 48.9; d1 30.4 64.9; d2 19.8 77.3; d3 30.4 89.8; bl 30.4 112.9;"
-  "br 69.6 112.9; w 50 41.8; fl 39.3 27.6; ft 50 8; fr 60.7 27.6; p1 12.7 112.9;"
-  "p2 87.3 112.9; pb1 21.6 125.3; pb2 78.4 125.3",
-  ["tl tr br bl d3 d2 d1 tl w fl ft fr w tr", "br p2 pb2 pb1 p1 bl"])
+  "flameTip 50 8; flameL 40.4 25.7; flameR 59.6 25.7; flameBase 50 35.3; dripL_top 40.4 51.7;"
+  "dripR_top 59.6 51.7; dripL_bulge 21.3 63.9; dripL_tip 30.9 73.5; dripR_bulge 78.7 63.9;"
+  "dripR_tip 69.1 73.5; botL 40.4 83; botR 59.6 83; plateL 22.7 95.3; plateR 77.3 95.3;"
+  "footTop 50 95.3; footBase 50 114.4; footL 36.4 125.3; footR 63.6 125.3",
+  ["botL dripL_top flameBase flameR flameTip flameL flameBase dripR_top dripR_bulge dripR_tip dripR_top botR botL plateL footTop plateR botR",
+   "footTop footBase footL", "footBase footR", "dripL_top dripL_bulge dripL_tip dripL_top"],
+  clue="Make a wish before I burn out",
+  colors={"orange": ["flameTip flameR flameBase flameL flameTip"],
+    "white": ["flameBase dripL_top botL botR dripR_top flameBase", "dripL_top dripL_bulge dripL_tip dripL_top", "dripR_top dripR_bulge dripR_tip dripR_top"],
+    "brown": ["botL plateL footTop plateR botR", "footTop footBase footL", "footBase footR"]})
 
 P("deer", "Deer", "animal",
-  "n 8 63.9; c 16.4 72.3; th 27.6 69.5; p 27.6 52.7; f 16.4 54.1; ear 38.8 47.1; a1 23.4 38.7;"
-  "a2 29 26.1; a3 40.2 14.9; t1 12.2 31.7; t2 19.2 17.7; t3 30.4 9.3; w 40.2 69.5; rt 82.2 68.1;"
-  "tl 92 58.3; ch 29 82.1; fl1 36 93.3; fl2 47.2 93.3; bl1 66.8 93.3; bl2 78 89.1;"
-  "hf1 31.8 124.1; hf2 48.6 124.1; hb1 65.4 124.1; hb2 80.8 124.1",
-  ["th c n f p w rt bl2 bl1 fl2 fl1 ch th p ear", "p a1 a2 a3 t3", "a1 t1", "a2 t2", "rt tl",
-   "fl1 hf1", "fl2 hf2", "bl1 hb1", "bl2 hb2"],
-  clue="Feeling a bit antler-social")
+  "rumpTop 20.5 64.5; midBack 40.4 57.1; shoulderTop 59.6 60; neckBack 68.4 51.2;"
+  "headTop 77.3 43.8; snout 90.5 48.2; chin 81.7 55.6; throat 74.3 65.9; chestFront 62.5 75.5;"
+  "bellyMid 40.4 80.7; rumpBottom 22.7 79.2; earTip 66.9 33.5; antlerBase 83.2 32;"
+  "tineL 71.4 20.2; tineR 92 21.7; tailTip 8 74.8; maneTip1 47.8 46.8; nostrilTip 92 60;"
+  "flKnee 71.4 89.5; flHoof 71.4 107.2; frKnee 56.6 93.9; frHoof 56.6 111.6; blKnee 16.8 93.9;"
+  "blHoof 16.8 111.6; brKnee 31.6 95.4; brHoof 31.6 113.1",
+  ["rumpTop midBack shoulderTop neckBack headTop snout chin throat chestFront bellyMid rumpBottom rumpTop tailTip",
+   "shoulderTop maneTip1", "chin nostrilTip", "earTip headTop antlerBase tineL",
+   "antlerBase tineR", "flHoof flKnee chestFront frKnee frHoof",
+   "blHoof blKnee rumpBottom brKnee brHoof"],
+  clue="Feeling a bit antler-social",
+  colors={"orange": ["rumpTop midBack shoulderTop neckBack headTop snout chin throat chestFront bellyMid rumpBottom rumpTop"],
+    "white": ["rumpTop tailTip", "shoulderTop maneTip1", "chin nostrilTip"],
+    "brown": ["earTip headTop antlerBase tineL", "antlerBase tineR", "flHoof flKnee chestFront frKnee frHoof", "blHoof blKnee rumpBottom brKnee brHoof"]})
 
 P("television", "Television", "object",
-  "tl 8 36.1; tr 84.4 36.1; bl 8 99.1; br 84.4 99.1; il 17.5 45.7; ir 74.8 45.7;"
-  "ibr 74.8 89.6; ibl 17.5 89.6; kt 92 49.5; kb 92 76.2; a1 32.8 20.8; a2 59.5 18.9;"
-  "ap 46.2 36.1; lg1 21.4 114.4; lg2 71 114.4",
-  ["tr ap tl bl br tr kt kb br lg2", "bl lg1", "a1 ap a2", "il ir ibr ibl il"])
+  "outerTL 15 37.9; antBase 50 37.9; outerTR 85 37.9; outerBR 85 100.1; outerBL 15 100.1;"
+  "screenTL 28.2 51.1; screenTR 46.9 51.1; screenBR 46.9 86.9; screenBL 28.2 86.9;"
+  "antTipL 32.9 20; antTipR 65.6 24.7; knobTop 67.1 48; knobRight 76.4 57.3;"
+  "knobBottom 67.1 66.7; knobLeft 57.8 57.3; lightTip 67.1 79.1; footL 8 113.3; footR 92 113.3",
+  ["outerBR outerTR antBase outerTL outerBL outerBR footR", "outerBL footL",
+   "screenTL screenTR screenBR screenBL screenTL screenBR", "screenTR screenBL",
+   "antTipL antBase antTipR", "knobBottom knobRight knobTop knobLeft knobBottom lightTip"],
+  clue="Way before your phone stole the show",
+  colors={"red": ["knobBottom knobRight knobTop knobLeft knobBottom lightTip"],
+    "cyan": ["screenTL screenTR screenBR screenBL screenTL screenBR", "screenTR screenBL"],
+    "white": ["antTipL antBase antTipR"],
+    "brown": ["outerBR outerTR antBase outerTL outerBL outerBR footR", "outerBL footL"]})
 
 P("lemon", "Lemon", "plant",
-  "tipR 72.2 49.1; u1 53.7 49.4; u2 33.9 55.8; u3 19.9 69.2; u4 12.2 85.8; u6 10.6 101.2;"
-  "u5 13.4 112; tipL 12.6 125.3; w5 25.3 121.4; w6 36.6 121.4; w4 51.1 116.2; w3 65.3 104.7;"
-  "w2 75 87.9; w1 76.3 67.1; g1 24.5 99; g2 25.1 83.8; g3 32.7 70.6; lf1 89.4 35.2; lft 83.2 8;"
-  "lf2 64.2 28.5; lfm 78.2 26.6",
-  ["tipR u1 u2 u3 u4 u6 u5 tipL w5 w6 w4 w3 w2 w1 tipR lf1 lft lf2 tipR lfm lft", "u5 w5",
-   "g1 g2 g3", "lf1 lfm lf2"],
-  clue="When life gives you me, make a drink")
+  "topTip 60.1 24.2; tl1 47.8 30.3; tl2 39.9 44.9; tl3 38.8 60.5; tl4 45.5 75;"
+  "bottomTip 60.1 86.2; tr4 74.6 75; tr3 81.3 60.5; tr2 80.2 44.9; tr1 72.3 30.3;"
+  "stemTip 60.1 10.2; leafBase 71.2 13.6; leafTip1 82.4 8; leafTip2 81.3 23.6;"
+  "markTip 60.1 98.5; sliceCenter 32.1 110.8; rim1 32.1 96.3; rim2 46.6 110.8; rim3 32.1 125.3;"
+  "rim4 17.6 110.8",
+  ["bottomTip tl4 tl3 tl2 tl1 topTip tr1 tr2 tr3 tr4 bottomTip markTip",
+   "stemTip topTip leafBase leafTip1", "leafBase leafTip2",
+   "rim1 sliceCenter rim2 rim1 rim4 sliceCenter rim3 rim2", "rim3 rim4"],
+  clue="When life gives you me, make a drink",
+  colors={"green": ["stemTip topTip leafBase leafTip1", "leafBase leafTip2"],
+    "white": ["rim1 sliceCenter rim2 rim1 rim4 sliceCenter rim3 rim2", "rim3 rim4"],
+    "brown": ["bottomTip markTip"]})
 
 P("horse", "Horse", "animal",
-  "E 49.3 15.8; Ef 41.9 32; Eb 55.2 30.6; Fh 30.1 39.4; N1 15.4 73.3; N2 8 88; M1 13.9 99.8;"
-  "C 27.2 102.8; J1 41.9 98.4; J2 55.2 88; T 59.6 71.8; Nf 64 117.5; Pb 64 37.9; Nb1 72.8 61.5;"
-  "Nb2 78.7 88; Nbb 81.7 117.5; m1 78.7 37.9; m2 87.6 64.5; m3 92 92.5; k1 44.8 77.7;"
-  "k2 47.8 65.9; e1 33.1 52.7; e2 44.8 54.1; mo 30.1 91",
-  ["Ef E Eb Pb Nb1 Nb2 Nbb Nf T J2 J1 C M1 N2 N1 Fh Ef Eb", "M1 mo", "J2 k1 k2",
-   "Pb m1 Nb1 m2 Nb2 m3 Nbb", "e1 e2"],
-  clue="Straight from its mouth, they say")
+  "rumpTop 28.4 60.5; midBack 45.1 54.3; shoulderTop 61.1 56.2; neckBack 69.8 48.8;"
+  "headTop 79.6 40.7; snout 92 45.7; chin 83.4 53.1; throat 74.7 61.7; chestFront 64.8 70.4;"
+  "bellyMid 45.1 74.7; rumpBottom 30.2 72.8; earL 71 30.8; earR 85.8 30.8; maneTip1 52.5 45.7;"
+  "maneTip2 62.4 39.5; tailMid 16.6 71.6; tailTip1 8 63; tailTip2 9.2 81.5; flKnee 72.2 82.7;"
+  "flHoof 72.2 97.5; frKnee 59.9 86.4; frHoof 59.9 101.3; blKnee 25.3 86.4; blHoof 25.3 101.3;"
+  "brKnee 37.6 87.7; brHoof 37.6 102.5",
+  ["rumpTop midBack shoulderTop neckBack headTop snout chin throat chestFront bellyMid rumpBottom rumpTop tailMid tailTip1",
+   "shoulderTop maneTip1", "neckBack maneTip2", "earL headTop earR", "tailMid tailTip2",
+   "flHoof flKnee chestFront frKnee frHoof", "blHoof blKnee rumpBottom brKnee brHoof"],
+  clue="Straight from its mouth, they say",
+  colors={"white": ["rumpTop tailMid tailTip1", "shoulderTop maneTip1", "neckBack maneTip2", "tailMid tailTip2"],
+    "brown": ["earL headTop neckBack shoulderTop midBack rumpTop rumpBottom bellyMid chestFront throat chin snout headTop earR", "flHoof flKnee chestFront frKnee frHoof", "blHoof blKnee rumpBottom brKnee brHoof"]})
 
 P("car", "Car", "object",
-  "fl 8 75.9; fh 9.7 59.1; hw 31.5 55.7; rt1 41.6 37.3; pm 55 37.3; rt2 68.5 37.3;"
-  "rw 80.2 55.7; rtop 92 59.1; rb 92 75.9; pb 55 55.7; wt1 26.5 75.9; wl1 18.1 86;"
-  "wb1 26.5 96.1; wr1 34.9 86; wt2 73.5 75.9; wl2 65.1 86; wb2 73.5 96.1; wr2 81.9 86",
-  ["hw fh fl wt1 wt2 rb rtop rw rt2 pm rt1 hw pb rw", "pm pb", "wt2 wl2 wb2 wr2 wt2",
-   "wt1 wl1 wb1 wr1 wt1"])
+  "rearBumper 14.1 67.3; trunkTop 20.2 42.9; roofBack 37.2 25.9; doorTop 50.6 25.9;"
+  "roofFront 64 25.9; hoodTop 79.8 42.9; frontBumper 85.9 67.3; rockerFront 75 72.1;"
+  "rockerMid 49.4 72.1; rockerRear 25 72.1; mirrorTip 85.9 30.8; hubF 79.8 95.3;"
+  "rimFtop 79.8 83.1; rimFright 92 95.3; rimFbottom 79.8 107.4; rimFleft 67.7 95.3;"
+  "hubR 20.2 95.3; rimRtop 20.2 83.1; rimRright 32.3 95.3; rimRbottom 20.2 107.4;"
+  "rimRleft 8 95.3",
+  ["doorTop roofBack trunkTop rearBumper rockerRear rockerMid rockerFront frontBumper hoodTop roofFront doorTop rockerMid",
+   "hoodTop mirrorTip", "rimFtop hubF rimFright rimFtop rimFleft hubF rimFbottom rimFright",
+   "rimFbottom rimFleft", "rimRtop hubR rimRright rimRtop rimRleft hubR rimRbottom rimRright",
+   "rimRbottom rimRleft"],
+  clue="Beep beep, coming through",
+  colors={"red": ["doorTop roofBack trunkTop rearBumper rockerRear rockerMid rockerFront frontBumper hoodTop roofFront doorTop rockerMid", "hoodTop mirrorTip"],
+    "white": ["rimFtop hubF rimFright rimFtop rimFleft hubF rimFbottom rimFright", "rimFbottom rimFleft", "rimRtop hubR rimRright rimRtop rimRleft hubR rimRbottom rimRright", "rimRbottom rimRleft"]})
 
 P("seagull", "Seagull", "animal",
-  "bt 8 38.4; bu 22.5 31.9; bl 22.5 44.1; ht 33.8 20.6; hb 46.8 25.5; np 50 38.4; bk 67.8 48.1;"
-  "wt 92 69.1; ws 40.3 52.9; w1 54.8 67.5; tt 87.2 82; ut 74.2 78.8; bb 59.7 83.6; be 43.5 82;"
-  "ch 30.6 70.7; nf 25.8 56.2; pl 40.3 101.4; pr 62.9 101.4; ql 40.3 124; qr 62.9 124;"
-  "m1 54.8 17.4; m2 62.9 9.3; m3 72.6 15.8; m4 82.3 9.3; m5 90.4 17.4",
-  ["bu bt bl bu ht hb np bk wt w1 ws np", "bl nf ch be bb ut tt wt", "w1 ut", "bb pr pl be",
-   "pl ql qr pr", "m1 m2 m3 m4 m5"],
-  clue="Mine? Mine? Mine?")
+  "wTipL 18.3 58.4; primary1L 8 62.5; wBendL 34.1 43.9; covertL 28.7 31.5; wRootL 38.2 68.3;"
+  "bodyC 47.3 78.3; wRootR 56.4 68.3; wBendR 60.6 43.9; covertR 65.9 31.5; wTipR 76.3 58.4;"
+  "primary1R 88.7 54.3; neck 68 77; headTop 79.6 70; eye 88.7 79.1; beakTip 92 66.7;"
+  "tailTip 47.3 93.6; tailForkA 37 101.8; tailForkB 57.7 101.8",
+  ["primary1L wTipL wBendL wRootL bodyC wRootR wBendR wTipR primary1R", "wBendL covertL",
+   "wBendR covertR", "headTop neck bodyC tailTip tailForkA", "headTop beakTip", "headTop eye",
+   "tailTip tailForkB"],
+  clue="Soaring over the boardwalk chips",
+  colors={"orange": ["headTop beakTip"], "blue": ["primary1L wTipL wBendL", "wBendR wTipR primary1R"],
+    "cyan": ["wBendL covertL", "wBendR covertR"],
+    "white": ["wBendL wRootL bodyC wRootR wBendR", "headTop neck bodyC tailTip tailForkA", "tailTip tailForkB"]})
 
 P("snowflake", "Snowflake", "object",
-  "t0 92 66.7; m0 71 66.7; b0 80.3 84.2; t1 71 103; m1 60.5 84.9; b1 50 101.7; t2 29 103;"
-  "m2 39.5 84.9; b2 19.7 84.2; t3 8 66.7; m3 29 66.7; b3 19.7 49.2; t4 29 30.3;"
-  "m4 39.5 48.5; b4 50 31.7; t5 71 30.3; m5 60.5 48.5; b5 80.3 49.2; c 50 66.7",
-  ["t0 m0 c m1 t1", "t2 m2 c m3 t3", "t4 m4 c m5 t5", "m0 b0 m1 b1 m2 b2 m3 b3 m4 b4 m5 b5 m0"])
+  "hub 50 66.7; mid0 69.4 66.7; tip0 92 66.7; t0a 81.4 74.8; t0b 81.4 58.5; mid1 59.7 83.5;"
+  "tip1 71 103; t1a 58.7 98; t1b 72.8 89.8; mid2 40.3 83.5; tip2 29 103; t2a 27.2 89.8;"
+  "t2b 41.3 98; mid3 30.6 66.7; tip3 8 66.7; t3a 18.6 58.5; t3b 18.6 74.8; mid4 40.3 49.9;"
+  "tip4 29 30.3; t4a 41.3 35.4; t4b 27.2 43.5; mid5 59.7 49.9; tip5 71 30.3; t5a 72.8 43.5;"
+  "t5b 58.7 35.4",
+  ["tip0 mid0 hub mid1 tip1", "t0a mid0 t0b", "t1a mid1 t1b", "tip2 mid2 hub mid3 tip3",
+   "t2a mid2 t2b", "t3a mid3 t3b", "tip4 mid4 hub mid5 tip5", "t4a mid4 t4b", "t5a mid5 t5b"],
+  clue="No two of us are ever alike",
+  colors={"blue": ["t0a mid0 t0b", "t1a mid1 t1b", "t2a mid2 t2b", "t3a mid3 t3b", "t4a mid4 t4b", "t5a mid5 t5b"],
+    "cyan": ["mid0 tip0", "mid1 tip1", "mid2 tip2", "mid3 tip3", "mid4 tip4", "mid5 tip5"],
+    "white": ["mid0 hub mid1", "mid2 hub mid3", "mid4 hub mid5"]})
 
 P("bird", "Bird", "animal",
-  "bt 92 35; bu 74.6 27; bl 76.2 41.3; h1 69.8 14.4; h2 54 11.2; h3 39.7 20.7; k1 34.9 41.3;"
-  "k2 28.6 63.5; tb1 27 82.5; t1 8 101.5; t2 19.1 112.6; tb2 39.7 92; be1 49.2 99.9;"
-  "be2 66.6 93.6; ch 80.9 74.6; c1 84.1 55.6; e1 50.8 25.5; e2 62.7 25.5; e3 56.7 35.8;"
-  "wa 44.5 49.2; wb 63.5 55.6; wc 58.7 76.2; br1 8 122.1; fl 47.6 122.1; fr 65.1 122.1;"
-  "br2 90.4 122.1",
-  ["bu bt bl bu h1 h2 h3 k1 k2 tb1 t1 t2 tb2 tb1 wc wb wa tb1", "bl c1 ch be2 be1 tb2",
-   "be1 fl br1", "be2 fr fl", "fr br2", "e1 e2 e3 e1"],
-  clue="Tweet me on the branch, not online")
+  "b0 76.7 61.8; b1 70.6 79.3; b2 55.9 86.5; b3 41.2 79.3; b4 35.1 61.8; b5 41.2 44.4;"
+  "b6 55.9 37.1; b7 70.6 44.4; beakTip 92 64.6; eyeDot 84.9 50.1; tailTip1 23.3 41.2;"
+  "tailTip2 36.5 26.8; wingBase 24.9 83.7; feather1 14 96.6; feather2 8 83.7; feather3 14 70.7;"
+  "footL 46.5 106.5; footR 65.2 106.5; branchL 27 106.5; branchR 84.7 106.5",
+  ["b3 b2 b1 b0 b7 b6 b5 b4 b3 wingBase feather1", "beakTip b0 eyeDot", "tailTip1 b5 tailTip2",
+   "feather2 wingBase feather3", "footL branchL", "footL footR branchR", "footL b2 footR"],
+  clue="Tweet me on the branch, not online",
+  colors={"orange": ["beakTip b0 eyeDot"],
+    "blue": ["b3 wingBase feather1", "feather2 wingBase feather3"],
+    "brown": ["tailTip1 b5 b6 b7 b0 b1 b2 b3 b4 b5 tailTip2", "footL branchL", "footL footR branchR", "footL b2 footR"]})
 
 P("donut", "Donut", "object",
-  "o0 50 0; o1 84 14; o2 98 48; o3 84 82; o4 50 96; o5 16 82; o6 2 48; o7 16 14;i0 50 26;"
-  "i2 72 48; i4 50 70; i6 28 48;s1 22 26; s2 34 20; s3 66 20; s4 78 26; s5 24 70; s6 36 76;"
-  "s7 64 76; s8 76 70",
-  ["o0 o1 o2 o3 o4 o5 o6 o7 o0", "i0 i2 i4 i6 i0", "s1 s2", "s3 s4", "s5 s6", "s7 s8"])
+  "o0 92 66.7; i0 70.5 66.7; o1 79.7 96.4; i1 64.5 81.2; o2 50 108.7; i2 50 87.2; o3 20.3 96.4;"
+  "i3 35.5 81.2; o4 8 66.7; i4 29.5 66.7; o5 20.3 37; i5 35.5 52.1; o6 50 24.7; i6 50 46.1;"
+  "o7 79.7 37; i7 64.5 52.1; s0a 81 73.5; s0b 76.7 83.8; s1a 43.2 97.7; s1b 32.9 93.4;"
+  "s2a 19 59.9; s2b 23.3 49.5; s3a 56.8 35.6; s3b 67.1 39.9",
+  ["o0 i0 i1 o1 o0 o7 i7 i6 o6 o5 i5 i4 o4 o3 i3 i2 o2 o1", "i0 i7", "i1 i2", "o2 o3", "i3 i4",
+   "o4 o5", "i5 i6", "o6 o7", "s0a s0b", "s1a s1b", "s2a s2b", "s3a s3b"],
+  clue="Squeeze the middle, it's still there",
+  colors={"orange": ["s0a s0b", "s2a s2b"], "pink": ["i0 i1 i2 i3 i4 i5 i6 i7 i0"],
+    "blue": ["s1a s1b", "s3a s3b"], "brown": ["o0 o1 o2 o3 o4 o5 o6 o7 o0"]})
 
 P("grapes", "Grapes", "plant",
-  "g0 36.1 97.9; g1 50.3 88.1; g2 66.4 99.4; g3 63.8 114.1; g4 50.2 120.4; g5 37.3 112.9;"
-  "g6 24.2 92.3; g7 21 79.4; g8 33.4 67.5; g9 49.1 74.5; g10 63.9 67.4; g11 76.7 75.3;"
-  "g12 77.6 89.9; g13 35.1 51.1; g14 48.6 44.2; g15 61.7 50.5; g16 8 65.8; g17 16.4 49;"
-  "g18 78.5 47.3; g19 87.3 62; s1 52.7 28.4; la 64.6 12.9; lt 92 18.4; lb 79.2 33",
-  ["g0 g1 g2 g3 g4 g5 g0 g6 g7 g8 g9 g1", "g2 g12 g11 g10 g9", "g7 g16 g17 g13 g8",
-   "g10 g15 g14 g13", "g11 g19 g18 g15", "g14 s1 la lt lb s1 lt"],
-  clue="Squash me and wait a few years")
+  "g0 50 52.8; g1l 37.9 70.9; g1r 62.1 70.9; g2l 25.8 89; g2m 50 89; g2r 74.2 89;"
+  "g3a 13.7 107.2; g3b 37.9 107.2; g3c 62.1 107.2; g3d 86.3 107.2; g4a 25.8 125.3; g4b 50 125.3;"
+  "g4c 74.2 125.3; stem1 50 28.6; leafTop 31.9 8; leafTip 13.7 16.5; leafBot 28.2 29.8;"
+  "leafTop2 68.1 8; leafTip2 86.3 16.5; leafBot2 71.8 29.8",
+  ["g0 g1l g2l g3a g4a g3b g2l", "g0 g1r g2m g1l",
+   "g0 stem1 leafTop leafTip leafBot stem1 leafTop2 leafTip2 leafBot2 stem1",
+   "g1r g2r g3c g2m g3b g4b g3c g4c g3d g2r", "g4a g4b g4c"],
+  clue="Squash me and wait a few years",
+  colors={"purple": ["g1l g0 g1r g2m g1l g2l g3a g4a g3b g2l", "g1r g2r g3c g2m g3b g4b g3c g4c g3d g2r", "g4a g4b g4c"],
+    "green": ["g0 stem1 leafTop leafTip leafBot stem1 leafTop2 leafTip2 leafBot2 stem1"]})
 
 P("lizard", "Lizard", "animal",
-  "sn 47.6 12.8; hL 36.5 25.5; hR 58.7 23.9; shL 39.7 42.9; shR 57.1 42.9; bR 58.7 60.3;"
-  "hpL 46 76.2; hpR 63.5 73; elL 22.3 47.6; ftL 19.1 31.8; taL 8 25.5; tbL 23.8 17.5;"
-  "elR 74.6 39.7; ftR 80.9 23.9; taR 77.7 12.8; tbR 92 22.3; fbL 30.2 92; tcL 17.5 93.6;"
-  "tdL 28.6 104.7; fbR 79.3 84.1; tcR 92 84.1; tdR 79.3 96.8; t1 60.3 90.4; t2 57.1 106.3;"
-  "t3 44.5 117.4; t4 28.6 120.6",
-  ["hL sn hR shR bR hpR t1 hpL shL hL hR", "hpL fbL tcL", "hpR fbR tcR",
-   "ftL elL shL shR elR ftR taR", "ftL taL", "ftL tbL", "ftR tbR", "fbL tdL", "fbR tdR",
-   "t1 t2 t3 t4"],
-  clue="Sun's out, tongue's out")
+  "snoutTip 92 63.7; headTop 83 45.7; napeTop 71 39.7; spineMid 56 42.7; hipTop 41 49.9;"
+  "tailBase 30.8 60.7; belly3 41 73.9; belly2 59 77.5; belly1 75.2 70.3; jaw 86 75.1;"
+  "tail1 20 51.7; tail2 11 63.7; tailTip 8 78.7; eye 78.8 30.7; spike1 53 25.9; spike2 35 33.7;"
+  "flKnee 83 87.7; flFoot 74 99.7; flToe1 60.8 107.5; flToe2 84.8 107.5; blKnee 23 75.7;"
+  "blFoot 32 89.5; blToe1 23 96.7; blToe2 42.8 97.9",
+  ["headTop snoutTip jaw belly1 belly2 belly3 tailBase hipTop spineMid napeTop headTop eye",
+   "spineMid spike1", "hipTop spike2", "belly1 flKnee flFoot flToe1",
+   "tailTip tail2 tail1 tailBase blKnee blFoot blToe1", "flFoot flToe2", "blFoot blToe2"],
+  clue="Sun-worshipper on a rock",
+  colors={"green": ["belly1 jaw snoutTip headTop napeTop spineMid hipTop tailBase belly3 belly2 belly1 flKnee flFoot flToe1", "tailTip tail2 tail1 tailBase blKnee blFoot blToe1", "flFoot flToe2", "blFoot blToe2"],
+    "white": ["headTop eye"], "brown": ["spineMid spike1", "hipTop spike2"]})
 
 P("castle", "Castle", "object",
-  "bl 4 130; a 4 40; rt 15 16; rr 26 40; c1 26 54; c2 40 54; c3 40 38; c4 60 38;"
-  "c5 60 54;c6 74 54; c7 74 40; rt2 85 16; rr2 96 40; k 96 130; g1 38 130; g2 50 102;"
-  "g3 62 130;w1 40 74; w2 56 74; w3 56 90; w4 40 90",
-  ["bl a rt rr c1 c2 c3 c4 c5 c6 c7 rt2 rr2 k g3 g2 g1 bl", "w1 w2 w3 w4 w1"])
+  "c1 19.8 53.4; m1a 19.8 41.6; m1b 34.5 41.6; c2 34.5 53.4; c3 52.2 53.4; m2a 52.2 41.6;"
+  "m2b 66.9 41.6; c4 66.9 53.4; c5 80.2 53.4; baseL 19.8 106.5; baseR 80.2 106.5;"
+  "doorL 41.9 106.5; doorApex 53.7 82.9; doorR 65.5 106.5; spike1 19.8 28.4; spike3 47.8 28.4;"
+  "flagPoleTop 65.5 26.9; flagTip 77.3 29.8; torchL 8 96.1; torchR 92 96.1",
+  ["m1a c1 baseL doorL doorR baseR c5 c4 m2b m2a c3 c2 m1b m1a spike1", "m2a spike3",
+   "m2b flagPoleTop flagTip", "baseL torchL", "baseR torchR", "doorL doorApex doorR"],
+  clue="Moat not included",
+  colors={"orange": ["baseL torchL", "baseR torchR"], "red": ["flagPoleTop flagTip"],
+    "brown": ["m1a c1 baseL doorL doorR baseR c5 c4 m2b m2a c3 c2 m1b m1a spike1", "m2a spike3", "m2b flagPoleTop", "doorL doorApex doorR"]})
 
 P("monkey", "Monkey", "animal",
-  "h1l 37.5 26.9; hel 22 44.6; hbl 21.3 69.6; eal 13.2 37.2; ebl 8 54.1; ecl 10.2 68.1;"
-  "ltl 37.5 41.6; eyal 30.1 60.8; eybl 41.2 63; nl 43.4 75.5; sl 27.9 88.8; cl 37.5 106.5;"
-  "h1r 62.5 26.9; her 78 44.6; hbr 78.7 69.6; ear 86.8 37.2; ebr 92 54.1; ecr 89.8 68.1;"
-  "ltr 62.5 41.6; eyar 69.9 60.8; eybr 58.8 63; nr 56.6 75.5; sr 72.1 88.8; cr 62.5 106.5;"
-  "md 50 56.4; s0 50 94.7",
-  ["hel h1l h1r her hbr sr cr cl sl hbl hel eal ebl ecl hbl", "hel ebl",
-   "hel ltl md ltr her ear ebr ecr hbr", "eyal eybl", "her ebr", "eyar eybr",
-   "nl sl s0 sr nr nl"],
-  clue="Going bananas since forever")
+  "muzzleTip 83.1 66.2; muzzleTop 70.3 59.3; browTop 63.3 47.4; headTop 55.4 36.5;"
+  "earTop 52.5 50.4; earBack 40.6 44.4; napeStart 43.6 62.2; backTop 33.7 54.3;"
+  "rumpTop 24.8 64.2; rumpBack 23.8 76.1; hipFront 36.7 78; belly 50.5 80; chestFront 64.3 74.1;"
+  "chin 76.2 76.1; eye 67.3 30.6; nostril 92 56.3; earInner 43.6 31.6; elbow 67.3 87.9;"
+  "hand 61.4 98.8; knee 33.7 91.9; foot 26.8 102.7; tail1 12.9 70.1; tailTip 8 81",
+  ["muzzleTip muzzleTop browTop headTop earTop earBack napeStart backTop rumpTop rumpBack hipFront belly chestFront chin muzzleTip nostril",
+   "headTop eye", "earTop earInner", "rumpBack tail1 tailTip", "hipFront knee foot",
+   "chestFront elbow hand"],
+  clue="Branch manager, self-appointed",
+  colors={"orange": ["rumpBack tail1 tailTip"], "white": ["headTop eye"],
+    "brown": ["muzzleTip muzzleTop browTop headTop earTop earBack napeStart backTop rumpTop rumpBack hipFront belly chestFront chin muzzleTip nostril", "earTop earInner", "hipFront knee foot", "chestFront elbow hand"]})
 
 P("mailbox", "Mailbox", "object",
-  "F1 8.2 84.4; F2 38.4 84.4; F3 38.4 61.3; F4 34 50.7; F5 23.3 46.2; F6 12.7 50.7; F7 8.2 61.3;"
-  "B2 91.8 73.8; B3 91.8 50.7; B4 87.3 40; B5 76.7 35.6; h1 17.1 72; h2 29.6 72; pb 61.6 61.3;"
-  "pm 61.6 22.2; pt 61.6 8; fa 81.1 8; fb 81.1 22.2; q1 54.4 80.9; q2 68.7 78; q3 54.4 125.3;"
-  "q4 68.7 125.3",
-  ["F2 F1 F7 F6 F5 F4 F3 F2 q1 q2 B2 B3 B4 B5 F5", "F3 F7", "h1 h2", "pb pm pt fa fb pm",
-   "q1 q3 q4 q2"],
-  clue="You've got mail")
+  "bL 26.7 83; aL 26.7 55; aTL 35.1 34.5; aT 59.3 25.1; aTR 83.6 34.5; aR 92 55; bR 92 83;"
+  "postAttach 59.3 83; flagBase 26.7 69; dL 40.7 59.7; dR 78 59.7; dR2 78 75.5; dL2 40.7 75.5;"
+  "handleA 64.9 66.2; handleB 50 69; postBottom 59.3 125; baseL 40.7 125; baseR 78 125;"
+  "flagLow 8 59.7; flagTop 8 27; flagTip 31.3 12.1; slotA 59.3 8.3",
+  ["aL flagBase bL postAttach bR aR aTR aT aTL aL dL dR aR", "aT slotA",
+   "postAttach postBottom baseL", "flagBase flagLow flagTop flagTip flagLow", "dL dL2 dR2 dR",
+   "handleA handleB", "postBottom baseR"],
+  clue="You've got mail",
+  colors={"red": ["flagBase flagLow flagTop flagTip flagLow"],
+    "blue": ["aL flagBase bL postAttach bR aR aTR aT aTL aL dL dR aR", "dL dL2 dR2 dR"],
+    "white": ["aT slotA", "handleA handleB"],
+    "brown": ["postAttach postBottom baseL", "postBottom baseR"]})
 
 P("panda", "Panda", "animal",
-  "n3 50 96.6; m 50 108.7; bl 27.4 118.4; br 72.6 118.4; l 9.6 82.8; r 90.4 82.8; h1 16.1 47.3;"
-  "g1 83.9 47.3; h2 35.5 32.7; g2 64.5 32.7; e1 8 27.9; f1 92 27.9; e2 24.2 15; f2 75.8 15;"
-  "n1 43.5 86.1; n2 56.5 86.1; pa 40.3 52.1; qa 59.7 52.1; pb 20.9 65.1; qb 79.1 65.1;"
-  "pc 24.2 92.5; qc 75.8 92.5; ya 30.6 79.6; za 69.4 79.6; yb 35.5 68.3; zb 64.5 68.3",
-  ["n3 n2 qc qb qa n2 n1 pc pb pa n1 n3 m", "h1 l bl br r g1 g2 h2 h1 e1 e2 h2", "g1 f1 f2 g2",
-   "ya yb", "za zb"],
-  clue="Black, white, and bamboo all over")
+  "h0 50 37.5; h1 78 48; h2 92 72.5; h3 78 97; h4 50 107.5; h5 22 97; h6 8 72.5; h7 22 48;"
+  "earLa 8 28.2; earLb 24.3 25.8; earLc 31.3 37.5; earRa 68.7 37.5; earRb 75.7 25.8;"
+  "earRc 92 28.2; pL1 32.5 57.3; pL2 44.2 69; pL3 32.5 80.7; pL4 20.8 69; pLc 32.5 69;"
+  "pR1 67.5 57.3; pR2 79.2 69; pR3 67.5 80.7; pR4 55.8 69; pRc 67.5 69; noseA 43 95.8;"
+  "noseB 57 95.8",
+  ["pL1 pL2 pL3 pL4 pL1 pLc pL2", "pL3 pLc pL4", "pR1 pR2 pR3 pR4 pR1 pRc pR2", "pR3 pRc pR4",
+   "noseA noseB", "h0 h1 h2 h3 h4 h5 h6 h7 h0", "h1 earRa earRb earRc h1",
+   "h7 earLa earLb earLc h7"],
+  clue="Black, white, and bamboo all over",
+  colors={"pink": ["noseA noseB"], "white": ["h0 h1 h2 h3 h4 h5 h6 h7 h0"],
+    "brown": ["pL1 pL2 pL3 pL4 pL1 pLc pL2", "pL3 pLc pL4", "pR1 pR2 pR3 pR4 pR1 pRc pR2", "pR3 pRc pR4", "h1 earRa earRb earRc h1", "h7 earLa earLb earLc h7"]})
 
-P("icecream", "Ice cream cone", "object",
-  "s1L 18.5 78.1; s2L 28.5 86.7; s3L 39.3 78.1; d1L 12.8 65.2; d2L 18.5 50.9; d3L 32.8 40.9;"
-  "k1L 35.7 99.6; k2L 42.8 112.5; s1R 81.5 78.1; s2R 71.5 86.7; s3R 60.7 78.1; d1R 87.2 65.2;"
-  "d2R 81.5 50.9; d3R 67.2 40.9; k1R 64.3 99.6; k2R 57.2 112.5; s0 50 88.1; top 50 38;"
-  "tip 50 125.3; st 61.4 8; h1 40.5 31.1; h2 44.1 19.9; h3 55.9 19.9; h4 59.5 31.1",
-  ["s2L s1L d1L d2L d3L top d3R d2R d1R s1R s2R s3R s0 s3L s2L k1L k2L tip k2R k1R s2R",
-   "k2L k1R s0 k1L k2R", "st h3 h2 h1 top h4 h3"],
-  clue="Brain freeze in a crunchy cup")
+P("icecream", "Ice Cream Cone", "object",
+  "A 50 125.3; R1L 42.2 110.7; R1R 57.8 110.7; R2L 34.4 96; R2M 50 96; R2R 65.6 96;"
+  "R3A 26.5 84.3; R3B 42.2 84.3; R3C 57.8 84.3; R3D 73.5 84.3; P1 30.4 58.8; V1 40.2 70.6;"
+  "P2 50 53; V2 59.8 70.6; P3 69.6 58.8; sp1 26.5 37.3; sp2 36.3 47.1; sp3 50 35.4;"
+  "sp4 63.7 47.1; sp5 73.5 37.3; swirlTip 50 19.7; chL 40.2 8; chR 59.8 8",
+  ["R1L A R1R R2M R1L R2L R3A P1 V1 P2 V2 P3 R3D R2R R1R", "R2L R3B R2M R3C R2R",
+   "P1 sp1 sp2 sp3 sp4 sp5 P3", "sp3 swirlTip chL chR swirlTip"],
+  clue="Brain freeze in a crunchy cup",
+  colors={"red": ["sp3 swirlTip chL chR swirlTip"], "pink": ["R3A P1 V1 P2 V2 P3 R3D"],
+    "white": ["P1 sp1 sp2 sp3 sp4 sp5 P3"],
+    "brown": ["R1L R2M R1R A R1L R2L R3A", "R1R R2R R3D", "R2L R3B R2M R3C R2R"]})
 
 P("sunflower", "Sunflower", "plant",
-  "t0 50 92.2; d0 41.9 71.8; t1 22.6 82.3; d1 29.5 61.4; t2 8 57; d2 26.7 45.5; t3 13.1 28.3;"
-  "d3 34.8 31.4; t4 35.4 9.5; d4 50 25.9; t5 64.6 9.5; d5 65.2 31.4; t6 86.9 28.3; d6 73.3 45.5;"
-  "t7 92 57; d7 70.5 61.4; t8 77.4 82.3; d8 58.1 71.8; s1 50 106.4; s2 50 122.2; la 64.2 93.8;"
-  "lt 86.3 95.4; lb 72.1 109.6; lc 35.8 111.2; lu 13.7 108; ld 29.5 123.8",
-  ["t0 d0 t1 d1 t2 d2 t3 d3 t4 d4 t5 d5 t6 d6 t7 d7 t8 d8 t0 s1 s2 lc lu ld s2 lu",
-   "d0 d1 d2 d3 d4 d5 d6 d7 d8 d0 d6 d4 d2 d8", "d1 d5", "d3 d7", "s1 la lt lb s1 lt"],
-  clue="I always turn to face the sun")
+  "c0 50 27.9; c1 61.7 32.4; c2 66.2 44.1; c3 61.7 55.8; c4 50 60.3; c5 38.3 55.8; c6 33.8 44.1;"
+  "c7 38.3 32.4; t0 50 8; t1 69.9 17; t2 81.6 44.1; t3 69.9 71.2; t5 30.1 71.2; t6 18.4 44.1;"
+  "t7 30.1 17; stemMid 50 84.7; stemBot 50 111.8; leafTop 68.1 89.2; leafTip 81.6 96.5;"
+  "leafBot 69.9 105.5; leafTop2 36.5 105.5; leafTip2 18.4 118.1; leafBot2 31.9 125.3",
+  ["t0 c0 c1 c2 c3 c4 c5 c6 c7 c0 c4 stemMid stemBot leafTop2 leafTip2 leafBot2 stemBot",
+   "t1 c1 c5 t5", "t2 c2 c6 t6", "t3 c3 c7 t7", "stemMid leafTop leafTip leafBot stemMid"],
+  clue="I always turn to face the sun",
+  colors={"green": ["c4 stemMid stemBot leafTop2 leafTip2 leafBot2 stemBot", "stemMid leafTop leafTip leafBot stemMid"],
+    "brown": ["c0 c1 c2 c3 c4 c5 c6 c7 c0 c4", "c1 c5", "c2 c6", "c3 c7"]})
 
 P("tiger", "Tiger", "animal",
-  "T 50 30.3; EiL 36.9 31.2; EaL 31.3 19.1; EbL 18.3 20.9; EoL 12.7 35.9; S1L 8 56.4;"
-  "S2L 10.8 78.8; CkL 23.9 101.2; B 50 114.3; st1L 24.8 54.5; st2L 26.7 75.1; F 50 47.1;"
-  "FsL 38.8 46.1; YaL 35.1 62.9; YbL 44.4 69.5; NL 41.6 84.4; N 50 93.7; EiR 63.1 31.2;"
-  "EaR 68.7 19.1; EbR 81.7 20.9; EoR 87.3 35.9; S1R 92 56.4; S2R 89.2 78.8; CkR 76.1 101.2;"
-  "st1R 75.2 54.5; st2R 73.3 75.1; FsR 61.2 46.1; YaR 64.9 62.9; YbR 55.6 69.5; NR 58.4 84.4",
-  ["T EiL EaL EbL EoL S1L S2L CkL B CkR S2R S1R EoR EbR EaR EiR T F", "EoL EiL FsL",
-   "S1L st1L", "S2L st2L", "B N NR NL N", "YaL YbL", "EoR EiR FsR", "S1R st1R", "S2R st2R",
-   "YaR YbR"],
-  clue="They're grrreat!")
+  "noseTip 92 77.9; muzzleTop 81.7 68.5; browTop 78 57.3; earTip1 74.3 46.1; earTip2 62.1 42.4;"
+  "napeStart 61.2 57.3; shoulderTop 50.9 46.1; midBack 40.7 40.5; hipTop 30.4 50.8;"
+  "rumpBack 23.9 62.9; loin 37.9 76; belly 54.7 78.8; chestFront 72.4 76.9; chin 82.7 85.3;"
+  "eye 70.5 65.7; stripeTip1 43.5 54.5; stripeTip2 24.8 38.7; tailBase 15.5 53.6; tail1 8 42.4;"
+  "tailTip 26.7 26.5; flKnee 78 96.5; flPaw 68.7 106.8; blKnee 35.1 90; blPaw 32.3 101.2",
+  ["browTop muzzleTop noseTip chin chestFront belly loin rumpBack hipTop midBack shoulderTop napeStart earTip2 earTip1 browTop eye",
+   "shoulderTop stripeTip1", "hipTop stripeTip2", "rumpBack tailBase tail1 tailTip",
+   "loin blKnee blPaw", "chestFront flKnee flPaw"],
+  clue="Prowls in orange pajamas",
+  colors={"orange": ["rumpBack loin belly chestFront chin noseTip muzzleTop browTop earTip1 earTip2 napeStart shoulderTop midBack hipTop rumpBack tailBase tail1 tailTip", "loin blKnee blPaw", "chestFront flKnee flPaw"],
+    "white": ["browTop eye"], "brown": ["shoulderTop stripeTip1", "hipTop stripeTip2"]})
 
 P("skateboard", "Skateboard", "object",
-  "Nt 50 8; NaL 38 13; WtL 35 26.1; WbL 35 40.1; WoTL 18.9 26.1; WoBL 18.9 40.1; XtL 35 93.2;"
-  "XbL 35 107.3; XoTL 18.9 93.2; XoBL 18.9 107.3; TaL 38 120.3; Tt 50 125.3; NaR 62 13;"
-  "WtR 65 26.1; WbR 65 40.1; WoTR 81.1 26.1; WoBR 81.1 40.1; XtR 65 93.2; XbR 65 107.3;"
-  "XoTR 81.1 93.2; XoBR 81.1 107.3; TaR 62 120.3; z1 55 50.1; z2 43 70.2; z3 57 66.2;"
-  "z4 45 86.2",
-  ["z1 z2 z3 z4", "Nt NaL WtL WbL XtL XbL TaL Tt TaR XbR XtR WbR WtR NaR Nt",
-   "WtL WoTL WoBL WbL WbR WoBR WoTR WtR WtL", "XtL XoTL XoBL XbL XbR XoBR XoTR XtR XtL"],
-  clue="Ollie, ollie, oxen free!")
+  "tT 8 41.5; tB1 20.6 52.4; tB2 37.4 55.7; tB3 62.6 55.7; tB4 79.4 52.4; nT 92 41.5;"
+  "tT2 8 56.6; bB1 20.6 67.5; bB2 37.4 70.9; bB3 62.6 70.9; bB4 79.4 67.5; nT2 92 56.6;"
+  "wheelTop1 20.6 80.9; w1r 32.4 92.7; w1b 20.6 104.5; w1l 8.8 92.7; wheelTop2 79.4 80.9;"
+  "w2r 91.2 92.7; w2b 79.4 104.5; w2l 67.6 92.7; accentA 8 28.9; accentB 92 28.9",
+  ["tT tB1 tB2 tB3 tB4 nT nT2 bB4 bB3 bB2 bB1 tT2 tT accentA", "nT accentB",
+   "bB1 wheelTop1 w1r w1b w1l wheelTop1", "bB4 wheelTop2 w2r w2b w2l wheelTop2"],
+  clue="Four wheels and a whole lot of attitude",
+  colors={"red": ["tT accentA", "nT accentB"],
+    "white": ["bB1 wheelTop1 w1r w1b w1l wheelTop1", "bB4 wheelTop2 w2r w2b w2l wheelTop2"],
+    "brown": ["tT tB1 tB2 tB3 tB4 nT nT2 bB4 bB3 bB2 bB1 tT2 tT"]})
 
 # Publish order (index 0 = launch day). Redrawn puzzles first, old drawings after.
 ORDER = [
@@ -1031,7 +1316,10 @@ REDRAWN = [
     "bus", "cactus", "church", "ladybug", "clock", "compass", "dice", "octopus", "mushroom2",
     "flag", "laptop", "penguin", "robot", "snowman", "daisy", "trophy", "spider", "violin",
     "starfish", "barn", "drum", "pine", "teapot", "sled", "fish", "balloon", "bridge",
-    "pineapple"
+    "pineapple", "bat", "key2", "bee", "tent", "strawberry", "hedgehog", "microphone", "frog",
+    "candle", "deer", "television", "lemon", "horse", "car", "seagull", "snowflake", "bird",
+    "donut", "grapes", "lizard", "castle", "monkey", "mailbox", "panda", "icecream", "sunflower",
+    "tiger", "skateboard"
 ]
 
 
