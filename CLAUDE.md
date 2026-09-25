@@ -187,7 +187,12 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
    fallback for webviews); a cancelled share sheet is silent. Also: how-to-play dialog (opens on
    the first visit) and stats dialog (solved, streaks, average/best time, "view today's result")
    behind header buttons. All their copy is placeholder text in `js/strings.js`.
-7. Ads + cookie consent banner. **In progress (2026-09-25): AdSense account applied.**
+7. Ads + cookie consent banner + analytics. **In progress (2026-09-25): AdSense review requested;
+   consent message = Google's 3-choice (Consent / Do not consent / Manage options).**
+   - ✅ **Cloudflare Web Analytics** (cookie-free, no consent needed; token 86d6de4d…): beacon
+     snippet before `</body>` in index.html, privacy.html, 404.html. The site is NOT proxied
+     through Cloudflare (DNS points at GitHub Pages), so the snippet is installed manually —
+     "automatic injection" would never fire. Privacy page has an Analytics section.
    - Publisher **ca-pub-2867727940898674**. The AdSense script is in `<head>` of index.html and
      privacy.html (not 404.html: no ads on error pages); `ads.txt` at the root. Auto ads are
      configured in the AdSense dashboard (anchor/overlay on). Advice given: keep in-page auto ads
@@ -234,8 +239,7 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
    How to play fits a 360×640 screen (compact layout ≤ 760px tall) and its 220 KB animation only
    loads when the dialog first opens (`data-src` → `openHelp()` in main.js).
    **Known, not done:** 28 weak/old puzzles from day 74 (5 Dec); line colours only on the first 10
-   (day 11 = 3 Oct is all-yellow); content runs out 2027-01-01; no analytics (a cookie-free counter
-   like GoatCounter would need a privacy-page line); a deploy can briefly serve new HTML with
+   (day 11 = 3 Oct is all-yellow); content runs out 2027-01-01; a deploy can briefly serve new HTML with
    cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs.
 
 ## Non-goals for v1
