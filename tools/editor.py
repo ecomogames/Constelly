@@ -27,7 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 AUTHOR = ROOT / "tools" / "author_puzzles.py"
-LAUNCH = date(2026, 10, 1)  # keep in sync with LAUNCH_DATE_UTC in js/daily.js
+LAUNCH = date(2026, 9, 23)  # keep in sync with LAUNCH_DATE_UTC in js/daily.js
 CATEGORIES = ["animal", "plant", "object"]
 CLUE_MAX = 80
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")

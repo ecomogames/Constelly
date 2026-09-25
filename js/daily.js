@@ -9,7 +9,7 @@
 // The launch date is the epoch — changing it after launch shifts every player's puzzle.
 // Keep in sync with LAUNCH_DATE in tools/validate_puzzles.py.
 
-export const LAUNCH_DATE_UTC = "2026-10-01";
+export const LAUNCH_DATE_UTC = "2026-09-23";
 
 const DAY_MS = 86_400_000;
 const EPOCH_MS = Date.parse(`${LAUNCH_DATE_UTC}T00:00:00Z`);
@@ -25,6 +25,23 @@ export function getTodaysPuzzle(puzzles, now = new Date()) {
   const day = getDayIndex(now);
   const index = Math.max(0, day);
   return { index, number: index + 1, puzzle: puzzles[index] ?? null, preLaunch: day < 0 };
+}
+
+// The puzzle to show for this page load. `requested` is the ?n=N number (1-based) from a
+// "Past puzzles" link: an earlier day is playable (archive: true); today's number, anything in
+// the future, junk, or pre-launch falls back to today's puzzle.
+// → { index, number, puzzle, preLaunch, archive }
+export function pickPuzzle(puzzles, requested, now = new Date()) {
+  const today = getTodaysPuzzle(puzzles, now);
+  const n = Number(requested);
+  const valid = requested != null && Number.isInteger(n) && n >= 1 && n < today.number && n <= puzzles.length;
+  if (today.preLaunch || !valid) return { ...today, archive: false };
+  return { index: n - 1, number: n, puzzle: puzzles[n - 1], preLaunch: false, archive: true };
+}
+
+// The UTC date a puzzle index is (or was) played on.
+export function puzzleDate(index) {
+  return new Date(EPOCH_MS + index * DAY_MS);
 }
 
 // Milliseconds until the next 00:00 UTC (when the next puzzle unlocks).

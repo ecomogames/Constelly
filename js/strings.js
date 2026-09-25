@@ -23,6 +23,10 @@ export const STRINGS = {
     nextPuzzle: "Next puzzle in",
     nextPuzzleReady: "A new puzzle is ready — reload the page.",
     openButton: "See results",
+    replay: "Play again",
+    // Shown after solving a replay: the first solve stays the official result (stats, share).
+    replayNote: (time, hints) => `Replay: ${time} · ${hints} ${hintWord(hints)}. Your first solve is the one above.`,
+    lateNote: "Solved from Past puzzles — it doesn't count toward your streak.",
   },
 
   share: {
@@ -42,7 +46,7 @@ export const STRINGS = {
       "Each number is how many lines that star still needs. A star turns yellow when its lines are right and red when one is wrong.",
       "Tap two stars (or drag between them) to draw a line. Use the eraser to remove lines, or undo your last move.",
       "The quote at the top is a clue about the picture. Still stuck? A hint reveals one correct line. You're scored on time and hints used.",
-      "A new puzzle every day at 00:00 UTC.",
+      "A new puzzle every day at 00:00 UTC. Missed one? Open the menu for past puzzles — and replay any puzzle you've solved.",
     ],
     close: "Play",
     privacy: "Privacy",
@@ -62,9 +66,33 @@ export const STRINGS = {
     bestTime: "Best time",
     none: "–",
     viewToday: "View today's result",
-    history: "History",
-    historyToday: "Today — not solved yet",
-    historyMissed: "Missed",
-    historyHints: (n) => `${n} ${hintWord(n)}`,
+  },
+
+  menu: {
+    button: "Menu",
+    today: "Today's puzzle",
+    past: "Past puzzles",
+    help: "How to play",
+    stats: "Statistics",
+    privacy: "Privacy",
+  },
+
+  past: {
+    heading: "Past puzzles",
+    note: "Play any earlier day. Your streak and stats only count puzzles solved on their own day.",
+    none: "No past puzzles yet — come back tomorrow!",
+    today: "Today",
+    unsolved: "Not played yet",
+    started: "In progress",
+    late: "played later",
+    hints: (n) => `${n} ${hintWord(n)}`,
+    // e.g. "Thu 24 Sep"; the date is the UTC day the puzzle was published
+    date: (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }),
+  },
+
+  archive: {
+    label: (number, date) => `Past puzzle #${number} · ${date}`,
+    backToToday: "Back to today",
+    replaying: (number) => `Replaying #${number} — your first solve is the one that counts`,
   },
 };

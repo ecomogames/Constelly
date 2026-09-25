@@ -41,7 +41,8 @@ ES modules and `fetch()` don't work from `file://`, so serve the folder:
 python -m http.server 8000
 ```
 then open http://localhost:8000. (Or use VS Code's Live Server extension.)
-On localhost, `?p=N` opens `puzzles[N]` instead of today's puzzle.
+On localhost, `?p=N` opens `puzzles[N]` instead of today's puzzle (dev storage, no stats).
+Anywhere, `?n=N` plays an earlier day's puzzle #N (what the "Past puzzles" list links to).
 
 ## Tests
 Zero-dependency unit tests for the pure modules (Node 22+, built-in runner, no `npm install`):

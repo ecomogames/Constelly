@@ -29,8 +29,8 @@
 </head>
 <body>
   <header class="topbar">
-    <button id="help-btn" class="icon-btn" type="button" data-label="help.button">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-5h2v2h-2zm1-9a4 4 0 0 0-4 4h2a2 2 0 1 1 3.2 1.6c-1 .8-2.2 1.6-2.2 3.4h2c0-1 .6-1.5 1.4-2.1A4 4 0 0 0 12 6z"/></svg>
+    <button id="menu-btn" class="icon-btn" type="button" data-label="menu.button" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </button>
     <h1 class="logo">Constelly <span id="puzzle-num" class="puzzle-num"></span></h1>
     <button id="stats-btn" class="icon-btn" type="button" data-label="stats.button">
@@ -41,6 +41,10 @@
   <noscript><p class="reveal">Constelly needs JavaScript to run — please enable it and reload.</p></noscript>
 
   <main class="stage">
+    <!-- Shown when playing an earlier day from "Past puzzles" (?n=N). -->
+    <p id="archive-bar" class="archive-bar" hidden>
+      <span id="archive-label"></span><span id="archive-today"> · <a href="./" data-text="archive.backToToday"></a></span>
+    </p>
     <div class="hud">
       <span id="timer">0:00</span>
       <!-- The puzzle's clue: hints at the picture without naming it (puzzle.clue, optional). -->
@@ -63,8 +67,36 @@
       <button id="reset-btn" type="button" disabled>Start over</button>
     </div>
     <p id="reveal" class="reveal" hidden></p>
-    <button id="results-btn" class="link-btn" type="button" data-text="results.openButton" hidden></button>
+    <div class="solved-actions">
+      <button id="results-btn" class="link-btn" type="button" data-text="results.openButton" hidden></button>
+      <button id="replay-btn" class="link-btn" type="button" data-text="results.replay" hidden></button>
+    </div>
   </main>
+
+  <!-- Sidebar menu (slides in from the left). -->
+  <dialog id="menu" class="dialog drawer" aria-labelledby="menu-heading">
+    <form method="dialog" class="dialog-close-form">
+      <button class="dialog-close" data-label="close">&times;</button>
+    </form>
+    <h2 id="menu-heading">Constelly</h2>
+    <nav class="menu-list">
+      <a class="menu-item" id="menu-today" href="./" data-text="menu.today"></a>
+      <button class="menu-item" id="menu-past" type="button" data-text="menu.past"></button>
+      <button class="menu-item" id="menu-help" type="button" data-text="menu.help"></button>
+      <button class="menu-item" id="menu-stats" type="button" data-text="menu.stats"></button>
+      <a class="menu-item menu-item--small" href="privacy.html" data-text="menu.privacy"></a>
+    </nav>
+  </dialog>
+
+  <!-- Past puzzles: filled in by js/main.js from storage.archiveRows. -->
+  <dialog id="past" class="dialog" aria-labelledby="past-heading">
+    <form method="dialog" class="dialog-close-form">
+      <button class="dialog-close" data-label="close">&times;</button>
+    </form>
+    <h2 id="past-heading" data-text="past.heading"></h2>
+    <p class="past-note" data-text="past.note"></p>
+    <ol id="past-list" class="past-list"></ol>
+  </dialog>
 
   <dialog id="confirm-reset" class="confirm">
     <form method="dialog">
@@ -87,9 +119,11 @@
       <div><dt data-text="results.time"></dt><dd id="results-time"></dd></div>
       <div><dt data-text="results.hints"></dt><dd id="results-hints"></dd></div>
     </dl>
+    <p id="results-replay" class="results-replay" hidden></p>
     <button id="share-btn" class="primary-btn" type="button" data-text="results.share"></button>
     <p id="share-status" class="share-status" role="status" aria-live="polite"></p>
     <p class="results-next" id="results-next"></p>
+    <button id="results-replay-btn" class="link-btn" type="button" data-text="results.replay"></button>
   </dialog>
 
   <dialog id="help" class="dialog dialog--text" aria-labelledby="help-heading">
@@ -123,11 +157,7 @@
       <div><dt data-text="stats.bestTime"></dt><dd id="stat-best"></dd></div>
     </dl>
     <button id="stats-today" class="primary-btn" type="button" data-text="stats.viewToday" hidden></button>
-    <!-- History: filled in by js/main.js from storage.historyRows; hidden before launch. -->
-    <section id="history" class="history" aria-labelledby="history-heading" hidden>
-      <h3 id="history-heading" data-text="stats.history"></h3>
-      <ol id="history-list" class="history-list"></ol>
-    </section>
+    <p class="dialog-links"><button id="stats-past" class="link-btn" type="button" data-text="menu.past"></button></p>
   </dialog>
 
   <footer class="footer">

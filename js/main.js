@@ -8,14 +8,17 @@
 //   4. hook up input + controls (eraser, undo, start over, hint) and the timer
 //   5. on win: glow + title, record the result, then the results dialog (with Share).
 //      A puzzle that was already solved opens straight into the win state.
-//   Header: how-to-play (auto-opens on the first visit) and stats dialogs.
+//   Header: sidebar menu (today, past puzzles, how to play, stats, privacy) and stats.
+//   How-to-play auto-opens on the first visit. ?n=N plays an earlier day ("Past puzzles"):
+//   recorded in history but not in stats/streak. "Play again" clears a solved puzzle's progress
+//   and reloads; the first result stays the official one (results dialog, share, stats).
 
 import {
   createGame, addEdge, removeEdge, undo, canUndo, startOver, isSolved, edgeKey, splitKey,
   useHint, elapsedMs, pauseTimer, resumeTimer, snapshot, restoreProgress,
 } from "./game.js";
-import { getDayIndex, getTodaysPuzzle, msUntilNextPuzzle } from "./daily.js";
-import { createStore, summarize, historyRows } from "./storage.js";
+import { getDayIndex, pickPuzzle, puzzleDate, msUntilNextPuzzle } from "./daily.js";
+import { createStore, summarize, archiveRows } from "./storage.js";
 import { share } from "./share.js";
 import { renderBoard } from "./render.js";
 import { attachInput } from "./input.js";
@@ -79,11 +82,15 @@ async function init() {
   }
   const override = devOverride(puzzles.length);
   const pick = override !== null
-    ? { index: override, number: override + 1, puzzle: puzzles[override], preLaunch: false }
-    : getTodaysPuzzle(puzzles);
+    ? { index: override, number: override + 1, puzzle: puzzles[override], preLaunch: false, archive: false }
+    : pickPuzzle(puzzles, new URLSearchParams(location.search).get("n"));
 
   $("puzzle-num").textContent = `#${pick.number}`;
   document.title = `Constelly #${pick.number} — daily constellation puzzle`;
+  if (pick.archive) {
+    $("archive-label").textContent = STRINGS.archive.label(pick.number, STRINGS.past.date(puzzleDate(pick.index)));
+    $("archive-bar").hidden = false;
+  }
 
   const svg = $("board");
   const reveal = $("reveal");
@@ -111,38 +118,69 @@ async function init() {
     $("help-body").appendChild(p);
   }
   $("help-demo-img").alt = STRINGS.help.demoAlt;
-  $("help-btn").addEventListener("click", () => helpDialog.showModal());
+  const menuDialog = $("menu");
+  const pastDialog = $("past");
+  const closeAll = () => document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+
+  // ---- sidebar menu ----
+  $("menu-btn").addEventListener("click", () => { closeAll(); menuDialog.showModal(); });
+  $("menu-today").addEventListener("click", (e) => {
+    // Already on today's puzzle: just close the menu instead of reloading.
+    if (!pick.archive && override === null) { e.preventDefault(); menuDialog.close(); }
+  });
+  $("menu-past").addEventListener("click", () => openPast());
+  $("menu-help").addEventListener("click", () => { closeAll(); helpDialog.showModal(); });
+  $("menu-stats").addEventListener("click", () => { closeAll(); $("stats-btn").click(); });
+  $("stats-past").addEventListener("click", () => openPast());
   if (!store.hasSeenHelp()) {
     helpDialog.showModal();
     store.markHelpSeen();
   }
 
-  // ---- stats ----
-  function renderHistory() {
-    const rows = historyRows(store.loadHistory(), puzzles, today);
-    const list = $("history-list");
+  // ---- past puzzles ----
+  function openPast() {
+    const rows = archiveRows(store.loadHistory(), puzzles, getDayIndex(), store.loadProgress);
+    const list = $("past-list");
     list.replaceChildren();
-    for (const r of rows) {
+    if (!rows.length) {
       const li = document.createElement("li");
-      li.className = `history-row history-row--${r.status}`;
-      const num = document.createElement("span");
-      num.className = "history-num";
-      num.textContent = `#${r.number}`;
-      const name = document.createElement("span");
-      name.className = "history-title";
-      name.textContent = r.status === "solved" ? r.title
-        : r.status === "today" ? STRINGS.stats.historyToday : STRINGS.stats.historyMissed;
-      const meta = document.createElement("span");
-      meta.className = "history-meta";
-      if (r.status === "solved") {
-        meta.textContent = [r.timeMs === null ? null : formatTime(r.timeMs),
-          r.hints === null ? null : STRINGS.stats.historyHints(r.hints)].filter(Boolean).join(" · ");
-      }
-      li.append(num, name, meta);
+      li.className = "past-row";
+      li.textContent = STRINGS.past.none;
       list.appendChild(li);
     }
-    $("history").hidden = rows.length === 0;
+    for (const r of rows) {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.className = `past-row past-row--${r.status}` + (pick.puzzle && r.day === pick.index ? " past-row--current" : "");
+      a.href = r.today ? "./" : `?n=${r.number}`;
+      const num = document.createElement("span");
+      num.className = "past-num";
+      num.textContent = `#${r.number}`;
+      const title = document.createElement("span");
+      title.className = "past-title";
+      title.textContent = r.status === "solved" ? r.title
+        : r.status === "started" ? STRINGS.past.started : STRINGS.past.unsolved;
+      const date = document.createElement("span");
+      date.className = "past-date";
+      date.textContent = r.today ? STRINGS.past.today : STRINGS.past.date(puzzleDate(r.day));
+      a.append(num, title, date);
+      if (r.status === "solved") {
+        const meta = document.createElement("span");
+        meta.className = "past-meta";
+        meta.textContent = [r.timeMs === null ? null : formatTime(r.timeMs),
+          r.hints === null ? null : STRINGS.past.hints(r.hints), r.late ? STRINGS.past.late : null]
+          .filter(Boolean).join(" · ");
+        a.append(meta);
+      }
+      li.append(a);
+      list.appendChild(li);
+    }
+    closeAll();
+    pastDialog.showModal();
+    list.querySelector(".past-row--current")?.scrollIntoView({ block: "nearest" });
   }
+
+  // ---- stats ----
   let isSolvedNow = () => false; // replaced once a puzzle is loaded
   const statTime = (ms) => (ms === null ? STRINGS.stats.none : formatTime(ms));
   $("stats-btn").addEventListener("click", () => {
@@ -153,8 +191,7 @@ async function init() {
     $("stat-avg").textContent = statTime(s.avgTimeMs);
     $("stat-best").textContent = statTime(s.bestTimeMs);
     $("stats-today").hidden = !isSolvedNow();
-    renderHistory();
-    for (const d of [helpDialog, resultsDialog]) if (d.open) d.close();
+    closeAll();
     statsDialog.showModal();
   });
 
@@ -173,13 +210,27 @@ async function init() {
     $("clue").textContent = STRINGS.hud.clue(puzzle.clue);
     $("clue").hidden = false;
   }
+  // The first solve is the official result (results dialog, share, stats); replays don't change it.
+  const official = () => (store.dev ? null : store.loadResult(puzzle.id));
   const game = restoreProgress(createGame(puzzle), store.loadProgress(puzzle.id));
   const view = renderBoard(svg, game);
+  if (official() && !isSolved(game)) {  // a "Play again" in progress
+    $("archive-label").textContent = STRINGS.archive.replaying(pick.number);
+    $("archive-today").hidden = !pick.archive;
+    $("archive-bar").hidden = false;
+  }
   let solved = false;
 
-  const save = () => store.saveProgress(puzzle.id, snapshot(game));
+  let leaving = false; // set by "Play again", so pagehide doesn't save the old board back
+  const save = () => { if (!leaving) store.saveProgress(puzzle.id, snapshot(game)); };
   function recordResult() {
-    store.recordResult({ id: puzzle.id, day: pick.index, timeMs: elapsedMs(game), hints: game.hintsUsed });
+    store.recordResult({ id: puzzle.id, day: pick.index, timeMs: elapsedMs(game), hints: game.hintsUsed,
+      late: pick.archive });
+  }
+  function playAgain() {
+    leaving = true;
+    store.clearProgress(puzzle.id);
+    location.reload();
   }
 
   // ---- results ----
@@ -196,27 +247,41 @@ async function init() {
       : `${STRINGS.results.nextPuzzle} ${formatCountdown(msUntilNextPuzzle())}`;
   }
 
+  // What the results dialog shows and Share sends: the official (first) solve if there is one.
+  function shownResult() {
+    const now = currentResult();
+    const first = official();
+    return first ? { ...now, timeMs: first.timeMs, hints: first.hints, late: !!first.late, now } : { ...now, now };
+  }
+
   function openResults() {
-    const r = currentResult();
+    const r = shownResult();
     $("results-heading").textContent = STRINGS.results.heading(r.number);
     $("results-title").textContent = STRINGS.results.solvedTitle(r.title);
     $("results-time").textContent = formatTime(r.timeMs);
     $("results-hints").textContent = String(r.hints);
+    const isReplay = r.now.timeMs !== r.timeMs || r.now.hints !== r.hints;
+    const notes = [isReplay ? STRINGS.results.replayNote(formatTime(r.now.timeMs), r.now.hints) : null,
+      r.late ? STRINGS.results.lateNote : null].filter(Boolean);
+    $("results-replay").textContent = notes.join(" ");
+    $("results-replay").hidden = notes.length === 0;
     $("share-status").textContent = "";
     updateCountdown();
     clearInterval(countdownTimer);
     countdownTimer = setInterval(updateCountdown, 1000);
-    for (const d of [helpDialog, statsDialog]) if (d.open) d.close();
+    for (const d of [helpDialog, statsDialog, menuDialog, pastDialog]) if (d.open) d.close();
     if (!resultsDialog.open) resultsDialog.showModal();
   }
   resultsDialog.addEventListener("close", () => clearInterval(countdownTimer));
   resultsBtn.addEventListener("click", openResults);
+  $("replay-btn").addEventListener("click", playAgain);
+  $("results-replay-btn").addEventListener("click", playAgain);
   $("stats-today").addEventListener("click", openResults);
   isSolvedNow = () => solved;
 
   let statusTimer = null;
   $("share-btn").addEventListener("click", async () => {
-    const outcome = await share(currentResult());
+    const outcome = await share(shownResult());
     const message = { copied: STRINGS.share.copied, failed: STRINGS.share.failed }[outcome] ?? "";
     $("share-status").textContent = message;
     clearTimeout(statusTimer);
@@ -236,6 +301,7 @@ async function init() {
     reveal.textContent = puzzle.title;
     reveal.hidden = false;
     resultsBtn.hidden = false;
+    $("replay-btn").hidden = false;
     document.querySelector(".stage").classList.add("stage--solved");
   }
 
@@ -317,7 +383,7 @@ async function init() {
     } else {
       // A tab left open past 00:00 UTC: load the new puzzle — unless the player is part-way
       // through the old one (its progress is saved; solving it still counts for its own day).
-      if (override === null && getDayIndex() !== today && (solved || game.drawn.size === 0)) {
+      if (override === null && !pick.archive && getDayIndex() !== today && (solved || game.drawn.size === 0)) {
         location.reload();
         return;
       }

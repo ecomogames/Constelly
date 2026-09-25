@@ -35,7 +35,7 @@ PUZZLES = ROOT / "puzzles" / "puzzles.json"
 SCHEMA = ROOT / "puzzles" / "schema.json"
 
 # Keep in sync with LAUNCH_DATE_UTC in js/daily.js.
-LAUNCH_DATE = date(2026, 10, 1)
+LAUNCH_DATE = date(2026, 9, 23)
 RUNWAY_WARN_DAYS = 14
 
 # Portrait 3:4 board: one unit = board width, so x in [0, 1] and y in [0, BOARD_H].

@@ -259,38 +259,89 @@ body {
   gap: 1rem 0.5rem;
 }
 .figures--stats dd { font-size: 1.4rem; }
-.history { margin-top: 1.25rem; text-align: left; }
-.history h3 {
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-align: center;
-}
-.history-list {
+/* ---- past puzzles ---- */
+.past-note { color: var(--muted); font-size: 0.9rem; }
+.past-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 14rem;
-  overflow-y: auto;
+  text-align: left;
   border-top: 1px solid var(--muted);
 }
-.history-row {
+.past-row {
   display: grid;
   grid-template-columns: 3rem 1fr auto;
-  gap: 0.5rem;
+  gap: 0.15rem 0.5rem;
   align-items: baseline;
-  padding: 0.45rem 0.25rem;
+  min-height: 44px;
+  padding: 0.5rem 0.25rem;
   border-bottom: 1px solid rgb(92 100 144 / 0.35);
+  color: var(--fg);
+  text-decoration: none;
   font-variant-numeric: tabular-nums;
 }
-.history-num { color: var(--muted); }
-.history-row--solved .history-title { color: var(--ok); }
-.history-row--missed .history-title,
-.history-row--today .history-title { color: var(--muted); font-style: italic; }
-.history-meta { color: var(--fg); font-size: 0.9rem; white-space: nowrap; }
+a.past-row:hover, a.past-row:focus-visible { background: rgb(92 100 144 / 0.18); }
+.past-row--current { background: rgb(255 216 74 / 0.08); }
+.past-num { color: var(--muted); }
+.past-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.past-row--solved .past-title { color: var(--ok); }
+.past-row--new .past-title,
+.past-row--started .past-title { color: var(--muted); font-style: italic; }
+.past-row--started .past-title { color: var(--fg); }
+.past-date { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+.past-meta { grid-column: 2 / 4; color: var(--muted); font-size: 0.85rem; }
+
+/* ---- sidebar menu ---- */
+.drawer {
+  margin: 0;
+  inset: 0 auto 0 0;
+  width: min(82vw, 19rem);
+  height: 100%;
+  height: 100dvh;
+  max-height: none;
+  border-width: 0 1px 0 0;
+  border-radius: 0 14px 14px 0;
+  padding: 1.25rem 0.75rem;
+  text-align: left;
+  animation: drawer-in 0.2s ease-out;
+}
+.drawer h2 { margin: 0.25rem 2.5rem 1rem 0.5rem; letter-spacing: 0.08em; }
+@keyframes drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+.menu-list { display: flex; flex-direction: column; gap: 0.15rem; }
+.menu-item {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 0.75rem;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--fg);
+  text-align: left;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.menu-item:hover, .menu-item:focus-visible { background: rgb(92 100 144 / 0.25); }
+.menu-item--small { margin-top: 1rem; font-size: 0.9rem; color: var(--muted); }
+
+/* ---- playing a past day ---- */
+.archive-bar {
+  margin: 0;
+  padding: 0.15rem 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+}
+.archive-bar a { color: var(--ok); text-underline-offset: 0.2em; }
+.solved-actions { display: flex; justify-content: center; flex-wrap: wrap; }
+.solved-actions [hidden] { display: none; }
+.results-replay { color: var(--muted); font-size: 0.9rem; }
+
 .link-btn {
   font: inherit;
   color: var(--ok);
@@ -432,6 +483,7 @@ body {
   .dot--shake .dot-circle { animation: dot-flag 0.6s steps(1, end); }
   .line--flash { animation: none; } /* .line--shake is an opacity blink, not motion: kept */
   .reveal,
+  .drawer,
   .board--solved .lines,
   .board--solved .dots { animation: none; }
 }

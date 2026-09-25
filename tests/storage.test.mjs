@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import {
   emptyStats, applyResult, refreshStreak, normalizeStats, summarize, createStore,
 } from "../js/storage.js";
-import { getDayIndex } from "../js/daily.js";
+import { getDayIndex, LAUNCH_DATE_UTC } from "../js/daily.js";
+
+const L = Date.parse(`${LAUNCH_DATE_UTC}T00:00:00Z`);
+const at = (days, ms = 0) => new Date(L + days * 86_400_000 + ms);
 
 // Minimal in-memory stand-in for localStorage.
 function memory() {
@@ -12,11 +15,13 @@ function memory() {
     m,
     getItem: (k) => (m.has(k) ? m.get(k) : null),
     setItem: (k, v) => m.set(k, String(v)),
+    removeItem: (k) => m.delete(k),
   };
 }
 const broken = {
   getItem() { throw new Error("SecurityError"); },
   setItem() { throw new Error("QuotaExceededError"); },
+  removeItem() { throw new Error("SecurityError"); },
 };
 
 // ---- pure streak logic ----
@@ -59,12 +64,12 @@ test("a missed day resets the streak to 0 on the next load", () => {
 });
 
 test("the streak boundary is 00:00 UTC", () => {
-  // Solved puzzle day 0 (1 Oct). Loading at 23:59 UTC on 2 Oct keeps it; 00:00 UTC on 3 Oct resets.
+  // Solved puzzle day 0. Loading at 23:59 UTC on day 1 keeps it; 00:00 UTC on day 2 resets.
   const s = applyResult(emptyStats(), 0, 1000);
-  assert.equal(refreshStreak(s, getDayIndex(new Date("2026-10-02T23:59:59Z"))).streak, 1);
-  assert.equal(refreshStreak(s, getDayIndex(new Date("2026-10-03T00:00:00Z"))).streak, 0);
-  // 01:00 on 3 Oct in Denmark (UTC+2) is still 2 Oct in UTC: streak alive.
-  assert.equal(refreshStreak(s, getDayIndex(new Date("2026-10-03T01:00:00+02:00"))).streak, 1);
+  assert.equal(refreshStreak(s, getDayIndex(at(2, -1000))).streak, 1);
+  assert.equal(refreshStreak(s, getDayIndex(at(2))).streak, 0);
+  // 01:00 on day 2 in Denmark (UTC+2) is still day 1 in UTC: streak alive.
+  assert.equal(refreshStreak(s, getDayIndex(at(2, -3_600_000))).streak, 1);
 });
 
 test("solving a puzzle after midnight counts for the puzzle's own day", () => {
@@ -139,24 +144,52 @@ test("store: corrupt JSON reads as nothing", () => {
   assert.equal(store.recordResult({ id: "x", day: 0, timeMs: 1, hints: 0 }).totalSolved, 1);
 });
 
-// ---- history list ----
-import { historyRows } from "../js/storage.js";
+// ---- past puzzles + replays ----
+import { archiveRows } from "../js/storage.js";
 
-test("historyRows: newest first, titles only for solved days, today flagged", () => {
-  const puzzles = [{ id: "a", title: "Fish" }, { id: "b", title: "Tulip" }, { id: "c", title: "House" }];
-  const history = { a: { day: 0, timeMs: 61_000, hints: 1 } };
-  const rows = historyRows(history, puzzles, 2);
-  assert.deepEqual(rows.map((r) => [r.number, r.status, r.title]), [
-    [3, "today", null], [2, "missed", null], [1, "solved", "Fish"],
-  ]);
-  assert.equal(rows[2].timeMs, 61_000);
-  assert.equal(rows[2].hints, 1);
+test("store: a late (Past puzzles) solve goes into history but not stats", () => {
+  const backend = memory();
+  const store = createStore({ backend });
+  store.recordResult({ id: "a", day: 2, timeMs: 3000, hints: 0 });
+  const stats = store.recordResult({ id: "b", day: 0, timeMs: 1000, hints: 2, late: true });
+  assert.equal(stats.totalSolved, 1);
+  assert.equal(stats.bestTimeMs, 3000);
+  assert.equal(stats.streak, 1);
+  const b = store.loadResult("b");
+  assert.deepEqual([b.day, b.timeMs, b.hints, b.late], [0, 1000, 2, true]);
+  assert.equal(store.loadResult("a").late, undefined);
+  assert.equal(store.loadResult("zzz"), null);
 });
 
-test("historyRows: empty before launch, capped past the end and by limit", () => {
+test("store: Play again clears progress but keeps the first result", () => {
+  const backend = memory();
+  const store = createStore({ backend });
+  store.saveProgress("a", { edges: ["x|y"], solved: true });
+  store.recordResult({ id: "a", day: 0, timeMs: 9000, hints: 1 });
+  assert.equal(store.clearProgress("a"), true);
+  assert.equal(store.loadProgress("a"), null);
+  const after = store.recordResult({ id: "a", day: 0, timeMs: 10, hints: 0 }); // replay solved faster
+  assert.equal(after.bestTimeMs, 9000);
+  assert.equal(store.loadResult("a").timeMs, 9000);
+  assert.equal(createStore({ backend: broken }).clearProgress("a"), false);
+});
+
+test("archiveRows: newest first, titles only once solved, started and late flagged", () => {
+  const puzzles = [{ id: "a", title: "Fish" }, { id: "b", title: "Tulip" }, { id: "c", title: "House" }, { id: "d", title: "Kite" }];
+  const history = { a: { day: 0, timeMs: 61_000, hints: 1, late: true }, c: { day: 2, timeMs: 5000, hints: 0 } };
+  const progress = { b: { edges: ["p|q"] }, d: { edges: [] } };
+  const rows = archiveRows(history, puzzles, 3, (id) => progress[id] ?? null);
+  assert.deepEqual(rows.map((r) => [r.number, r.status, r.title, r.today, r.late]), [
+    [4, "new", null, true, false], [3, "solved", "House", false, false],
+    [2, "started", null, false, false], [1, "solved", "Fish", false, true],
+  ]);
+  assert.equal(rows[3].timeMs, 61_000);
+  assert.equal(rows[3].hints, 1);
+});
+
+test("archiveRows: empty before launch, capped past the end", () => {
   const puzzles = [{ id: "a", title: "A" }, { id: "b", title: "B" }];
-  assert.deepEqual(historyRows({}, puzzles, -3), []);
-  assert.deepEqual(historyRows({}, puzzles, 10).map((r) => r.day), [1, 0]);
-  assert.equal(historyRows({}, puzzles, 1, 1).length, 1);
-  assert.equal(historyRows(null, puzzles, 0)[0].status, "today");
+  assert.deepEqual(archiveRows({}, puzzles, -3), []);
+  assert.deepEqual(archiveRows({}, puzzles, 10).map((r) => [r.day, r.today]), [[1, false], [0, false]]);
+  assert.equal(archiveRows(null, puzzles, 0)[0].status, "new");
 });

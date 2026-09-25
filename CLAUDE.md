@@ -204,6 +204,20 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
      tests/). So never commit solution previews: `Claude outputs/` is gitignored. puzzles.json
      itself is readable by anyone — accepted, it's the price of no backend.
 
+9. ✅ Past puzzles + replay (2026-09-25).
+   - Header left = **menu** (sidebar `<dialog class="drawer">`: Today's puzzle, Past puzzles,
+     How to play, Statistics, Privacy); right = stats. The old stats "History" list is replaced
+     by the **Past puzzles** dialog (`archiveRows` in storage.js): every day from today back to
+     #1, title only once solved, "In progress" / "Not played yet", time/hints, "played later".
+   - `?n=N` plays puzzle #N (only earlier days — `pickPuzzle` in daily.js; today/future/junk →
+     today). Shown with a "Past puzzle #N · date · Back to today" bar. A past puzzle solved from
+     the list goes into history with `late: true` and **never touches stats or the streak**. No
+     midnight auto-reload on past puzzles.
+   - **Play again** (solved state + results dialog) on any solved puzzle, today's included: clears
+     that puzzle's saved progress and reloads. The first solve stays the official result — the
+     results dialog and Share show it, with a "Replay: 0:20 · 0 hints" note for the replay;
+     stats/history never change. A replay in progress shows a "Replaying #N" bar.
+
 ## Non-goals for v1
 - No user accounts or server-side leaderboards.
 - No procedural puzzle generation.
@@ -219,8 +233,10 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 - ~~**Interaction model:**~~ Resolved: support **both** tap-tap and drag-to-connect via pointer
   events. Tapping a line erases it only in eraser mode (see Controls).
 - ~~**Hosting:**~~ Resolved: **GitHub Pages** (deploy from `main`, root folder).
-- ~~**Launch date / epoch:**~~ Resolved: **2026-10-01** (`LAUNCH_DATE_UTC` in `js/daily.js`,
-  `LAUNCH_DATE` in `tools/validate_puzzles.py`).
+- ~~**Launch date / epoch:**~~ Resolved: **2026-09-23** (moved from 2026-10-01 on 2026-09-25, so
+  that day was #3). `LAUNCH_DATE_UTC` in `js/daily.js`, `LAUNCH_DATE` in
+  `tools/validate_puzzles.py`, `LAUNCH` in `tools/editor.py`. Puzzles #1+ are now live: don't
+  reorder or reshape them (the editor warns).
 - ~~**Pre-launch / out of puzzles:**~~ Resolved: before launch the site shows puzzle 0 (#1); past
   the end of the list it shows a "back tomorrow" message (no looping — progress is keyed by puzzle
   id). The validator prints the last puzzle's date and warns when < 14 days remain.

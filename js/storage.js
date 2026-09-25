@@ -3,10 +3,15 @@
 // Keys:
 //   constelly:progress:<puzzleId>  → game.js snapshot():
 //                                    { edges, hinted, hints, started, elapsedMs, solved }
-//   constelly:history              → { <puzzleId>: { day, timeMs, hints, solvedAt } }
+//   constelly:history              → { <puzzleId>: { day, timeMs, hints, solvedAt, late? } }
+//                                    first solve only; late = solved from "Past puzzles"
 //   constelly:stats                → { streak, maxStreak, lastSolvedDay, totalSolved,
 //                                      totalTimeMs, bestTimeMs }
 //   constelly:seen-help            → 1 once the how-to-play dialog has been shown
+//
+// Past puzzles (archive) and replays: a past puzzle solved late goes into history (so the list
+// shows it solved) but never touches stats or the streak. A replay ("Play again") clears the
+// saved progress only; the first result in history stays the official one.
 //
 // Progress is keyed by puzzle id; streaks use the puzzle's day index (the "day" in history), so
 // finishing a puzzle just after midnight still counts for the day it belongs to.
@@ -76,20 +81,26 @@ export function summarize(stats) {
   };
 }
 
-// Rows for the history list in the stats dialog, newest first: one per puzzle day from today
-// (or the last puzzle, if we've run out) back to launch, at most `limit`. Titles only for
-// solved puzzles — a missed day stays unspoiled. → [{ day, number, status, title, timeMs, hints }]
-//   status: "solved" | "today" (today's puzzle, not solved yet) | "missed"
-export function historyRows(history, puzzles, today, limit = 30) {
+// Rows for the "Past puzzles" list, newest first: every puzzle day from today (or the last
+// puzzle, if we've run out) back to #1. Titles only for solved puzzles, so an unplayed day stays
+// unspoiled. progressOf(id) → saved progress or null, to spot puzzles started but not finished.
+// → [{ day, number, id, today, status, late, title, timeMs, hints }]
+//   status: "solved" | "started" | "new";  late: solved from the list, not on its own day
+export function archiveRows(history, puzzles, today, progressOf = () => null) {
   const rows = [];
-  for (let day = Math.min(today, puzzles.length - 1); day >= 0 && rows.length < limit; day--) {
+  for (let day = Math.min(today, puzzles.length - 1); day >= 0; day--) {
     const p = puzzles[day];
     const h = history?.[p.id];
-    const solved = h && typeof h === "object";
+    const solved = !!h && typeof h === "object";
+    const progress = solved ? null : progressOf(p.id);
+    const started = Array.isArray(progress?.edges) && progress.edges.length > 0;
     rows.push({
       day,
       number: day + 1,
-      status: solved ? "solved" : day === today ? "today" : "missed",
+      id: p.id,
+      today: day === today,
+      status: solved ? "solved" : started ? "started" : "new",
+      late: solved && h.late === true,
       title: solved ? p.title : null,
       timeMs: solved && Number.isFinite(h.timeMs) ? h.timeMs : null,
       hints: solved && Number.isInteger(h.hints) ? h.hints : null,
@@ -114,6 +125,15 @@ export function createStore({ dev = false, backend } = {}) {
     }
   }
 
+  function remove(key) {
+    try {
+      ls().removeItem(key);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   function write(key, value) {
     try {
       ls().setItem(key, JSON.stringify(value));
@@ -134,6 +154,7 @@ export function createStore({ dev = false, backend } = {}) {
     dev,
     loadProgress: (id) => read(progressKey(id)),
     saveProgress: (id, data) => write(progressKey(id), data),
+    clearProgress: (id) => remove(progressKey(id)), // "Play again"
 
     // Current stats with the streak reset if a day was missed (persisted, outside dev mode).
     loadStats(today) {
@@ -143,18 +164,24 @@ export function createStore({ dev = false, backend } = {}) {
       return stats;
     },
 
-    // Record a solve once per puzzle id. → updated stats (unchanged in dev mode / if already recorded)
-    recordResult({ id, day, timeMs, hints }, now = new Date()) {
+    // Record a solve once per puzzle id (a replay changes nothing). late = solved from the
+    // Past puzzles list: kept in history, left out of stats and the streak.
+    // → updated stats (unchanged in dev mode / if already recorded / if late)
+    recordResult({ id, day, timeMs, hints, late = false }, now = new Date()) {
       const stats = normalizeStats(read(`${PREFIX}stats`));
       if (dev) return stats;
       const history = loadHistory();
       if (history[id]) return stats;
-      history[id] = { day, timeMs, hints, solvedAt: now.toISOString() };
-      const next = applyResult(stats, day, timeMs);
+      history[id] = { day, timeMs, hints, solvedAt: now.toISOString(), ...(late ? { late: true } : {}) };
       write(`${PREFIX}history`, history);
+      if (late) return stats;
+      const next = applyResult(stats, day, timeMs);
       write(`${PREFIX}stats`, next);
       return next;
     },
+
+    // The first (official) result for a puzzle, or null.
+    loadResult: (id) => loadHistory()[id] ?? null,
 
     loadHistory,
 
