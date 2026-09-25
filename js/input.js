@@ -1,8 +1,10 @@
 // Input — pointer events so mouse, touch and pen share one code path.
 //
 // Decision (confirmed): support BOTH interaction styles.
-//   - Tap-tap: tap a dot to select it, tap another dot to connect. Tap the same dot / empty
-//     space to cancel the selection.
+//   - Tap-tap: tap a dot to select it, tap another dot to connect. Taps CHAIN: the dot just
+//     connected stays selected, so a third tap draws 2nd→3rd, and so on — until that dot has no
+//     room for another line (onConnect returns false) or the player taps the selected dot again
+//     / empty space to stop.
 //   - Drag: press on a dot, drag, release over another dot to connect (show a rubber-band
 //     line while dragging).
 // Distinguish tap from drag by movement distance after pointerdown. A drag that ends back on
@@ -16,8 +18,8 @@
 //
 // Hit testing is geometric via the view: dotAtPoint(p, {strict}) and lineAtPoint(p).
 // No game knowledge here — it only reports gestures through the handlers:
-//   onConnect(a, b), onEraseLine(a, b), onSelect(id | null), onRubberBand(fromId, point | null),
-//   onEraserChange(on)
+//   onConnect(a, b) → false to end a tap chain at b, onEraseLine(a, b), onSelect(id | null),
+//   onRubberBand(fromId, point | null), onEraserChange(on)
 
 import { splitKey } from "./game.js";
 
@@ -27,6 +29,7 @@ export function attachInput(svg, { dotAtPoint, lineAtPoint }, handlers) {
   let selected = null; // dot id chosen by a first tap
   let press = null;    // { pointerId, startX, startY, dot, edge, dragging }
   let eraser = false;
+  let attached = true;
 
   function select(id) {
     selected = id;
@@ -66,7 +69,8 @@ export function attachInput(svg, { dotAtPoint, lineAtPoint }, handlers) {
     else {
       const from = selected;
       select(null);
-      handlers.onConnect(from, id);
+      const keepGoing = handlers.onConnect(from, id) !== false;
+      if (keepGoing && attached) select(id); // chain on from the dot just reached
     }
   }
 
@@ -142,6 +146,7 @@ export function attachInput(svg, { dotAtPoint, lineAtPoint }, handlers) {
   svg.addEventListener("pointercancel", onCancel);
 
   function detach() {
+    attached = false;
     svg.removeEventListener("pointerdown", onDown);
     svg.removeEventListener("pointermove", onMove);
     svg.removeEventListener("pointerup", onUp);

@@ -44,7 +44,7 @@ export const STRINGS = {
     body: [
       "Connect the stars to reveal a hidden picture.",
       "Each number is how many lines that star still needs. A star turns yellow when its lines are right and red when one is wrong.",
-      "Tap two stars (or drag between them) to draw a line. Use the eraser to remove lines, or undo your last move.",
+      "Tap two stars (or drag between them) to draw a line. Keep tapping to carry on from the last star; tap it again to stop. Use the eraser to remove lines, or undo your last move.",
       "The quote at the top is a clue about the picture. Still stuck? A hint reveals one correct line. You're scored on time and hints used.",
       "A new puzzle every day at 00:00 UTC. Missed one? Open the menu for past puzzles — and replay any puzzle you've solved.",
     ],

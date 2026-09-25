@@ -37,6 +37,9 @@ low running cost** over scalability or cleverness.
 
 ## Controls (confirmed)
 - **Draw (default mode):** tap-tap or drag between dots. Tapping a line does **nothing** in this mode.
+  **Tap chains (2026-09-25):** after tap-tap connects A→B, B stays selected, so tapping C draws
+  B→C, and so on. The chain ends when the reached dot is full (no lines left), on a tap on the
+  selected dot or empty space, or when the puzzle is solved. Drags don't chain.
 - **Eraser:** toggle button (eraser icon). While on, tapping a line erases it. It turns off when
   the button is pressed again **or** when the player taps a dot (so they can draw again right away).
   In eraser mode, line hit-testing must take priority over the dots' tap areas — otherwise short

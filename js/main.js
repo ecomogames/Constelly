@@ -14,7 +14,7 @@
 //   and reloads; the first result stays the official one (results dialog, share, stats).
 
 import {
-  createGame, addEdge, removeEdge, undo, canUndo, startOver, isSolved, edgeKey, splitKey,
+  createGame, addEdge, removeEdge, undo, canUndo, startOver, isSolved, edgeKey, splitKey, remaining,
   useHint, elapsedMs, pauseTimer, resumeTimer, snapshot, restoreProgress,
 } from "./game.js";
 import { getDayIndex, pickPuzzle, puzzleDate, msUntilNextPuzzle } from "./daily.js";
@@ -336,6 +336,8 @@ async function init() {
       const result = addEdge(game, a, b);
       if (!result.ok && result.reason === "cap") result.capped.forEach((id) => view.shake(id));
       afterChange();
+      // Tap-tap chains on from b while b can still take a line.
+      return !solved && remaining(game, b) > 0;
     },
     onEraseLine(a, b) {
       const result = removeEdge(game, a, b);
