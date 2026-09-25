@@ -28,7 +28,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 AUTHOR = ROOT / "tools" / "author_puzzles.py"
 LAUNCH = date(2026, 10, 1)  # keep in sync with LAUNCH_DATE_UTC in js/daily.js
-CATEGORIES = ["animal", "plant", "object", "real-constellation"]
+CATEGORIES = ["animal", "plant", "object"]
+CLUE_MAX = 80
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_]+$")
 SAVE_LOCK = threading.Lock()
@@ -52,11 +53,13 @@ def load_module(source=None):
 def list_puzzles():
     mod = load_module()
     by_id = {p["id"]: p for p in mod["PUZZLES"]}
+    redrawn = set(mod.get("REDRAWN", []))
     out = []
     for index, pid in enumerate(mod["ORDER"]):
         fitted = mod["fit"](by_id[pid])
         out.append({
             "index": index, "id": pid, "title": fitted["title"], "category": fitted["category"],
+            "clue": fitted.get("clue", ""), "redrawn": pid in redrawn,
             "dots": [{"id": d["id"], "x": d["x"], "y": d["y"]} for d in fitted["dots"]],
             "edges": fitted["edges"],
         })
@@ -110,32 +113,33 @@ def wrap(items, sep, width, indent):
     return lines
 
 
-def format_block(pid, title, category, pts, paths):
+def format_block(pid, title, category, pts, paths, clue=""):
     items = [f"{n} {num(x)} {num(y)}" for n, (x, y) in pts]
     chunks = wrap(items, "; ", 94, "  ")
     pts_src = "\n  ".join(json.dumps(c) for c in chunks)  # wrap() ends each chunk but the last with ";"
     path_lines = wrap([json.dumps(p) for p in paths], ", ", 94, "   ")
     paths_src = "[" + "\n   ".join(path_lines) + "]"
+    clue_src = f",\n  clue={json.dumps(clue, ensure_ascii=False)}" if clue else ""
     return (f"P({json.dumps(pid)}, {json.dumps(title, ensure_ascii=False)}, {json.dumps(category)},\n"
-            f"  {pts_src},\n  {paths_src})")
+            f"  {pts_src},\n  {paths_src}{clue_src})")
 
 
-def format_order(order):
-    lines = wrap([json.dumps(i) for i in order], ", ", 96, "    ")
-    return "ORDER = [\n" + "".join(f"    {l}\n" for l in lines) + "]"
+def format_list(name, ids):
+    lines = wrap([json.dumps(i) for i in ids], ", ", 96, "    ")
+    return f"{name} = [\n" + "".join(f"    {l}\n" for l in lines) + "]"
 
 
 def top_level(tree):
-    blocks, order = {}, None
+    blocks, spans = {}, {}
     for node in tree.body:
         if (isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
                 and getattr(node.value.func, "id", None) == "P" and node.value.args
                 and isinstance(node.value.args[0], ast.Constant)):
             blocks[node.value.args[0].value] = (node.lineno, node.end_lineno)
         elif (isinstance(node, ast.Assign) and len(node.targets) == 1
-              and getattr(node.targets[0], "id", None) == "ORDER"):
-            order = (node.lineno, node.end_lineno)
-    return blocks, order
+              and getattr(node.targets[0], "id", None) in ("ORDER", "REDRAWN")):
+            spans[node.targets[0].id] = (node.lineno, node.end_lineno)
+    return blocks, spans
 
 
 class BadRequest(Exception):
@@ -145,6 +149,9 @@ class BadRequest(Exception):
 def check_request(body, existing_ids, order, today):
     pid = body.get("id", "")
     title = str(body.get("title", "")).strip()
+    clue = " ".join(str(body.get("clue") or "").split())
+    if len(clue) > CLUE_MAX:
+        raise BadRequest(f"clue is longer than {CLUE_MAX} characters")
     category = body.get("category")
     dots, edges = body.get("dots") or [], body.get("edges") or []
     is_new = bool(body.get("isNew"))
@@ -193,7 +200,8 @@ def check_request(body, existing_ids, order, today):
         if not isinstance(position, int) or not (max(today + 1, 0) <= position <= len(order)):
             raise BadRequest(f"position must be between {max(today + 1, 0)} and {len(order)} "
                              "(puzzles that have been played can't move)")
-    return pid, title, category, [(n, (x, y)) for n, x, y in pts], [list(e) for e in edges], position
+    return (pid, title, category, [(n, (x, y)) for n, x, y in pts], [list(e) for e in edges], position,
+            clue, bool(body.get("redrawn")))
 
 
 def run_tool(name, *args):
@@ -210,19 +218,26 @@ def save(body):
         src = raw.replace("\r\n", "\n")
         mod = load_module(src)
         order = list(mod["ORDER"])
-        pid, title, category, pts, edges, position = check_request(
+        pid, title, category, pts, edges, position, clue, is_redrawn = check_request(
             body, {p["id"] for p in mod["PUZZLES"]}, order, today_index())
+        redrawn = [i for i in mod.get("REDRAWN", []) if i != pid]
+        if is_redrawn:
+            redrawn.append(pid)
 
-        block = format_block(pid, title, category, pts, edges_to_paths([n for n, _ in pts], edges))
+        block = format_block(pid, title, category, pts, edges_to_paths([n for n, _ in pts], edges), clue)
         lines = src.split("\n")
-        blocks, order_span = top_level(ast.parse(src))
+        blocks, spans = top_level(ast.parse(src))
+        # Replace from the bottom up so earlier line numbers stay valid.
+        edits = []
+        if "REDRAWN" in spans:
+            edits.append((spans["REDRAWN"], format_list("REDRAWN", redrawn).split("\n")))
         if position is None:  # update in place
-            start, end = blocks[pid]
-            lines[start - 1:end] = block.split("\n")
+            edits.append((blocks[pid], block.split("\n")))
         else:  # new: block goes just above ORDER, id goes into ORDER at `position`
             order.insert(position, pid)
-            start, end = order_span
-            lines[start - 1:end] = block.split("\n") + [""] + format_order(order).split("\n")
+            edits.append((spans["ORDER"], block.split("\n") + [""] + format_list("ORDER", order).split("\n")))
+        for (start, end), new in sorted(edits, key=lambda e: -e[0][0]):
+            lines[start - 1:end] = new
         new_src = "\n".join(lines)
 
         # Make sure the file still runs (P() asserts, ORDER matches) before touching the disk.

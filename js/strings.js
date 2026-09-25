@@ -11,6 +11,7 @@ export const STRINGS = {
 
   hud: {
     hint: (used) => (used ? `Hint (${used})` : "Hint"),
+    clue: (text) => `“${text}”`, // today's clue, shown between the timer and the Hint button
   },
 
   results: {
@@ -40,7 +41,7 @@ export const STRINGS = {
       "Connect the stars to reveal a hidden picture.",
       "Each number is how many lines that star still needs. A star turns yellow when its lines are right and red when one is wrong.",
       "Tap two stars (or drag between them) to draw a line. Use the eraser to remove lines, or undo your last move.",
-      "Stuck? A hint reveals one correct line. You're scored on time and hints used.",
+      "The quote at the top is a clue about the picture. Still stuck? A hint reveals one correct line. You're scored on time and hints used.",
       "A new puzzle every day at 00:00 UTC.",
     ],
     close: "Play",

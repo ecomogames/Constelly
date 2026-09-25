@@ -10,7 +10,8 @@
     "properties": {
       "id": { "type": "string", "description": "Unique id, e.g. publish date 2026-10-01" },
       "title": { "type": "string", "description": "Revealed after solving" },
-      "category": { "enum": ["animal", "plant", "object", "real-constellation"] },
+      "category": { "enum": ["animal", "plant", "object"] },
+      "clue": { "type": "string", "minLength": 1, "maxLength": 80, "description": "Shown while solving: hints at the picture without naming it" },
       "dots": {
         "type": "array",
         "minItems": 2,

@@ -11,6 +11,7 @@ Checks (JSON Schema can't express the graph ones):
   - minimum spacing between dots (tap-target size on a phone), see MIN_DOT_SPACING
   - every dot at least MIN_EDGE_MARGIN from the board edge (x in 0-1, y in 0-BOARD_H)
   - no dot lies on (or grazes) a solution line it isn't an endpoint of, see MIN_LINE_CLEARANCE
+  - the optional clue doesn't contain a word of the title or id (it would give the picture away)
 Also prints the date the last puzzle is played, and warns when that's close.
 
 OPEN: solution uniqueness — optionally count alternative graphs that satisfy the same
@@ -22,6 +23,7 @@ Exit code 1 if any errors.
 
 import json
 import math
+import re
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -146,6 +148,13 @@ def check_puzzle(i: int, p: dict) -> list[str]:
         if not (m <= d["x"] <= 1 - m and m <= d["y"] <= BOARD_H - m):
             errors.append(f"{where} dot '{d['id']}' at ({d['x']}, {d['y']}) is closer than {m} "
                           f"to the board edge (x {m}-{1 - m:.3f}, y {m}-{BOARD_H - m:.3f})")
+
+    clue = p.get("clue")
+    if clue is not None:
+        words = {w for w in re.findall(r"[a-z]+", f"{p['title']} {p['id']}".lower()) if len(w) > 2}
+        given = sorted(w for w in words if re.search(rf"\b{w}", clue.lower()))
+        if given:
+            errors.append(f"{where} clue gives the picture away ({', '.join(given)}): {clue!r}")
 
     for a, b in sorted(tuple(sorted(k)) for k in seen):
         for d in ds:

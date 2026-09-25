@@ -4,9 +4,11 @@
 **Constelly** (playconstelly.com) is a daily browser puzzle game (Wordle-model: one puzzle per day,
 same for everyone, free to play, no login). The player sees a set of numbered dots and must connect them with lines to reveal a hidden
 picture. Each number is the **degree** of that dot — the exact count of lines that must touch it in
-the finished picture (not a sequence order). The subject of each picture varies: animals, everyday
-objects, and occasionally real astronomical constellations, all under a "constellation" visual
-theme (dots on a dark/starfield-style background).
+the finished picture (not a sequence order). The subject of each picture varies: animals, plants
+and everyday objects, all under a "constellation" visual theme (dots on a dark/starfield-style
+background). Real astronomical constellations were dropped (2026-09-25): hard to read, not fun.
+Each puzzle has a **clue** shown while solving — a witty line that hints at the picture without
+naming it (hot-air balloon: "I can see my house from here...", starfish: "No, this is Patrick!").
 
 Built solo, in about a week, by an experienced data scientist/software engineer who is new to
 frontend/web deployment/monetization — so the whole project is optimized for **low complexity and
@@ -80,18 +82,29 @@ low running cost** over scalability or cleverness.
   `ORDER` at a chosen future position), then runs author_puzzles/validate/quality. Saved coords
   are the fitted board ×100, so re-saving an unchanged puzzle gives identical JSON. Ids of
   existing puzzles are read-only; played puzzles show a warning and need a confirm for shape
-  changes. The server binds 127.0.0.1 and rejects foreign Host/Origin headers; the page is
+  changes. Also edits the clue and the "redrawn" flag (the `REDRAWN` list). The server binds
+  127.0.0.1 and rejects foreign Host/Origin headers; the page is
   public on Pages but inert there (no API). No delete — remove a puzzle by hand.
-- **Target size (confirmed):** ~15–20 dots per daily puzzle, clearly readable and tappable on a
-  phone. Example reference: a leaf with 15 dots (outline + stem + veins), bounding box roughly
-  2.6:1 tall-to-wide.
+- **Target size (updated 2026-09-25):** **18–26 dots** — the owner found the 10–20-dot drawings
+  too basic and often unrecognisable. The bar: a stranger names the solved picture in 3 seconds;
+  draw it like a clean line-art icon, exaggerate the 2–4 defining features, add internal detail.
+- **Clue (`clue=` in P()):** ≤ 80 chars (aim ≤ 40), witty, family-friendly, must not contain a
+  word of the title or id (validator + editor enforce), no song lyrics. Shown in the HUD between
+  the timer and the Hint button (max two lines); hidden when a puzzle has none.
+- **Redraw status:** `REDRAWN` in author_puzzles.py lists puzzles drawn to the new standard
+  (73 as of 2026-09-25); they come first in `ORDER`. The other 28 sit at the end of `ORDER` and
+  still need a redraw: 17 have a weak new attempt with a clue (bat, bee, bird, deer, frog, grapes,
+  horse, icecream, lemon, lizard, mailbox, monkey, panda, seagull, skateboard, sunflower, tiger),
+  11 are old drawings without a clue (candle, car, castle, donut, hedgehog, key2, microphone,
+  snowflake, strawberry, television, tent). The editor shows an "old" badge and a checkbox.
 
 ## Puzzle data format (starting point — adjust as needed)
 ```json
 {
   "id": "2026-10-01",
   "title": "unrevealed until solved, or optional subtle theme hint",
-  "category": "animal | plant | object | real-constellation",
+  "category": "animal | plant | object",
+  "clue": "optional: shown while solving, hints without naming it",
   "dots": [
     { "id": "a", "x": 0.32, "y": 0.14, "degree": 2 },
     { "id": "b", "x": 0.55, "y": 0.10, "degree": 1 }
@@ -134,10 +147,10 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 1. ✅ Core playable loop as a single HTML page: render one hardcoded puzzle, let the player connect
    dots, detect the solved state. No daily rotation, no stats, no styling polish yet.
 2. ✅ Puzzle data format finalized + day-index-based daily selection. 30 real puzzles authored
-   (animals, plants, objects; 9–20 dots). Now **110 puzzles** (2026-10-01 → 2027-01-18) after a manual
-   clean-up; most of the dull originals were dropped (see puzzle_quality.py — 9 still flag).
-   Publish order rotates category (animal → object → plant → object → animal → constellation) with
-   the smallest drawings first; the old test puzzles
+   (animals, plants, objects; 9–20 dots). Now **101 puzzles** (2026-10-01 → 2027-01-09): the 9
+   real constellations were removed and 73 were redrawn (see "Redraw status" above). ORDER =
+   redrawn puzzles first, then the rest; each part spreads the categories evenly with fewer dots
+   first, and Starfish is day 1. The old test puzzles
    moved to `puzzles/samples.json` (not loaded by the game).
 3. ✅ Controls + board for real-size puzzles: countdown numbers, eraser, undo, start over (see
    Controls); portrait board + nearest-dot hit testing (see open questions); review fix-ups

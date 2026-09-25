@@ -1,6 +1,6 @@
 # Constelly
 
-Daily dot-to-dot constellation puzzle — playconstelly.com. Static site: HTML + CSS + vanilla JS,
+Daily dot-to-dot puzzle — playconstelly.com. Static site: HTML + CSS + vanilla JS,
 no backend. See `CLAUDE.md` for the full design.
 
 ## Layout

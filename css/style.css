@@ -94,6 +94,23 @@ body {
   color: var(--muted);
 }
 .hud #timer { font-variant-numeric: tabular-nums; }
+.clue {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--fg);
+  opacity: 0.8;
+  /* at most two lines, so the board keeps its height on small phones */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clue[hidden] { display: none; }
 .hud button {
   font: inherit;
   color: var(--fg);

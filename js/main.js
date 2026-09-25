@@ -169,6 +169,10 @@ async function init() {
   }
 
   const puzzle = pick.puzzle;
+  if (puzzle.clue) {
+    $("clue").textContent = STRINGS.hud.clue(puzzle.clue);
+    $("clue").hidden = false;
+  }
   const game = restoreProgress(createGame(puzzle), store.loadProgress(puzzle.id));
   const view = renderBoard(svg, game);
   let solved = false;

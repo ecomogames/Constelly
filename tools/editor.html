@@ -48,6 +48,8 @@
     .badge.played { background: #2b3565; color: var(--muted); }
     .badge.today { background: var(--ok); color: #1b1600; }
     .badge.dull { background: #4a3514; color: var(--warn); }
+    .badge.old { background: transparent; border: 1px solid #3a4580; color: var(--dim); }
+    label.check { display: flex; gap: 6px; align-items: center; color: var(--fg); font-size: 13px; }
 
     main { display: flex; flex-direction: column; min-width: 0; }
     .toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px;
@@ -149,6 +151,9 @@
       <input id="f-title" type="text" autocomplete="off">
       <label for="f-cat">Category</label>
       <select id="f-cat"></select>
+      <label for="f-clue">Clue — shown while solving; hint at it, don't name it</label>
+      <input id="f-clue" type="text" maxlength="80" autocomplete="off" placeholder="I can see my house from here...">
+      <label class="check" title="Listed in REDRAWN in author_puzzles.py: drawn to the new standard"><input id="f-redrawn" type="checkbox"> Redrawn to the new standard</label>
       <div id="pos-wrap">
         <label for="f-pos">Publish as puzzle #</label>
         <input id="f-pos" type="number">
@@ -216,6 +221,7 @@ const clampPt = (p) => ({ x: Math.min(1, Math.max(0, p.x)), y: Math.min(BOARD_H,
 const r3 = (v) => Math.round(v * 1000) / 1000;
 const isDirty = () => cur && JSON.stringify(stateOf(cur)) !== savedJson;
 const stateOf = (c) => ({ id: c.id, title: c.title, category: c.category, position: c.position,
+  clue: (c.clue || "").trim(), redrawn: !!c.redrawn,
   dots: c.dots.map((d) => [d.id, r3(d.x), r3(d.y)]), edges: c.edges.map((e) => key(...e)).sort() });
 
 // Same as fit() in tools/author_puzzles.py.
@@ -237,6 +243,13 @@ function analyse() {
   const { dots: fdots, scale } = fit(cur.dots);
   const F = new Map(fdots.map((d) => [d.id, d]));
   if (!cur.title.trim()) errors.push("Title is empty");
+  const clue = (cur.clue || "").trim();
+  if (!clue) warns.push("No clue yet");
+  else {
+    const words = new Set(`${cur.title} ${cur.id}`.toLowerCase().match(/[a-z]+/g)?.filter((w) => w.length > 2) || []);
+    const given = [...words].filter((w) => new RegExp(`\\b${w}`).test(clue.toLowerCase()));
+    if (given.length) errors.push(`Clue gives it away: ${given.join(", ")}`);
+  }
   if (cur.isNew) {
     if (!/^[a-z0-9][a-z0-9-]*$/.test(cur.id)) errors.push("Id: lowercase letters, digits and dashes");
     else if (meta.puzzles.some((p) => p.id === cur.id)) errors.push(`Id "${cur.id}" is taken`);
@@ -412,6 +425,7 @@ function renderList() {
     if (p.index < meta.todayIndex) t.append(badge("played", "played"));
     else if (p.index === meta.todayIndex) t.append(badge("today", "today"));
     if (p.dull) t.append(badge("dull", "dull"));
+    if (!p.redrawn) t.append(badge("old", "old"));
     li.append(num, t, date);
     li.addEventListener("click", () => open(p.id));
     ul.append(li);
@@ -425,6 +439,8 @@ function fillForm() {
   $("f-id").title = cur.isNew ? "" : "Ids can't change: saved progress is keyed by id";
   $("f-title").value = cur.title;
   $("f-cat").value = cur.category;
+  $("f-clue").value = cur.clue || "";
+  $("f-redrawn").checked = !!cur.redrawn;
   $("pos-wrap").hidden = !cur.isNew;
   const min = Math.max(meta.todayIndex + 1, 0);
   $("f-pos").min = min + 1; $("f-pos").max = meta.puzzles.length + 1;
@@ -566,7 +582,7 @@ async function loadMeta() {
   if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `HTTP ${res.status}`);
   meta = await res.json();
   for (const p of meta.puzzles) {
-    const saveCur = cur; cur = { dots: p.dots, edges: p.edges, title: p.title, isNew: false, id: p.id };
+    const saveCur = cur; cur = { dots: p.dots, edges: p.edges, title: p.title, isNew: false, id: p.id, clue: p.clue };
     const a = analyse(); p.dull = a.chain > MAX_CHAIN || a.junc < MIN_JUNCTION; cur = saveCur;
   }
 }
@@ -581,13 +597,13 @@ function open(id) {
   if (!confirmDiscard()) return;
   const p = meta.puzzles.find((x) => x.id === id);
   setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
-    position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
   history.replaceState(null, "", `#${id}`);
 }
 function newPuzzle(from) {
   if (!confirmDiscard()) return;
   setCurrent({ isNew: true, index: null, id: "", title: from ? `${from.title} copy` : "",
-    category: from?.category || "object", position: meta.puzzles.length,
+    category: from?.category || "object", clue: from?.clue || "", redrawn: true, position: meta.puzzles.length,
     dots: from ? clone(from.dots) : [], edges: from ? clone(from.edges) : [] });
   history.replaceState(null, "", "#new");
   $("f-id").focus();
@@ -602,6 +618,7 @@ async function save() {
   const shapeChanged = before && shape(cur) !== shape(before);
   if (played && shapeChanged && !confirm(`#${cur.index + 1} has already been played. Change its drawing anyway?`)) return;
   const body = { isNew: cur.isNew, id: cur.id, title: cur.title.trim(), category: cur.category,
+    clue: (cur.clue || "").trim(), redrawn: !!cur.redrawn,
     dots: cur.dots, edges: cur.edges, confirmPlayed: played };
   if (cur.isNew) body.position = cur.position;
   $("save-btn").disabled = true; $("save-btn").textContent = "Saving…";
@@ -622,7 +639,7 @@ async function save() {
   savedJson = ""; cur = null;
   const p = meta.puzzles.find((x) => x.id === id);
   setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
-    position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+    clue: p.clue, redrawn: p.redrawn, position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
   history.replaceState(null, "", `#${id}`);
   const box = $("save-result");
   box.append(banner(result.ok ? "good" : "bad", result.ok
@@ -700,6 +717,8 @@ function wire() {
   $("f-id").oninput = () => { cur.id = $("f-id").value.trim(); render(); };
   $("f-title").oninput = () => { cur.title = $("f-title").value; render(); };
   $("f-cat").onchange = () => { cur.category = $("f-cat").value; render(); };
+  $("f-clue").oninput = () => { cur.clue = $("f-clue").value; render(); };
+  $("f-redrawn").onchange = () => { cur.redrawn = $("f-redrawn").checked; render(); };
   $("f-pos").oninput = () => {
     const min = Math.max(meta.todayIndex + 1, 0), n = Number.parseInt($("f-pos").value, 10) - 1;
     if (Number.isInteger(n)) cur.position = Math.min(meta.puzzles.length, Math.max(min, n));
