@@ -4,25 +4,30 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Privacy — Constelly</title>
-  <meta name="description" content="How Constelly handles your data: no accounts, no cookies, no tracking.">
+  <meta name="description" content="How Constelly handles your data: no accounts, game progress kept on your device, ads from Google AdSense.">
   <link rel="canonical" href="https://playconstelly.com/privacy.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <meta name="theme-color" content="#0b1026">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Google AdSense (publisher ca-pub-2867727940898674). Auto ads + Google's certified consent
+       message for EEA/UK/CH visitors are configured in the AdSense dashboard (Privacy & messaging),
+       not here. Not on 404.html: AdSense doesn't allow ads on error pages. -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2867727940898674"
+          crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- DRAFT (not legal advice). Rewrite the "Ads" section and the cookie notice before AdSense
-       goes live — ads in the EEA need a Google-certified consent tool (see CLAUDE.md, step 7). -->
+  <!-- Not legal advice. The AdSense disclosures follow Google's "Required content" guidance
+       (support.google.com/adsense/answer/1348695). Keep in sync if analytics are added. -->
   <main class="page">
     <p><a href="./">&larr; Back to the puzzle</a></p>
     <h1>Privacy</h1>
-    <p class="updated">Last updated: 25 September 2026</p>
+    <p class="updated">Last updated: 25 September 2026 (ads added)</p>
 
     <p>Constelly is a free daily puzzle made by one person in Copenhagen, Denmark. It has no
       accounts and no server of its own, and it doesn't collect your name, email or any other
-      personal details.</p>
+      personal details. It's paid for by ads from Google, which work as described below.</p>
 
     <h2>What's stored on your device</h2>
     <p>To remember your progress, Constelly saves a few small entries in your browser's local
@@ -36,10 +41,26 @@
       the game to work, so no consent banner is shown for it. You can delete it at any time by
       clearing this site's data in your browser settings (this resets your stats).</p>
 
-    <h2>Cookies, analytics and ads</h2>
-    <p>Constelly currently sets no cookies and uses no analytics, tracking or advertising.
-      If that changes, this page will be updated first and you'll be asked for consent before
-      any non-essential cookies are used.</p>
+    <h2>Ads and cookies</h2>
+    <p>Constelly shows ads from <strong>Google AdSense</strong>. Third-party vendors, including
+      Google, use cookies to serve ads based on your prior visits to this website or other
+      websites. Google's use of advertising cookies enables it and its partners to serve ads to you
+      based on your visits to this site and/or other sites on the Internet.
+      <a href="https://policies.google.com/technologies/partner-sites">How Google uses information
+      from sites that use its services</a>.</p>
+    <p>If you're in the EEA, the UK or Switzerland, Google asks for your consent first, using a
+      Google-certified consent message, and ads are only personalised if you agree. You can change
+      your choice at any time with the <strong>Privacy and cookie settings</strong> link that Google
+      shows on the site<span id="consent-link-wrap" hidden>, or here:
+      <button id="consent-link" class="link-btn" type="button">Privacy and cookie settings</button></span>.</p>
+    <p>Anywhere, you can opt out of personalised advertising in
+      <a href="https://www.google.com/settings/ads">Google's Ads Settings</a>, or opt out of other
+      vendors' use of cookies for personalised advertising at
+      <a href="https://www.aboutads.info/choices/">aboutads.info</a>.</p>
+
+    <h2>Analytics</h2>
+    <p>Constelly doesn't use any analytics or tracking of its own. If that changes, this page will
+      be updated first.</p>
 
     <h2>Hosting</h2>
     <p>The site is hosted on GitHub Pages. Like any web host, GitHub may process technical data
@@ -51,10 +72,28 @@
       Nothing is sent anywhere unless you choose to share it.</p>
 
     <h2>Your rights and contact</h2>
-    <p>Since Constelly doesn't hold personal data about you, there's usually nothing for us to
-      access or delete — clearing your browser data removes everything. If you have questions,
+    <p>Constelly itself doesn't hold personal data about you, so there's usually nothing for us to
+      access or delete — clearing your browser data removes your game data. For data Google collects
+      through ads, see <a href="https://policies.google.com/privacy">Google's privacy policy</a>. If you have questions,
       write to <a href="mailto:hello@playconstelly.com">hello@playconstelly.com</a>. You can also complain to the Danish Data Protection Agency
       (Datatilsynet).</p>
   </main>
+  <script>
+    // Optional extra way back into Google's consent message (Google also shows its own link).
+    // Only offered once Google's consent tool has loaded, i.e. where the message applies.
+    (function () {
+      var tries = 0;
+      var timer = setInterval(function () {
+        var fc = window.googlefc;
+        if (fc && fc.callbackQueue && fc.showRevocationMessage) {
+          clearInterval(timer);
+          document.getElementById("consent-link-wrap").hidden = false;
+          document.getElementById("consent-link").onclick = function () {
+            fc.callbackQueue.push(fc.showRevocationMessage);
+          };
+        } else if (++tries > 20) clearInterval(timer);
+      }, 500);
+    })();
+  </script>
 </body>
 </html>

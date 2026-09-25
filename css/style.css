@@ -42,8 +42,9 @@ body {
   flex-direction: column;
   min-height: 100%;
   min-height: 100dvh; /* dvh: excludes mobile browser toolbars */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-           env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* --ad-top / --ad-bottom: room for an AdSense anchor ad (js/ads.js), 0 when there's none */
+  padding: calc(env(safe-area-inset-top) + var(--ad-top, 0px)) env(safe-area-inset-right)
+           calc(env(safe-area-inset-bottom) + var(--ad-bottom, 0px)) env(safe-area-inset-left);
 }
 
 /* ---- layout ---- */

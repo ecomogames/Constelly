@@ -24,6 +24,7 @@ import { renderBoard } from "./render.js";
 import { attachInput } from "./input.js";
 import { formatTime, formatCountdown, formatAverage } from "./format.js";
 import { STRINGS } from "./strings.js";
+import { watchAnchorAds } from "./ads.js";
 
 const LOCAL_HOSTS = ["localhost", "127.0.0.1", "[::1]"];
 const RESULTS_DELAY_MS = 1000; // let the win glow play before the dialog covers it
@@ -63,6 +64,7 @@ function lightDismiss(dialog) {
 
 async function init() {
   applyStaticStrings();
+  watchAnchorAds();
   document.querySelectorAll("dialog.dialog").forEach(lightDismiss);
 
   let puzzles;

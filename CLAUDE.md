@@ -187,9 +187,17 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
    fallback for webviews); a cancelled share sheet is silent. Also: how-to-play dialog (opens on
    the first visit) and stats dialog (solved, streaks, average/best time, "view today's result")
    behind header buttons. All their copy is placeholder text in `js/strings.js`.
-7. Ads + cookie consent banner.
+7. Ads + cookie consent banner. **In progress (2026-09-25): AdSense account applied.**
+   - Publisher **ca-pub-2867727940898674**. The AdSense script is in `<head>` of index.html and
+     privacy.html (not 404.html: no ads on error pages); `ads.txt` at the root. Auto ads are
+     configured in the AdSense dashboard (anchor/overlay on). Advice given: keep in-page auto ads
+     off or excluded from the game area (ads next to the dots → accidental taps), no ads in dialogs.
+   - `js/ads.js` pads the page by whatever an anchor ad covers (`--ad-top` / `--ad-bottom` on
+     body), so it never sits on the controls; the board shrinks to fit.
+   - Consent: Google's certified European regulations message (AdSense → Privacy & messaging),
+     which also adds its own "Privacy and cookie settings" link; privacy.html has the required
+     AdSense disclosures + an optional revocation link that appears once `googlefc` has loaded.
    - ✅ `privacy.html` (contact: hello@playconstelly.com), linked from the how-to-play dialog.
-     Today the site only uses localStorage for game state (strictly necessary → no banner needed).
    - **Consent approach (flagged):** since Jan 2024 Google requires a **Google-certified CMP**
      (IAB TCF v2.2) to serve AdSense ads in the EEA/UK/CH — a hand-rolled banner won't do. Plan:
      use AdSense's free built-in *Privacy & messaging* GDPR message instead of building one, and
@@ -228,8 +236,7 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
    **Known, not done:** 28 weak/old puzzles from day 74 (5 Dec); line colours only on the first 10
    (day 11 = 3 Oct is all-yellow); content runs out 2027-01-01; no analytics (a cookie-free counter
    like GoatCounter would need a privacy-page line); a deploy can briefly serve new HTML with
-   cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs; ads + consent
-   still deferred.
+   cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs.
 
 ## Non-goals for v1
 - No user accounts or server-side leaderboards.
@@ -270,5 +277,4 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 - ~~**Hints vs. undo:**~~ Resolved: a hint isn't undoable and doesn't clear the undo history; it
   drops only the history entries for the lines it touched (the hinted line + any wrong lines it
   removed), so the rest of the player's undo steps stay usable.
-- Cookie consent and ads: deliberately deferred until after launch.
 - ~~**Domain/branding/name:** not yet decided.~~ Resolved: **Constelly**, domain **playconstelly.com** (live on GitHub Pages, HTTPS + www redirect).
