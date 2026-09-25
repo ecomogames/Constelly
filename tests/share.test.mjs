@@ -8,7 +8,7 @@ test("share text has number, time and hints", () => {
   assert.match(text, /#12\b/);
   assert.match(text, /2:41/);
   assert.match(text, /1 hint\b/);
-  assert.match(text, /constelly\.com/);
+  assert.match(text, /playconstelly\.com/);
   assert.match(buildShareText({ number: 1, timeMs: 0, hints: 2 }), /2 hints/);
 });
 

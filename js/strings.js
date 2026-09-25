@@ -24,7 +24,7 @@ export const STRINGS = {
   share: {
     // No title or category here, ever: the share text must not spoil the picture.
     text: ({ number, time, hints }) =>
-      `Constelly #${number} ✨\n⏱ ${time} · 💡 ${hints} ${hintWord(hints)}\nconstelly.com`,
+      `Constelly #${number} ✨\n⏱ ${time} · 💡 ${hints} ${hintWord(hints)}\nplayconstelly.com`,
     copied: "Copied!",
     failed: "Couldn't copy — try again",
   },

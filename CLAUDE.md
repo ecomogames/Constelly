@@ -1,7 +1,7 @@
 # CLAUDE.md — Constelly
 
 ## What this is
-**Constelly** (constelly.com) is a daily browser puzzle game (Wordle-model: one puzzle per day,
+**Constelly** (playconstelly.com) is a daily browser puzzle game (Wordle-model: one puzzle per day,
 same for everyone, free to play, no login). The player sees a set of numbered dots and must connect them with lines to reveal a hidden
 picture. Each number is the **degree** of that dot — the exact count of lines that must touch it in
 the finished picture (not a sequence order). The subject of each picture varies: animals, everyday
@@ -200,4 +200,4 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
   drops only the history entries for the lines it touched (the hinted line + any wrong lines it
   removed), so the rest of the player's undo steps stay usable.
 - Cookie consent and ads: deliberately deferred until after launch.
-- ~~**Domain/branding/name:** not yet decided.~~ Resolved: **Constelly**, domain constelly.com.
+- ~~**Domain/branding/name:** not yet decided.~~ Resolved: **Constelly**, domain **playconstelly.com** (live on GitHub Pages, HTTPS + www redirect).

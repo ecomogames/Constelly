@@ -1,6 +1,6 @@
 # Constelly
 
-Daily dot-to-dot constellation puzzle — constelly.com. Static site: HTML + CSS + vanilla JS,
+Daily dot-to-dot constellation puzzle — playconstelly.com. Static site: HTML + CSS + vanilla JS,
 no backend. See `CLAUDE.md` for the full design.
 
 ## Layout
@@ -56,5 +56,5 @@ dot spacing (≥ 0.11), edge margin (≥ 0.05) and that no dot sits on a line it
 
 ## Deploy (GitHub Pages)
 Push to GitHub → repo Settings → Pages → Deploy from branch `main`, folder `/ (root)`.
-Custom domain: add a `CNAME` file containing `constelly.com` **after** the domain is bought
-and DNS is pointed at GitHub.
+Custom domain: add a `CNAME` file containing `playconstelly.com` (done — live since 2026-09-24)
+(DNS points at GitHub; Enforce HTTPS is on).
