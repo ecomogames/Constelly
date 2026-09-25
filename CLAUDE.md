@@ -106,9 +106,9 @@ low running cost** over scalability or cleverness.
   enum; the validator checks CSS and schema agree. Colours show **only in the win state** (each
   line glows in its own colour via the `#win-glow` SVG filter), never while solving — they'd
   give away which lines are right. Editor: palette swatches → click/drag over lines to paint.
-  Coloured so far (2026-09-25, updated): **all 101 puzzles** now have line colours.
+  Coloured so far (2026-09-25, updated): **all 128 puzzles** now have line colours.
 - **Redraw status (2026-09-25, updated):** `REDRAWN` in author_puzzles.py lists puzzles drawn to
-  the new standard — **all 101** puzzles now qualify; the 28 that were still weak/old (bat, bee,
+  the new standard — **all 128** puzzles now qualify; the 28 that were still weak/old (bat, bee,
   bird, candle, car, castle, deer, donut, frog, grapes, hedgehog, horse, icecream, key2, lemon,
   lizard, mailbox, microphone, monkey, panda, seagull, skateboard, snowflake, strawberry,
   sunflower, television, tent, tiger) were redrawn to the 18-26 dot standard and coloured, via
@@ -167,10 +167,10 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 1. ✅ Core playable loop as a single HTML page: render one hardcoded puzzle, let the player connect
    dots, detect the solved state. No daily rotation, no stats, no styling polish yet.
 2. ✅ Puzzle data format finalized + day-index-based daily selection. 30 real puzzles authored
-   (animals, plants, objects; 9–20 dots). Now **101 puzzles** (2026-09-23 → 2027-01-01): the 9
+   (animals, plants, objects; 9–20 dots). Now **128 puzzles** (2026-09-23 → 2027-01-28; Pine removed, 28 new added 2026-09-25): the 9
    real constellations were removed and 73 were redrawn (see "Redraw status" above). ORDER =
    redrawn puzzles first, then the rest; each part spreads the categories evenly with fewer dots
-   first, and Starfish is day 1. The old test puzzles
+   first, and Starfish is day 1. **Seasonal slots (2026-09-25):** from #4 on, holiday puzzles sit on their dates — Halloween week 26–31 Oct (spider, bat, witch hat, ghost, black cat, pumpkin on 31 Oct), Thanksgiving turkey 26 Nov, stocking 6 Dec, Lucia candle 13 Dec, Christmas week 19–26 Dec (Christmas tree 24 Dec, gift 25 Dec), champagne 31 Dec, fireworks 1 Jan, crown 6 Jan. Keep them there when adding puzzles. The old test puzzles
    moved to `puzzles/samples.json` (not loaded by the game).
 3. ✅ Controls + board for real-size puzzles: countdown numbers, eraser, undo, start over (see
    Controls); portrait board + nearest-dot hit testing (see open questions); review fix-ups
@@ -254,9 +254,9 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
 10. ✅ Review fixes (2026-09-25): a tap chain's selection is dropped by Undo, Hint and Start over;
    How to play fits a 360×640 screen (compact layout ≤ 760px tall) and its 220 KB animation only
    loads when the dialog first opens (`data-src` → `openHelp()` in main.js).
-   **Known, not done:** content runs out 2027-01-01; a deploy can briefly serve new HTML with
+   **Known, not done:** content runs out 2027-01-28 (Valentine's Day, Easter, Chinese New Year need slots in the next batch); a deploy can briefly serve new HTML with
    cached old JS (Pages caches 10 min) — fix would be `?v=` on script/style URLs.
-11. ✅ All 101 puzzles redrawn to the 18-26 dot standard and line-coloured (2026-09-25), per
+11. ✅ All 128 puzzles redrawn to the 18-26 dot standard and line-coloured (2026-09-25), per
     `docs/PUZZLES_REDRAW_AND_COLOR.md`. See "Redraw status" / "Line colours" above for the two
     puzzles (tiger, monkey) worth another look.
 

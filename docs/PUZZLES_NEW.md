@@ -5,7 +5,7 @@ new puzzles."*
 
 ## Goal
 Add new, original puzzles to the **end** of the daily list. The list currently runs out on
-**2027-01-01** (#101). The validator prints the last date and warns when fewer than 14 days
+**2027-01-28** (#128). The validator prints the last date and warns when fewer than 14 days
 remain. One puzzle = one day.
 
 ## Setup and tool
