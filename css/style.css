@@ -339,6 +339,7 @@ a.past-row:hover, a.past-row:focus-visible { background: rgb(92 100 144 / 0.18);
 }
 .menu-item:hover, .menu-item:focus-visible { background: rgb(92 100 144 / 0.25); }
 .menu-item--small { margin-top: 1rem; font-size: 0.9rem; color: var(--muted); }
+.menu-item--tight { margin-top: 0; }
 
 /* ---- playing a past day ---- */
 .archive-bar {
@@ -381,6 +382,10 @@ a.past-row:hover, a.past-row:focus-visible { background: rgb(92 100 144 / 0.18);
 .page h2 { font-size: 1.1rem; margin: 1.75rem 0 0.5rem; }
 .page .updated { color: var(--muted); margin: 0 0 1.5rem; }
 .page code { font-size: 0.9em; }
+.page li { margin-bottom: 0.4rem; }
+.example { margin: 1rem 0 1.25rem; }
+.example svg { display: block; width: 100%; max-width: 440px; height: auto; margin: 0 auto; }
+.example figcaption { margin-top: 0.6rem; color: var(--muted); font-size: 0.95rem; }
 
 /* Portrait 3:4 board, as large as the space left in .board-wrap allows (capped on desktop).
    The first width is a fallback for browsers without container query units. */

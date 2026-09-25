@@ -202,6 +202,10 @@ same length on both axes. One puzzle = one JSON object; all puzzles ship as a st
    - Consent: Google's certified European regulations message (AdSense → Privacy & messaging),
      which also adds its own "Privacy and cookie settings" link; privacy.html has the required
      AdSense disclosures + an optional revocation link that appears once `googlefc` has loaded.
+   - ✅ `about.html` (2026-09-25): About & FAQ — how to play, a worked Y-shaped example (inline
+     SVG), scoring/streaks/sharing, past puzzles, FAQ, who makes it. Real text for the AdSense
+     review and search engines. Linked from the menu, the How to play dialog, privacy.html and
+     sitemap.xml; has the AdSense + Cloudflare snippets. Keep it true to the game when rules change.
    - ✅ `privacy.html` (contact: hello@playconstelly.com), linked from the how-to-play dialog.
    - **Consent approach (flagged):** since Jan 2024 Google requires a **Google-certified CMP**
      (IAB TCF v2.2) to serve AdSense ads in the EEA/UK/CH — a hand-rolled banner won't do. Plan:

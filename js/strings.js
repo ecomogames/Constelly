@@ -50,6 +50,7 @@ export const STRINGS = {
     ],
     close: "Play",
     privacy: "Privacy",
+    about: "About & FAQ",
     // Alt text for the tutorial animation in the how-to-play dialog.
     demoAlt:
       "Animation: a line is drawn to the wrong star, both stars turn red, the eraser removes it, " +
@@ -76,6 +77,7 @@ export const STRINGS = {
     past: "Past puzzles",
     help: "How to play",
     stats: "Statistics",
+    about: "About & FAQ",
     privacy: "Privacy",
   },
 
