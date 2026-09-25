@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Constelly editor</title>
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <!-- Puzzle editor. Needs the local server: python tools/editor.py (see that file). -->
+  <style>
+    :root {
+      --bg: #0b1026; --panel: #121937; --panel2: #1a2247; --fg: #e8ecff; --muted: #8a93c4;
+      --dim: #5c6490; --dot: #c9d1ff; --line: #7f8bd6; --ok: #ffd84a; --bad: #ff5a5a;
+      --warn: #ffb04a; --good: #6fdc8c;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+      font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    button, input, select { font: inherit; color: inherit; }
+    button { background: var(--panel2); border: 1px solid #2b3565; border-radius: 6px;
+      padding: 5px 10px; cursor: pointer; }
+    button:hover:not(:disabled) { border-color: var(--line); }
+    button:disabled { opacity: 0.45; cursor: default; }
+    button.primary { background: var(--ok); color: #1b1600; border-color: var(--ok); font-weight: 600; }
+    input[type=text], input[type=number], select { background: var(--bg); border: 1px solid #2b3565;
+      border-radius: 6px; padding: 5px 8px; width: 100%; }
+    input:read-only { color: var(--muted); }
+    label { display: block; color: var(--muted); font-size: 12px; margin: 10px 0 3px; }
+
+    .app { display: grid; grid-template-columns: 250px 1fr 320px; height: 100vh; }
+    aside, .panel { background: var(--panel); overflow: auto; }
+    aside { border-right: 1px solid #222b55; display: flex; flex-direction: column; }
+    .panel { border-left: 1px solid #222b55; padding: 12px 14px 24px; }
+    h1 { font-size: 16px; letter-spacing: 0.06em; margin: 0; padding: 12px 12px 8px; }
+    h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+      margin: 18px 0 6px; }
+    .list-tools { display: flex; gap: 6px; padding: 0 12px 8px; }
+    .list { list-style: none; margin: 0; padding: 0 0 12px; overflow: auto; flex: 1; }
+    .list li { display: grid; grid-template-columns: 38px 1fr auto; gap: 6px; align-items: baseline;
+      padding: 5px 12px; cursor: pointer; border-left: 3px solid transparent; }
+    .list li:hover { background: var(--panel2); }
+    .list li.active { background: var(--panel2); border-left-color: var(--ok); }
+    .list .num { color: var(--dim); font-variant-numeric: tabular-nums; }
+    .list .date { color: var(--dim); font-size: 12px; }
+    .list .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .badge { font-size: 10px; padding: 1px 5px; border-radius: 8px; margin-left: 4px;
+      text-transform: uppercase; letter-spacing: 0.05em; }
+    .badge.played { background: #2b3565; color: var(--muted); }
+    .badge.today { background: var(--ok); color: #1b1600; }
+    .badge.dull { background: #4a3514; color: var(--warn); }
+
+    main { display: flex; flex-direction: column; min-width: 0; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px;
+      border-bottom: 1px solid #222b55; }
+    .toolbar .sep { width: 1px; height: 22px; background: #2b3565; margin: 0 4px; }
+    .toolbar label { display: inline-flex; gap: 5px; align-items: center; margin: 0; color: var(--fg); font-size: 13px; }
+    .toolbar input[type=range] { width: 80px; }
+    .stage { flex: 1; min-height: 0; display: grid; place-items: center; padding: 10px;
+      container-type: size; }
+    svg#canvas { width: min(100cqw, 75cqh); height: auto; aspect-ratio: 3 / 4; display: block;
+      touch-action: none; user-select: none; }
+    .hint-bar { padding: 6px 12px 10px; color: var(--muted); font-size: 12px; text-align: center; }
+    kbd { background: var(--panel2); border: 1px solid #2b3565; border-radius: 4px; padding: 0 4px;
+      font: 11px ui-monospace, monospace; color: var(--fg); }
+
+    .banner { border-radius: 6px; padding: 8px 10px; margin: 8px 0; font-size: 13px; }
+    .banner.warn { background: #3a2a10; color: var(--warn); }
+    .banner.bad { background: #3a1418; color: #ff9a9a; }
+    .banner.good { background: #12321f; color: var(--good); }
+    .stats { display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; font-variant-numeric: tabular-nums; }
+    .stats .v.good { color: var(--good); } .stats .v.warn { color: var(--warn); } .stats .v.bad { color: var(--bad); }
+    ul.issues { margin: 4px 0; padding-left: 18px; }
+    ul.issues li.bad { color: #ff9a9a; } ul.issues li.warn { color: var(--warn); }
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    pre.out { white-space: pre-wrap; background: var(--bg); border-radius: 6px; padding: 8px;
+      font: 12px/1.35 ui-monospace, Consolas, monospace; max-height: 260px; overflow: auto; }
+    .muted { color: var(--muted); }
+    .offline { max-width: 520px; margin: 15vh auto; padding: 0 20px; }
+    .offline code { background: var(--panel2); padding: 2px 6px; border-radius: 4px; }
+
+    /* canvas */
+    .grid-minor { stroke: #16204a; stroke-width: 1; }
+    .grid-major { stroke: #1f2a5c; stroke-width: 1.5; }
+    .fitbox { fill: none; stroke: #3a4580; stroke-width: 2; stroke-dasharray: 10 8; }
+    .edge { stroke: var(--line); stroke-width: 7; stroke-linecap: round; }
+    .edge.hover { stroke: #aab4ff; stroke-width: 10; }
+    .edge.problem { stroke: var(--warn); stroke-dasharray: 14 10; }
+    .rubber { stroke: var(--dot); stroke-width: 3; stroke-dasharray: 6 8; opacity: 0.6; pointer-events: none; }
+    .dot circle { fill: var(--dot); stroke: none; }
+    .dot text { fill: var(--bg); font: 700 26px system-ui, sans-serif; text-anchor: middle;
+      dominant-baseline: central; pointer-events: none; }
+    .dot.isolated circle { fill: var(--bg); stroke: var(--dot); stroke-width: 4; }
+    .dot.isolated text { fill: var(--dot); }
+    .dot.problem circle { stroke: var(--bad); stroke-width: 6; }
+    .dot.hover circle { fill: #fff; }
+    .dot.selected circle { fill: var(--ok); stroke: #fff3b0; stroke-width: 5; }
+    .dot .name { fill: var(--dim); font: 500 20px ui-monospace, monospace; dominant-baseline: auto; }
+    .player .dot circle { fill: var(--dot); }
+    .player .dot text { font-size: 30px; }
+  </style>
+</head>
+<body>
+  <div id="offline" class="offline" hidden>
+    <h1>Constelly editor</h1>
+    <p>This editor only works on your own computer. From the project folder run:</p>
+    <p><code>python tools/editor.py</code></p>
+    <p class="muted">It opens this page at http://127.0.0.1:8001/tools/editor.html with the
+      local server that reads and writes the puzzles.</p>
+    <p id="offline-detail" class="muted"></p>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <aside>
+      <h1>Constelly editor</h1>
+      <div class="list-tools">
+        <input id="filter" type="text" placeholder="Filter…" autocomplete="off">
+        <button id="new-btn" title="Start a new puzzle">+ New</button>
+      </div>
+      <ul id="list" class="list"></ul>
+    </aside>
+
+    <main>
+      <div class="toolbar">
+        <button id="undo-btn" title="Undo (Ctrl+Z)">Undo</button>
+        <button id="redo-btn" title="Redo (Ctrl+Shift+Z)">Redo</button>
+        <span class="sep"></span>
+        <label title="Snap dots to a 0.01 grid (hold Alt while dragging to override)"><input id="snap" type="checkbox" checked> Snap</label>
+        <label title="Show dot names"><input id="names" type="checkbox"> Names</label>
+        <label title="What players see: the fitted board, numbers only"><input id="player" type="checkbox"> Player view</label>
+        <button id="fit-btn" title="Scale and centre the drawing into the dashed box, as saving will">Fit to box</button>
+        <span class="sep"></span>
+        <label title="A picture to trace over (only shown here, never saved)">Trace <input id="trace-file" type="file" accept="image/*" hidden><button id="trace-btn" type="button">Image…</button></label>
+        <input id="trace-opacity" type="range" min="0" max="1" step="0.05" value="0.35" title="Trace image opacity" disabled>
+        <button id="trace-clear" disabled title="Remove trace image">×</button>
+      </div>
+      <div class="stage"><svg id="canvas" viewBox="0 0 1000 1333"></svg></div>
+      <div class="hint-bar">
+        Click: add a dot, joined to the selected one (on a line: splits it) · Click a dot: select it,
+        or join / unjoin it with the selected one · Drag: move · Right-click: delete a dot or line ·
+        <kbd>Del</kbd>: delete selected · <kbd>Esc</kbd>: deselect · <kbd>Ctrl</kbd>+<kbd>Z</kbd>: undo · <kbd>Ctrl</kbd>+<kbd>S</kbd>: save
+      </div>
+    </main>
+
+    <section class="panel">
+      <div id="played-banner" class="banner warn" hidden></div>
+      <label for="f-id">Id</label>
+      <input id="f-id" type="text" autocomplete="off" spellcheck="false">
+      <label for="f-title">Title (shown after solving)</label>
+      <input id="f-title" type="text" autocomplete="off">
+      <label for="f-cat">Category</label>
+      <select id="f-cat"></select>
+      <div id="pos-wrap">
+        <label for="f-pos">Publish as puzzle #</label>
+        <input id="f-pos" type="number">
+        <div id="pos-date" class="muted" style="font-size:12px;margin-top:3px"></div>
+      </div>
+
+      <h2>Checks</h2>
+      <div id="stats" class="stats"></div>
+      <ul id="issues" class="issues"></ul>
+
+      <div class="actions">
+        <button id="save-btn" class="primary">Save</button>
+        <button id="revert-btn" title="Throw away unsaved changes">Revert</button>
+        <button id="dup-btn" title="Copy this drawing into a new puzzle">Duplicate as new</button>
+        <button id="play-btn" title="Open the saved version in the game">Play-test ↗</button>
+      </div>
+      <div id="save-result"></div>
+    </section>
+  </div>
+
+<script type="module">
+// Puzzle coordinates are board units (x 0–1, y 0–4/3); the SVG draws them ×1000.
+// Checks mirror tools/validate_puzzles.py and tools/puzzle_quality.py and run on the fitted
+// drawing (what tools/author_puzzles.py will ship), so they match the real validator.
+const S = 1000, BOARD_H = 4 / 3;
+const BOX = [0.08, 0.92, 0.08, BOARD_H - 0.08];
+const MIN_DOT_SPACING = 0.11, MIN_LINE_CLEARANCE = 0.05, MAX_CHAIN = 5, MIN_JUNCTION = 25;
+const DOT_HIT = 0.032, LINE_HIT = 0.014, SNAP = 0.01;
+const NS = "http://www.w3.org/2000/svg";
+const $ = (id) => document.getElementById(id);
+
+let meta = null;       // { launch, todayIndex, categories, puzzles }
+let cur = null;        // { isNew, index, id, title, category, position, dots:[{id,x,y}], edges:[[a,b]] }
+let savedJson = "";    // snapshot of cur at load/save, for the dirty check
+let sel = null, hover = null;  // hover: {dot:id} | {edge:i}
+let cursor = null;     // last pointer position (board units), for the rubber band
+let undoStack = [], redoStack = [];
+let traceUrl = null;
+
+// ---------- helpers ----------
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const key = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+function distToSegment(p, a, b) {
+  const dx = b.x - a.x, dy = b.y - a.y, len2 = dx * dx + dy * dy;
+  const t = len2 ? Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / len2)) : 0;
+  return { d: Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy)), t };
+}
+function dateFor(index) {
+  const d = new Date(`${meta.launch}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + index);
+  return d;
+}
+const fmtDate = (d, long) => d.toLocaleDateString("en-GB", long
+  ? { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }
+  : { day: "numeric", month: "short", timeZone: "UTC" });
+const dotById = () => new Map(cur.dots.map((d) => [d.id, d]));
+const degrees = () => {
+  const deg = Object.fromEntries(cur.dots.map((d) => [d.id, 0]));
+  for (const [a, b] of cur.edges) { deg[a]++; deg[b]++; }
+  return deg;
+};
+function snapV(v, on) { return on ? Math.round(v / SNAP) * SNAP : v; }
+const clampPt = (p) => ({ x: Math.min(1, Math.max(0, p.x)), y: Math.min(BOARD_H, Math.max(0, p.y)) });
+const r3 = (v) => Math.round(v * 1000) / 1000;
+const isDirty = () => cur && JSON.stringify(stateOf(cur)) !== savedJson;
+const stateOf = (c) => ({ id: c.id, title: c.title, category: c.category, position: c.position,
+  dots: c.dots.map((d) => [d.id, r3(d.x), r3(d.y)]), edges: c.edges.map((e) => key(...e)).sort() });
+
+// Same as fit() in tools/author_puzzles.py.
+function fit(dots) {
+  const xs = dots.map((d) => d.x), ys = dots.map((d) => d.y);
+  const minx = Math.min(...xs), maxx = Math.max(...xs), miny = Math.min(...ys), maxy = Math.max(...ys);
+  const w = maxx - minx, h = maxy - miny;
+  if (dots.length < 2 || (w === 0 && h === 0)) return { dots: clone(dots), scale: 1 };
+  const [x0, x1, y0, y1] = BOX;
+  const s = Math.min(w ? (x1 - x0) / w : Infinity, h ? (y1 - y0) / h : Infinity);
+  const ox = 0.5 - s * (minx + maxx) / 2, oy = BOARD_H / 2 - s * (miny + maxy) / 2;
+  return { dots: dots.map((d) => ({ id: d.id, x: r3(ox + s * d.x), y: r3(oy + s * d.y) })), scale: s };
+}
+
+// ---------- checks ----------
+function analyse() {
+  const errors = [], warns = [], problemDots = new Set(), problemEdges = new Set();
+  const deg = degrees();
+  const { dots: fdots, scale } = fit(cur.dots);
+  const F = new Map(fdots.map((d) => [d.id, d]));
+  if (!cur.title.trim()) errors.push("Title is empty");
+  if (cur.isNew) {
+    if (!/^[a-z0-9][a-z0-9-]*$/.test(cur.id)) errors.push("Id: lowercase letters, digits and dashes");
+    else if (meta.puzzles.some((p) => p.id === cur.id)) errors.push(`Id "${cur.id}" is taken`);
+  }
+  if (cur.dots.length < 2 || cur.edges.length < 1) errors.push("Needs at least two dots and a line");
+  const isolated = cur.dots.filter((d) => deg[d.id] === 0);
+  if (isolated.length) {
+    errors.push(`${isolated.length} dot(s) without lines`);
+    isolated.forEach((d) => problemDots.add(d.id));
+  }
+  if (cur.dots.length >= 2) {
+    const xs = cur.dots.map((d) => d.x), ys = cur.dots.map((d) => d.y);
+    if (Math.max(...xs) === Math.min(...xs) || Math.max(...ys) === Math.min(...ys))
+      errors.push("Dots all on one straight horizontal/vertical line");
+  }
+  let minSpacing = Infinity;
+  for (let i = 0; i < fdots.length; i++) for (let j = i + 1; j < fdots.length; j++) {
+    const d = dist(fdots[i], fdots[j]);
+    minSpacing = Math.min(minSpacing, d);
+    if (d < MIN_DOT_SPACING) {
+      problemDots.add(fdots[i].id); problemDots.add(fdots[j].id);
+      errors.push(`${fdots[i].id} and ${fdots[j].id} too close (${d.toFixed(3)} < ${MIN_DOT_SPACING})`);
+    }
+  }
+  cur.edges.forEach(([a, b], i) => {
+    for (const d of fdots) {
+      if (d.id === a || d.id === b) continue;
+      const { d: dd } = distToSegment(d, F.get(a), F.get(b));
+      if (dd < MIN_LINE_CLEARANCE) {
+        problemDots.add(d.id); problemEdges.add(i);
+        errors.push(`${d.id} sits on line ${a}–${b} (${dd.toFixed(3)} < ${MIN_LINE_CLEARANCE})`);
+      }
+    }
+  });
+  // quality (same as tools/puzzle_quality.py)
+  const adj = Object.fromEntries(cur.dots.map((d) => [d.id, []]));
+  for (const [a, b] of cur.edges) { adj[a].push(b); adj[b].push(a); }
+  let chain = 0; const seen = new Set();
+  for (const start of Object.keys(deg)) {
+    if (deg[start] !== 2 || seen.has(start)) continue;
+    let run = 1; const here = new Set([start]); seen.add(start);
+    for (const first of adj[start]) {
+      let prev = start, c = first;
+      while (deg[c] === 2 && !here.has(c)) {
+        seen.add(c); here.add(c); run++;
+        const nxt = adj[c].filter((x) => x !== prev);
+        if (!nxt.length) break;
+        prev = c; c = nxt[0];
+      }
+    }
+    chain = Math.max(chain, run);
+  }
+  const n = cur.dots.length;
+  const junc = n ? Math.round(100 * Object.values(deg).filter((v) => v >= 3).length / n) : 0;
+  if (n && (n < 15 || n > 20)) warns.push(`${n} dots — the target is 15–20`);
+  if (chain > MAX_CHAIN) warns.push(`Longest run of 2s is ${chain} (want ≤ ${MAX_CHAIN}) — add branching detail`);
+  if (n && junc < MIN_JUNCTION) warns.push(`Only ${junc}% of dots are 3+ (want ≥ ${MIN_JUNCTION}%)`);
+  return { errors, warns, problemDots, problemEdges, minSpacing, chain, junc, scale, fdots };
+}
+
+// ---------- rendering ----------
+function el(name, attrs, parent) {
+  const n = document.createElementNS(NS, name);
+  for (const [k, v] of Object.entries(attrs || {})) n.setAttribute(k, v);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+function render() {
+  const svg = $("canvas");
+  svg.replaceChildren();
+  const player = $("player").checked;
+  el("rect", { x: 0, y: 0, width: S, height: S * BOARD_H, fill: "#0b1026" }, svg);
+  if (!player) {
+    for (let v = 50; v < S * BOARD_H; v += 50) {
+      const major = v % 250 === 0;
+      if (v < S) el("line", { x1: v, y1: 0, x2: v, y2: S * BOARD_H, class: major ? "grid-major" : "grid-minor" }, svg);
+      el("line", { x1: 0, y1: v, x2: S, y2: v, class: major ? "grid-major" : "grid-minor" }, svg);
+    }
+  }
+  if (traceUrl && !player) {
+    el("image", { href: traceUrl, x: 0, y: 0, width: S, height: S * BOARD_H,
+      preserveAspectRatio: "xMidYMid meet", opacity: $("trace-opacity").value }, svg);
+  }
+  if (!player) el("rect", { class: "fitbox", x: BOX[0] * S, y: BOX[2] * S,
+    width: (BOX[1] - BOX[0]) * S, height: (BOX[3] - BOX[2]) * S }, svg);
+  if (!cur) return;
+
+  const a = analyse();
+  const deg = degrees();
+  if (player) {
+    svg.classList.add("player");
+    const g = el("g", {}, svg);
+    for (const d of a.fdots) {
+      const dg = el("g", { class: "dot" }, g);
+      el("circle", { cx: d.x * S, cy: d.y * S, r: 28 }, dg);
+      el("text", { x: d.x * S, y: d.y * S }, dg).textContent = deg[d.id];
+    }
+    renderPanel(a);
+    return;
+  }
+  svg.classList.remove("player");
+  const D = dotById();
+  const edges = el("g", {}, svg);
+  cur.edges.forEach(([p, q], i) => {
+    const A = D.get(p), B = D.get(q);
+    const cls = ["edge", hover?.edge === i ? "hover" : "", a.problemEdges.has(i) ? "problem" : ""].join(" ");
+    el("line", { x1: A.x * S, y1: A.y * S, x2: B.x * S, y2: B.y * S, class: cls }, edges);
+  });
+  if (sel && cursor && D.get(sel) && !hover?.dot && !hover?.drag) {
+    const A = D.get(sel);
+    el("line", { x1: A.x * S, y1: A.y * S, x2: cursor.x * S, y2: cursor.y * S, class: "rubber" }, svg);
+  }
+  const dots = el("g", {}, svg);
+  const showNames = $("names").checked;
+  for (const d of cur.dots) {
+    const cls = ["dot", deg[d.id] === 0 ? "isolated" : "", a.problemDots.has(d.id) ? "problem" : "",
+      hover?.dot === d.id ? "hover" : "", sel === d.id ? "selected" : ""].join(" ");
+    const g = el("g", { class: cls }, dots);
+    el("circle", { cx: d.x * S, cy: d.y * S, r: 22 }, g);
+    el("text", { x: d.x * S, y: d.y * S }, g).textContent = deg[d.id];
+    if (showNames) el("text", { class: "name", x: d.x * S + 26, y: d.y * S - 20 }, g).textContent = d.id;
+  }
+  svg.style.cursor = hover?.dot ? "grab" : "crosshair";
+  renderPanel(a);
+}
+
+function renderPanel(a) {
+  const stats = $("stats");
+  stats.replaceChildren();
+  const row = (label, value, cls = "") => {
+    const l = document.createElement("span"); l.textContent = label;
+    const v = document.createElement("span"); v.textContent = value; v.className = `v ${cls}`;
+    stats.append(l, v);
+  };
+  const n = cur.dots.length;
+  row("Dots", n, n >= 15 && n <= 20 ? "good" : "warn");
+  row("Lines", cur.edges.length);
+  row("Dots with 3+ lines", `${a.junc}%`, a.junc >= MIN_JUNCTION ? "good" : "warn");
+  row("Longest run of 2s", a.chain, a.chain <= MAX_CHAIN ? "good" : "warn");
+  row("Closest dots (fitted)", Number.isFinite(a.minSpacing) ? a.minSpacing.toFixed(3) : "–",
+    a.minSpacing >= MIN_DOT_SPACING ? "good" : "bad");
+  if (n >= 2 && Math.abs(a.scale - 1) > 0.005) row("Saving scales it by", `×${a.scale.toFixed(2)}`);
+
+  const ul = $("issues");
+  ul.replaceChildren();
+  const unique = (xs) => [...new Set(xs)];
+  for (const t of unique(a.errors).slice(0, 12)) { const li = document.createElement("li"); li.className = "bad"; li.textContent = t; ul.append(li); }
+  for (const t of a.warns) { const li = document.createElement("li"); li.className = "warn"; li.textContent = t; ul.append(li); }
+  if (!a.errors.length && !a.warns.length) { const li = document.createElement("li"); li.style.color = "var(--good)"; li.textContent = "All good"; ul.append(li); }
+
+  const dirty = isDirty();
+  $("save-btn").disabled = a.errors.length > 0 || (!dirty && !cur.isNew);
+  $("save-btn").textContent = cur.isNew ? "Save new puzzle" : dirty ? "Save" : "Saved";
+  $("revert-btn").disabled = !dirty;
+  $("play-btn").disabled = cur.isNew;
+  $("undo-btn").disabled = !undoStack.length;
+  $("redo-btn").disabled = !redoStack.length;
+  document.title = `${dirty ? "● " : ""}${cur.title || "New puzzle"} — Constelly editor`;
+}
+
+function renderList() {
+  const q = $("filter").value.trim().toLowerCase();
+  const ul = $("list");
+  ul.replaceChildren();
+  for (const p of meta.puzzles) {
+    if (q && !`${p.id} ${p.title} ${p.category} #${p.index + 1}`.toLowerCase().includes(q)) continue;
+    const li = document.createElement("li");
+    if (cur && !cur.isNew && cur.id === p.id) li.className = "active";
+    const num = document.createElement("span"); num.className = "num"; num.textContent = `#${p.index + 1}`;
+    const t = document.createElement("span"); t.className = "t"; t.textContent = p.title; t.title = `${p.id} · ${p.category}`;
+    const date = document.createElement("span"); date.className = "date"; date.textContent = fmtDate(dateFor(p.index));
+    if (p.index < meta.todayIndex) t.append(badge("played", "played"));
+    else if (p.index === meta.todayIndex) t.append(badge("today", "today"));
+    if (p.dull) t.append(badge("dull", "dull"));
+    li.append(num, t, date);
+    li.addEventListener("click", () => open(p.id));
+    ul.append(li);
+  }
+}
+function badge(cls, text) { const b = document.createElement("span"); b.className = `badge ${cls}`; b.textContent = text; return b; }
+
+function fillForm() {
+  $("f-id").value = cur.id;
+  $("f-id").readOnly = !cur.isNew;
+  $("f-id").title = cur.isNew ? "" : "Ids can't change: saved progress is keyed by id";
+  $("f-title").value = cur.title;
+  $("f-cat").value = cur.category;
+  $("pos-wrap").hidden = !cur.isNew;
+  const min = Math.max(meta.todayIndex + 1, 0);
+  $("f-pos").min = min + 1; $("f-pos").max = meta.puzzles.length + 1;
+  $("f-pos").value = cur.position + 1;
+  updatePosDate();
+  const played = !cur.isNew && cur.index <= meta.todayIndex;
+  $("played-banner").hidden = !played;
+  if (played) $("played-banner").textContent =
+    `#${cur.index + 1} was ${cur.index === meta.todayIndex ? "today's puzzle" : "played on " + fmtDate(dateFor(cur.index), true)}. ` +
+    "Changing its dots or lines changes it for anyone with saved progress — title and category edits are safe.";
+  $("save-result").replaceChildren();
+}
+function updatePosDate() {
+  if (!cur?.isNew) return;
+  $("pos-date").textContent = `Plays on ${fmtDate(dateFor(cur.position), true)} (UTC)` +
+    (cur.position < meta.puzzles.length ? " — later puzzles move one day back" : " — the end of the list");
+}
+
+// ---------- editing ----------
+function pushUndo() { undoStack.push(clone({ dots: cur.dots, edges: cur.edges })); redoStack = []; if (undoStack.length > 300) undoStack.shift(); }
+function restore(s) { cur.dots = s.dots; cur.edges = s.edges; if (sel && !cur.dots.some((d) => d.id === sel)) sel = null; }
+function doUndo() { if (!undoStack.length) return; redoStack.push(clone({ dots: cur.dots, edges: cur.edges })); restore(undoStack.pop()); render(); }
+function doRedo() { if (!redoStack.length) return; undoStack.push(clone({ dots: cur.dots, edges: cur.edges })); restore(redoStack.pop()); render(); }
+
+function nextName() {
+  const used = new Set(cur.dots.map((d) => d.id));
+  let i = 1;
+  while (used.has(`p${i}`)) i++;
+  return `p${i}`;
+}
+function toggleEdge(a, b) {
+  const k = key(a, b);
+  const i = cur.edges.findIndex((e) => key(...e) === k);
+  pushUndo();
+  if (i >= 0) cur.edges.splice(i, 1); else cur.edges.push([a, b]);
+}
+function addDot(p, joinTo) {
+  pushUndo();
+  const id = nextName();
+  cur.dots.push({ id, x: r3(p.x), y: r3(p.y) });
+  if (joinTo) cur.edges.push([joinTo, id]);
+  return id;
+}
+function deleteDot(id) {
+  pushUndo();
+  cur.dots = cur.dots.filter((d) => d.id !== id);
+  cur.edges = cur.edges.filter(([a, b]) => a !== id && b !== id);
+  if (sel === id) sel = null;
+}
+function splitEdge(i, p) {
+  const [a, b] = cur.edges[i];
+  const D = dotById();
+  const { t } = distToSegment(p, D.get(a), D.get(b));
+  const A = D.get(a), B = D.get(b);
+  pushUndo();
+  const id = nextName();
+  cur.dots.push({ id, x: r3(A.x + t * (B.x - A.x)), y: r3(A.y + t * (B.y - A.y)) });
+  cur.edges.splice(i, 1, [a, id], [id, b]);
+  return id;
+}
+
+// ---------- pointer ----------
+function toBoard(evt) {
+  const svg = $("canvas");
+  const pt = svg.createSVGPoint();
+  pt.x = evt.clientX; pt.y = evt.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return { x: p.x / S, y: p.y / S };
+}
+function dotAt(p) {
+  let best = null, bd = DOT_HIT;
+  for (const d of cur.dots) { const dd = dist(p, d); if (dd < bd) { bd = dd; best = d.id; } }
+  return best;
+}
+function edgeAt(p) {
+  const D = dotById();
+  let best = null, bd = LINE_HIT;
+  cur.edges.forEach(([a, b], i) => { const { d } = distToSegment(p, D.get(a), D.get(b)); if (d < bd) { bd = d; best = i; } });
+  return best;
+}
+let press = null; // { kind: "dot"|"edge"|"empty", id|i, start, moved, before }
+
+function onDown(evt) {
+  if (!cur || $("player").checked || evt.button !== 0) return;
+  const p = toBoard(evt);
+  const d = dotAt(p);
+  $("canvas").setPointerCapture(evt.pointerId);
+  if (d) press = { kind: "dot", id: d, start: p, moved: false, before: clone({ dots: cur.dots, edges: cur.edges }) };
+  else { const e = edgeAt(p); press = e !== null ? { kind: "edge", i: e, start: p } : { kind: "empty", start: p }; }
+}
+function onMove(evt) {
+  if (!cur || $("player").checked) return;
+  const p = toBoard(evt);
+  cursor = p;
+  if (press?.kind === "dot") {
+    if (!press.moved && dist(p, press.start) > 0.006) press.moved = true;
+    if (press.moved) {
+      const d = cur.dots.find((x) => x.id === press.id);
+      const snap = $("snap").checked && !evt.altKey;
+      const q = clampPt(p);
+      d.x = r3(snapV(q.x, snap)); d.y = r3(snapV(q.y, snap));
+      hover = { dot: d.id, drag: true };
+      render();
+    }
+    return;
+  }
+  const d = dotAt(p);
+  const e = d ? null : edgeAt(p);
+  hover = d ? { dot: d } : e !== null ? { edge: e } : null;
+  render();
+}
+function onUp(evt) {
+  if (!press || !cur) return;
+  const p = toBoard(evt);
+  const pr = press; press = null;
+  if (pr.kind === "dot") {
+    if (pr.moved) { undoStack.push(pr.before); redoStack = []; }
+    else if (!sel) sel = pr.id;
+    else if (sel === pr.id) sel = null;
+    else { toggleEdge(sel, pr.id); sel = pr.id; }
+  } else if (pr.kind === "edge") {
+    if (edgeAt(p) === pr.i) {
+      const prev = sel, id = splitEdge(pr.i, p);  // new dot sits exactly on the line
+      if (prev && !cur.edges.some((e) => key(...e) === key(prev, id))) cur.edges.push([prev, id]);
+      sel = id;
+    }
+  } else if (dist(p, pr.start) < 0.01) {
+    const snap = $("snap").checked && !evt.altKey;
+    const q = clampPt(p);
+    sel = addDot({ x: snapV(q.x, snap), y: snapV(q.y, snap) }, sel);
+  }
+  hover = null;
+  render();
+}
+
+// ---------- loading / saving ----------
+async function loadMeta() {
+  const res = await fetch("/api/puzzles", { cache: "no-store" });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `HTTP ${res.status}`);
+  meta = await res.json();
+  for (const p of meta.puzzles) {
+    const saveCur = cur; cur = { dots: p.dots, edges: p.edges, title: p.title, isNew: false, id: p.id };
+    const a = analyse(); p.dull = a.chain > MAX_CHAIN || a.junc < MIN_JUNCTION; cur = saveCur;
+  }
+}
+function confirmDiscard() { return !isDirty() || confirm("Discard unsaved changes?"); }
+function setCurrent(c) {
+  cur = c; sel = null; hover = null; undoStack = []; redoStack = [];
+  savedJson = c.isNew ? "" : JSON.stringify(stateOf(c));
+  fillForm(); renderList(); render();
+}
+function open(id) {
+  if (cur && !cur.isNew && cur.id === id) return;
+  if (!confirmDiscard()) return;
+  const p = meta.puzzles.find((x) => x.id === id);
+  setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
+    position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+  history.replaceState(null, "", `#${id}`);
+}
+function newPuzzle(from) {
+  if (!confirmDiscard()) return;
+  setCurrent({ isNew: true, index: null, id: "", title: from ? `${from.title} copy` : "",
+    category: from?.category || "object", position: meta.puzzles.length,
+    dots: from ? clone(from.dots) : [], edges: from ? clone(from.edges) : [] });
+  history.replaceState(null, "", "#new");
+  $("f-id").focus();
+}
+
+async function save() {
+  const a = analyse();
+  if (a.errors.length) return;
+  const played = !cur.isNew && cur.index <= meta.todayIndex;
+  const before = meta.puzzles.find((p) => p.id === cur.id);
+  const shape = (c) => { const st = stateOf(c); return JSON.stringify([st.dots, st.edges]); };
+  const shapeChanged = before && shape(cur) !== shape(before);
+  if (played && shapeChanged && !confirm(`#${cur.index + 1} has already been played. Change its drawing anyway?`)) return;
+  const body = { isNew: cur.isNew, id: cur.id, title: cur.title.trim(), category: cur.category,
+    dots: cur.dots, edges: cur.edges, confirmPlayed: played };
+  if (cur.isNew) body.position = cur.position;
+  $("save-btn").disabled = true; $("save-btn").textContent = "Saving…";
+  const out = $("save-result");
+  out.replaceChildren();
+  let result;
+  try {
+    const res = await fetch("/api/save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    result = await res.json();
+    if (!res.ok) throw new Error(result.error || `HTTP ${res.status}`);
+  } catch (e) {
+    out.append(banner("bad", `Not saved: ${e.message}`));
+    render();
+    return;
+  }
+  const id = result.id;
+  await loadMeta();
+  savedJson = ""; cur = null;
+  const p = meta.puzzles.find((x) => x.id === id);
+  setCurrent({ isNew: false, index: p.index, id: p.id, title: p.title, category: p.category,
+    position: p.index, dots: clone(p.dots), edges: clone(p.edges) });
+  history.replaceState(null, "", `#${id}`);
+  const box = $("save-result");
+  box.append(banner(result.ok ? "good" : "bad", result.ok
+    ? `Saved #${p.index + 1}. puzzles.json regenerated and valid — commit & push to publish.`
+    : "Saved, but puzzles.json does NOT validate — fix before pushing."));
+  const pre = document.createElement("pre"); pre.className = "out";
+  pre.textContent = [result.generate !== "OK" ? result.generate : "", result.validate,
+    result.quality && `quality:  ${result.quality}`].filter(Boolean).join("\n");
+  box.append(pre);
+}
+function banner(cls, text) { const d = document.createElement("div"); d.className = `banner ${cls}`; d.textContent = text; return d; }
+
+// ---------- wiring ----------
+function wire() {
+  const svg = $("canvas");
+  svg.addEventListener("pointerdown", onDown);
+  svg.addEventListener("pointermove", onMove);
+  svg.addEventListener("pointerup", onUp);
+  svg.addEventListener("pointerleave", () => { cursor = null; if (!press) { hover = null; render(); } });
+  svg.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    if (!cur || $("player").checked) return;
+    const p = toBoard(e), d = dotAt(p), i = d ? null : edgeAt(p);
+    if (d) deleteDot(d);
+    else if (i !== null) { pushUndo(); cur.edges.splice(i, 1); }
+    hover = null;
+    render();
+  });
+  document.addEventListener("keydown", (e) => {
+    const typing = /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName) && document.activeElement.type !== "checkbox";
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); if (!$("save-btn").disabled) save(); return; }
+    if (typing || !cur) return;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); e.shiftKey ? doRedo() : doUndo(); }
+    else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") { e.preventDefault(); doRedo(); }
+    else if (e.key === "Escape") { sel = null; render(); }
+    else if ((e.key === "Delete" || e.key === "Backspace") && sel) { e.preventDefault(); deleteDot(sel); render(); }
+    else if (sel && e.key.startsWith("Arrow")) {
+      e.preventDefault();
+      const d = cur.dots.find((x) => x.id === sel), step = e.shiftKey ? 0.02 : 0.005;
+      pushUndo();
+      if (e.key === "ArrowLeft") d.x = r3(d.x - step); if (e.key === "ArrowRight") d.x = r3(d.x + step);
+      if (e.key === "ArrowUp") d.y = r3(d.y - step); if (e.key === "ArrowDown") d.y = r3(d.y + step);
+      Object.assign(d, clampPt(d));
+      render();
+    }
+  });
+  $("undo-btn").onclick = doUndo;
+  $("redo-btn").onclick = doRedo;
+  for (const id of ["snap", "names", "player"]) $(id).onchange = render;
+  $("fit-btn").onclick = () => {
+    if (!cur || cur.dots.length < 2) return;
+    pushUndo(); cur.dots = fit(cur.dots).dots; render();
+  };
+  $("trace-btn").onclick = () => $("trace-file").click();
+  $("trace-file").onchange = () => {
+    const f = $("trace-file").files[0]; if (!f) return;
+    if (traceUrl) URL.revokeObjectURL(traceUrl);
+    traceUrl = URL.createObjectURL(f);
+    $("trace-opacity").disabled = $("trace-clear").disabled = false;
+    render();
+  };
+  $("trace-opacity").oninput = render;
+  $("trace-clear").onclick = () => { URL.revokeObjectURL(traceUrl); traceUrl = null; $("trace-file").value = "";
+    $("trace-opacity").disabled = $("trace-clear").disabled = true; render(); };
+  $("filter").oninput = renderList;
+  $("new-btn").onclick = () => newPuzzle(null);
+  $("dup-btn").onclick = () => cur && newPuzzle(cur);
+  $("revert-btn").onclick = () => {
+    if (!confirm("Throw away unsaved changes?")) return;
+    savedJson = "";
+    if (cur.isNew) newPuzzle(null); else { const id = cur.id; cur = null; open(id); }
+  };
+  $("play-btn").onclick = () => window.open(`/?p=${cur.index}`, "constelly-playtest");
+  $("save-btn").onclick = save;
+  $("f-id").oninput = () => { cur.id = $("f-id").value.trim(); render(); };
+  $("f-title").oninput = () => { cur.title = $("f-title").value; render(); };
+  $("f-cat").onchange = () => { cur.category = $("f-cat").value; render(); };
+  $("f-pos").oninput = () => {
+    const min = Math.max(meta.todayIndex + 1, 0), n = Number.parseInt($("f-pos").value, 10) - 1;
+    if (Number.isInteger(n)) cur.position = Math.min(meta.puzzles.length, Math.max(min, n));
+    updatePosDate(); render();
+  };
+  window.addEventListener("beforeunload", (e) => { if (isDirty()) { e.preventDefault(); e.returnValue = ""; } });
+}
+
+async function init() {
+  const local = ["127.0.0.1", "localhost"].includes(location.hostname);
+  try {
+    if (!local) throw new Error("");
+    await loadMeta();
+  } catch (e) {
+    $("offline").hidden = false;
+    if (e.message) $("offline-detail").textContent = `(Server said: ${e.message})`;
+    return;
+  }
+  $("app").hidden = false;
+  for (const c of meta.categories) { const o = document.createElement("option"); o.value = o.textContent = c; $("f-cat").append(o); }
+  wire();
+  const want = decodeURIComponent(location.hash.slice(1));
+  if (want && want !== "new" && meta.puzzles.some((p) => p.id === want)) open(want);
+  else if (want === "new") newPuzzle(null);
+  else open(meta.puzzles[Math.min(Math.max(meta.todayIndex + 1, 0), meta.puzzles.length - 1)].id);
+}
+init();
+</script>
+</body>
+</html>

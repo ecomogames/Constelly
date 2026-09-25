@@ -25,7 +25,12 @@ tools/author_puzzles.py    puzzle drawings (source of truth) -> puzzles.json
 tools/preview_puzzles.py   contact-sheet PNG of all puzzles (matplotlib)
 tools/puzzle_quality.py    flags dull puzzles (long chains of degree-2 dots)
 tools/make_tutorial_gif.py regenerates img/tutorial.gif + tutorial-still.png (cairosvg, pillow)
-img/                       tutorial animation for the how-to-play dialog
+img/                       tutorial animation, icons, link-preview image
+tools/make_icons.py        regenerates the icons + img/og-image.png (cairosvg, pillow)
+tools/editor.py + .html    local visual puzzle editor (see "Edit puzzles")
+site.webmanifest           home-screen app name + icons
+404.html                   "lost in space" page for missing URLs (absolute paths)
+robots.txt, sitemap.xml    for search engines
 privacy.html               privacy notice (draft)
 .nojekyll               tells GitHub Pages to serve files as-is
 ```
@@ -44,6 +49,15 @@ Zero-dependency unit tests for the pure modules (Node 22+, built-in runner, no `
 node --test
 ```
 This finds `tests/*.test.mjs` automatically.
+
+## Edit puzzles
+```
+python tools/editor.py
+```
+opens a visual editor at http://127.0.0.1:8001/tools/editor.html (only reachable from this
+computer; stop with Ctrl+C). Pick a puzzle on the left or press **+ New**, draw, then **Save**:
+it updates `tools/author_puzzles.py`, regenerates `puzzles/puzzles.json` and shows the validator
+and quality output. Commit and push to publish. Standard library only.
 
 ## Validate puzzles
 Run before publishing any change to `puzzles/puzzles.json` (exits 1 on problems):

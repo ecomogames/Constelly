@@ -1,0 +1,14 @@
+{
+  "name": "Constelly — daily constellation puzzle",
+  "short_name": "Constelly",
+  "description": "Connect the stars to reveal a hidden picture. A new puzzle every day.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1026",
+  "theme_color": "#0b1026",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

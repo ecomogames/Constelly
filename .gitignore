@@ -5,3 +5,6 @@ __pycache__/
 *.pyc
 .venv/
 node_modules/
+
+# Local previews / scratch (contain puzzle solutions; never publish)
+Claude outputs/

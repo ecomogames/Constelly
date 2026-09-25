@@ -62,7 +62,21 @@ async function init() {
   applyStaticStrings();
   document.querySelectorAll("dialog.dialog").forEach(lightDismiss);
 
-  const puzzles = await (await fetch("puzzles/puzzles.json")).json();
+  let puzzles;
+  try {
+    const res = await fetch("puzzles/puzzles.json");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    puzzles = await res.json();
+  } catch {
+    // Offline, or a flaky connection mid-load: say so instead of showing an empty board.
+    $("board").style.display = "none";
+    $("controls").hidden = true;
+    $("hint-btn").hidden = true;
+    $("timer").hidden = true;
+    $("reveal").textContent = STRINGS.loadFailed;
+    $("reveal").hidden = false;
+    return;
+  }
   const override = devOverride(puzzles.length);
   const pick = override !== null
     ? { index: override, number: override + 1, puzzle: puzzles[override], preLaunch: false }
@@ -149,8 +163,7 @@ async function init() {
     controls.hidden = true;
     hintBtn.hidden = true;
     timerEl.hidden = true;
-    reveal.textContent =
-      "That's all the constellations for now — new ones are coming soon. Check back tomorrow!";
+    reveal.textContent = STRINGS.outOfPuzzles;
     reveal.hidden = false;
     return;
   }
@@ -298,6 +311,12 @@ async function init() {
       pauseTimer(game);
       save();
     } else {
+      // A tab left open past 00:00 UTC: load the new puzzle — unless the player is part-way
+      // through the old one (its progress is saved; solving it still counts for its own day).
+      if (override === null && getDayIndex() !== today && (solved || game.drawn.size === 0)) {
+        location.reload();
+        return;
+      }
       resumeTimer(game);
     }
     showTime();

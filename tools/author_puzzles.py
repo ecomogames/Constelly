@@ -739,6 +739,8 @@ if __name__ == "__main__":
     by_id = {p["id"]: p for p in PUZZLES}
     assert sorted(ORDER) == sorted(by_id), set(by_id) ^ set(ORDER)
     out = [fit(by_id[i]) for i in ORDER]
+    if len(sys.argv) > 1 and sys.argv[1].startswith("-"):
+        sys.exit("usage: python tools/author_puzzles.py [OUTPUT.json]  (default: puzzles/puzzles.json)")
     path = sys.argv[1] if len(sys.argv) > 1 else ROOT / "puzzles" / "puzzles.json"
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(dumps(out))

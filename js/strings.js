@@ -5,6 +5,9 @@ const hintWord = (n) => (n === 1 ? "hint" : "hints");
 
 export const STRINGS = {
   close: "Close", // the × on every dialog
+  loadFailed: "Couldn't load today's puzzle — check your connection and reload the page.",
+  outOfPuzzles:
+    "That's all the constellations for now — new ones are coming soon. Check back tomorrow!",
 
   hud: {
     hint: (used) => (used ? `Hint (${used})` : "Hint"),

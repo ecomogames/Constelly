@@ -4,7 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Constelly — daily constellation puzzle</title>
-  <meta name="description" content="Connect the stars. A new constellation puzzle every day.">
+  <meta name="description" content="Connect the stars to reveal a hidden picture. A free new constellation puzzle every day — no login, no download.">
+  <link rel="canonical" href="https://playconstelly.com/">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0b1026">
+  <link rel="manifest" href="site.webmanifest">
+
+  <!-- Link previews (WhatsApp, iMessage, Slack, X, Facebook…). Image: tools/make_icons.py -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Constelly">
+  <meta property="og:url" content="https://playconstelly.com/">
+  <meta property="og:title" content="Constelly — daily constellation puzzle">
+  <meta property="og:description" content="Connect the stars to reveal a hidden picture. A new puzzle every day.">
+  <meta property="og:image" content="https://playconstelly.com/img/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Constelly: numbered stars being joined into a paper plane on a night sky.">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="stylesheet" href="css/style.css">
   <!-- TODO (step 7): AdSense script + cookie consent go here, loaded only after consent. -->
 </head>
@@ -18,6 +37,8 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10h4v10zm6 0V4h4v16zm6 0v-7h4v7z"/></svg>
     </button>
   </header>
+
+  <noscript><p class="reveal">Constelly needs JavaScript to run — please enable it and reload.</p></noscript>
 
   <main class="stage">
     <div class="hud">
@@ -108,7 +129,7 @@
   </dialog>
 
   <footer class="footer">
-    <!-- TODO (step 7): tip jar link, privacy/cookie link -->
+    <!-- Reserved for step 7 (ads / cookie settings link). -->
   </footer>
 
   <script type="module" src="js/main.js"></script>
